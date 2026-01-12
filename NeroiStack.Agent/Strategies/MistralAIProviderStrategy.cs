@@ -1,14 +1,14 @@
 #pragma warning disable SKEXP0070
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Connectors.Ollama;
+using Microsoft.SemanticKernel.Connectors.MistralAI;
 using NeroiStack.Agent.Enum;
 using NeroiStack.Agent.Model;
 
 namespace NeroiStack.Agent.Strategies;
 
-public class OllamaModelProviderStrategy : IKernelProviderStrategy
+public class MistralAIProviderStrategy : IKernelProviderStrategy
 {
-	public bool CanHandle(SupplierEnum supplier) => supplier == SupplierEnum.Ollama;
+	public bool CanHandle(SupplierEnum supplier) => supplier == SupplierEnum.MistralAI;
 
 	public void Configure(IKernelBuilder builder, string modelId, KeyVM apiKey)
 	{
@@ -20,12 +20,11 @@ public class OllamaModelProviderStrategy : IKernelProviderStrategy
 
 	public PromptExecutionSettings CreateExecutionSettings(AgentVM? agent = null)
 	{
-		return new OllamaPromptExecutionSettings
+		return new MistralAIPromptExecutionSettings
 		{
 			Temperature = (float?)agent?.Temperature ?? 0.7f,
-			TopK = 40,
-			TopP = (float?)agent?.TopP ?? 0.9f,
-			NumPredict = 2048,
+			TopP = (float?)agent?.TopP ?? 1f,
+			ResponseFormat = agent?.ResponseFormat ?? "text",
 			FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 		};
 	}

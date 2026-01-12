@@ -53,7 +53,7 @@ public partial class MainWindowViewModel : ViewModelBase
 		WeakReferenceMessenger.Default.Register<AddChatInstanceMessage>(this, (r, m) =>
 		{
 			var info = m.Value;
-			ChatMenus.Add(new NavigationItem
+			ChatMenus.Insert(0, new NavigationItem
 			{
 				Name = $"Instance_{info.InstanceId}",
 				Text = $"{info.Name} #{info.InstanceId}",

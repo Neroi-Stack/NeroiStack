@@ -60,4 +60,14 @@ public class ChatInstanceService(IChatContext context) : IChatInstanceService
 			await _context.SaveChangesAsync();
 		}
 	}
+
+	public async Task UpdateSelectedModelAsync(int instanceId, string selectedModel)
+	{
+		var entity = await _context.ChatInstances.FindAsync(instanceId);
+		if (entity != null)
+		{
+			entity.SelectedModel = selectedModel;
+			await _context.SaveChangesAsync();
+		}
+	}
 }

@@ -94,6 +94,25 @@ public partial class ChatBotViewModel : ViewModelBase
 			
 			SelectedModel = AvailableModels.FirstOrDefault(m => m != "➕ Create Key") ?? string.Empty;
 		}
+		else if (!string.IsNullOrEmpty(value) && InstanceId > 0)
+		{
+			// Save selected model to database
+			_ = SaveSelectedModelAsync(value);
+		}
+	}
+
+	private async Task SaveSelectedModelAsync(string selectedModel)
+	{
+		if (_chatInstanceService == null || InstanceId <= 0) return;
+
+		try
+		{
+			await _chatInstanceService.UpdateSelectedModelAsync(InstanceId, selectedModel);
+		}
+		catch
+		{
+			// Log or handle error if needed
+		}
 	}
 
 	[RelayCommand]
@@ -107,14 +126,16 @@ public partial class ChatBotViewModel : ViewModelBase
 	public IRelayCommand StopGenerationCommand => StopGenerationInternalCommand;
 
 	private readonly IKeyManageService _keyManageService;
+	private readonly IChatInstanceService _chatInstanceService;
 
 	public KeyManagementViewModel KeyCreationVM { get; }
 
-	public ChatBotViewModel(IChatService chatService, IServiceScopeFactory scopeFactory, IKeyManageService keyManageService)
+	public ChatBotViewModel(IChatService chatService, IServiceScopeFactory scopeFactory, IKeyManageService keyManageService, IChatInstanceService chatInstanceService)
 	{
 		_chatService = chatService;
 		_scopeFactory = scopeFactory;
 		_keyManageService = keyManageService;
+		_chatInstanceService = chatInstanceService;
 		
 		KeyCreationVM = new KeyManagementViewModel(_keyManageService);
 
@@ -122,7 +143,7 @@ public partial class ChatBotViewModel : ViewModelBase
 	}
 
 	// Default constructor for previewer or fallback
-	public ChatBotViewModel() : this(null!, null!, null!) { }
+	public ChatBotViewModel() : this(null!, null!, null!, null!) { }
 
 	private async Task LoadModelsAsync()
 	{
@@ -161,8 +182,36 @@ public partial class ChatBotViewModel : ViewModelBase
 		IsLoading = true;
 		Messages.Clear();
 
+		// Load selected model for this instance
+		_ = LoadSelectedModelAsync(instanceId);
+
 		// Fire and forget initialization
 		_ = InitializeSessionAsync(instanceId);
+	}
+
+	private async Task LoadSelectedModelAsync(int instanceId)
+	{
+		if (_chatInstanceService == null) return;
+
+		try
+		{
+			using (var scope = _scopeFactory.CreateScope())
+			{
+				var context = scope.ServiceProvider.GetRequiredService<IChatContext>();
+				var instance = await context.ChatInstances.FindAsync(instanceId);
+				if (instance?.SelectedModel != null && AvailableModels.Contains(instance.SelectedModel))
+				{
+					Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+					{
+						SelectedModel = instance.SelectedModel;
+					});
+				}
+			}
+		}
+		catch
+		{
+			// Log or handle error if needed
+		}
 	}
 
 	private async Task InitializeSessionAsync(int instanceId)
