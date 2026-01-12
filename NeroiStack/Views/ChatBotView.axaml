@@ -4,9 +4,11 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:fluenticons="using:FluentIcons.Avalonia"
 	xmlns:vm="using:NeroiStack.ViewModels"
+	xmlns:model="using:NeroiStack.Component.Model"
 	x:DataType="vm:ChatBotViewModel">
 
-	<Grid RowDefinitions="*, Auto">
+	<Grid>
+		<Grid RowDefinitions="*, Auto">
 
 		<ScrollViewer
 			Grid.Row="0"
@@ -166,5 +168,12 @@
 				</Grid>
 			</Grid>
 		</Border>
+	</Grid>
+
+	<!-- Modal Overlay -->
+	<Grid IsVisible="{Binding AgentCreationVM.IsModalOpen}">
+		<Border Background="#80000000" />
+		<model:UpsertAgentModal DataContext="{Binding AgentCreationVM}" IsVisible="{Binding AgentCreationVM.IsEditorVisible}" />
+	</Grid>
 	</Grid>
 </UserControl>

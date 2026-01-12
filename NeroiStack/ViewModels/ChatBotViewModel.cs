@@ -89,7 +89,9 @@ public partial class ChatBotViewModel : ViewModelBase
 	{
 		if (value == "➕ Create Agent")
 		{
-			WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(Views.AgentManageView)));
+			// Open Modal via AgentCreationVM
+			AgentCreationVM.CreateCommand.Execute(null);
+			
 			SelectedModel = AvailableModels.FirstOrDefault(m => m != "➕ Create Agent") ?? string.Empty;
 		}
 	}
@@ -105,18 +107,26 @@ public partial class ChatBotViewModel : ViewModelBase
 	public IRelayCommand StopGenerationCommand => StopGenerationInternalCommand;
 
 	private readonly IKeyManageService _keyManageService;
+	private readonly IAgentManageService _agentService;
+	private readonly IPluginManageService _pluginService;
 
-	public ChatBotViewModel(IChatService chatService, IServiceScopeFactory scopeFactory, IKeyManageService keyManageService)
+	public AgentManageViewModel AgentCreationVM { get; }
+
+	public ChatBotViewModel(IChatService chatService, IServiceScopeFactory scopeFactory, IKeyManageService keyManageService, IAgentManageService agentService, IPluginManageService pluginService)
 	{
 		_chatService = chatService;
 		_scopeFactory = scopeFactory;
 		_keyManageService = keyManageService;
+		_agentService = agentService;
+		_pluginService = pluginService;
+		
+		AgentCreationVM = new AgentManageViewModel(_agentService, _pluginService);
 
 		_ = LoadModelsAsync();
 	}
 
 	// Default constructor for previewer or fallback
-	public ChatBotViewModel() : this(null!, null!, null!) { }
+	public ChatBotViewModel() : this(null!, null!, null!, null!, null!) { }
 
 	private async Task LoadModelsAsync()
 	{

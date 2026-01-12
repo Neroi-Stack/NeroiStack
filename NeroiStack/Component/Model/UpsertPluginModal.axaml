@@ -1,0 +1,100 @@
+<UserControl
+	x:Class="NeroiStack.Component.Model.UpsertPluginModal"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:model="using:NeroiStack.Agent.Model"
+	xmlns:vm="clr-namespace:NeroiStack.ViewModels"
+	d:DesignHeight="500"
+	d:DesignWidth="500"
+	mc:Ignorable="d">
+
+	<UserControl.DataTemplates>
+		<DataTemplate DataType="{x:Type model:PluginMcpHttpVM}">
+			<StackPanel>
+				<SelectableTextBlock Text="Endpoint" />
+				<TextBox Text="{Binding Endpoint}" />
+				<SelectableTextBlock Text="API Key" />
+				<TextBox PasswordChar="*" Text="{Binding ApiKey}" />
+			</StackPanel>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type model:ChPluginMcpStdioVM}">
+			<StackPanel>
+				<SelectableTextBlock Text="Command" />
+				<TextBox Text="{Binding Command}" />
+				<SelectableTextBlock Text="Arguments (One per line)" />
+				<TextBox
+					Height="80"
+					AcceptsReturn="True"
+					Text="{Binding DataContext.McpStdioArguments, RelativeSource={RelativeSource AncestorType=UserControl}}" />
+			</StackPanel>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type model:ChPluginOpenApiVM}">
+			<StackPanel>
+				<SelectableTextBlock Text="Spec URL" />
+				<TextBox Text="{Binding Website}" />
+				<SelectableTextBlock Text="API Key" />
+				<TextBox PasswordChar="*" Text="{Binding ApiKey}" />
+			</StackPanel>
+		</DataTemplate>
+	</UserControl.DataTemplates>
+
+	<Border
+		Width="500"
+		HorizontalAlignment="Center"
+		VerticalAlignment="Center"
+		Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+		BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+		BorderThickness="1"
+		CornerRadius="8">
+		<Grid Margin="20" RowDefinitions="Auto, *, Auto">
+			<SelectableTextBlock
+				Grid.Row="0"
+				Margin="0,0,0,15"
+				FontSize="20"
+				FontWeight="Bold"
+				Text="{Binding ModalTitle}" />
+
+			<ScrollViewer Grid.Row="1" MaxHeight="500">
+				<StackPanel Spacing="10">
+					<SelectableTextBlock Text="Name" />
+					<TextBox Text="{Binding CurrentPlugin.Name}" />
+
+					<SelectableTextBlock Text="Description" />
+					<TextBox
+						Height="60"
+						AcceptsReturn="True"
+						Text="{Binding CurrentPlugin.Description}" />
+
+					<SelectableTextBlock IsVisible="{Binding IsPluginCreating}" Text="Type" />
+					<ComboBox
+						HorizontalAlignment="Stretch"
+						IsVisible="{Binding IsPluginCreating}"
+						ItemsSource="{Binding PluginTypes}"
+						SelectedItem="{Binding SelectedPluginType}" />
+					<SelectableTextBlock
+						Foreground="Gray"
+						IsVisible="{Binding !IsPluginCreating}"
+						Text="{Binding CurrentPlugin.Type}" />
+
+					<!--  Type Specific Fields via ContentControl  -->
+					<ContentControl Margin="0,10,0,0" Content="{Binding CurrentPlugin}" />
+				</StackPanel>
+			</ScrollViewer>
+
+			<StackPanel
+				Grid.Row="2"
+				Margin="0,15,0,0"
+				HorizontalAlignment="Right"
+				Orientation="Horizontal"
+				Spacing="10">
+				<Button Command="{Binding ClosePluginModalCommand}" Content="Cancel" />
+				<Button
+					Classes="accent"
+					Command="{Binding SavePluginCommand}"
+					Content="Save" />
+			</StackPanel>
+		</Grid>
+	</Border>
+</UserControl>

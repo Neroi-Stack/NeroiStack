@@ -4,142 +4,170 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:vm="using:NeroiStack.ViewModels"
+	xmlns:model="clr-namespace:NeroiStack.Component.Model"
+	xmlns:vm="clr-namespace:NeroiStack.ViewModels"
 	d:DesignHeight="600"
 	d:DesignWidth="800"
 	x:DataType="vm:KeyManagementViewModel"
 	mc:Ignorable="d">
 
-	<Grid RowDefinitions="Auto, *">
-		<Button
-			Grid.Row="0"
-			Margin="20,10"
-			Classes="accent"
-			Command="{Binding AddKeyCommand}"
-			Content="Add Key" />
+	<Grid>
+		<!--  Main Content  -->
+		<Grid RowDefinitions="Auto, *">
+			<!--  Header / Add Button  -->
+			<Grid
+				Grid.Row="0"
+				Margin="20,20,20,10"
+				ColumnDefinitions="*, Auto">
+				<TextBlock
+					VerticalAlignment="Center"
+					FontSize="24"
+					FontWeight="SemiBold"
+					Text="Key Management" />
+				<Button
+					Grid.Column="1"
+					Classes="accent"
+					Command="{Binding AddKeyCommand}"
+					Content="+ Add Key" />
+			</Grid>
 
-		<ScrollViewer Grid.Row="1">
-			<ItemsControl Margin="20" ItemsSource="{Binding Keys}">
-				<ItemsControl.Styles>
-					<Style Selector="Border.Card">
-						<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
-						<Setter Property="CornerRadius" Value="8" />
-						<Setter Property="Padding" Value="15" />
-						<Setter Property="Margin" Value="10" />
-						<Setter Property="BoxShadow" Value="0 4 8 0 #000000" />
-					</Style>
-				</ItemsControl.Styles>
-				<ItemsControl.ItemTemplate>
-					<DataTemplate x:DataType="vm:KeyItemViewModel">
-						<Border Classes="Card">
-							<StackPanel Spacing="10">
-								<StackPanel
-									Margin="0,0,0,10"
-									Orientation="Horizontal"
-									Spacing="10">
-									<TextBlock
-										VerticalAlignment="Center"
-										FontWeight="Bold"
-										Text="Supplier:" />
-									<ComboBox
-										Width="200"
-										VerticalAlignment="Center"
-										ItemsSource="{Binding AvailableSuppliers}"
-										SelectedItem="{Binding Supplier}" />
-								</StackPanel>
-
-								<Grid
-									Margin="0,5"
-									ColumnDefinitions="100, *"
-									RowDefinitions="Auto, Auto, Auto">
-									<TextBlock
-										Grid.Row="0"
-										Grid.Column="0"
-										VerticalAlignment="Center"
-										FontWeight="Medium"
-										Text="Endpoint" />
-									<TextBox
-										Grid.Row="0"
-										Grid.Column="1"
-										Margin="0,0,0,10"
-										Text="{Binding Endpoint}"
-										Watermark="https://api.openai.com/v1 (Optional)" />
-
-									<TextBlock
-										Grid.Row="1"
-										Grid.Column="0"
-										VerticalAlignment="Center"
-										FontWeight="Medium"
-										Text="API Key" />
-									<TextBox
-										Grid.Row="1"
-										Grid.Column="1"
-										Margin="0,0,0,10"
-										PasswordChar="*"
-										Text="{Binding Key}"
-										Watermark="sk-..." />
-
-									<Grid
-										Grid.Row="2"
-										Grid.Column="0"
-										Margin="0,5,10,0"
-										VerticalAlignment="Top"
-										ColumnDefinitions="*, Auto">
+			<!--  Card List  -->
+			<ScrollViewer Grid.Row="1" Padding="10">
+				<ItemsControl ItemsSource="{Binding Keys}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel Orientation="Horizontal" />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.Styles>
+						<Style Selector="Border.Card">
+							<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+							<Setter Property="CornerRadius" Value="8" />
+							<Setter Property="Padding" Value="15" />
+							<Setter Property="Margin" Value="10" />
+							<Setter Property="Width" Value="320" />
+							<Setter Property="BoxShadow" Value="0 4 8 0 #000000" />
+						</Style>
+					</ItemsControl.Styles>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate x:DataType="vm:KeyItemViewModel">
+							<Border Classes="Card">
+								<Grid RowDefinitions="Auto, *, Auto">
+									<!--  Header: Supplier Icon/Name  -->
+									<StackPanel Grid.Row="0" Orientation="Horizontal">
+										<!--  Maybe an icon based on Supplier later  -->
 										<TextBlock
-											VerticalAlignment="Center"
-											FontWeight="Medium"
-											Text="Models" />
-										<Button
-											Grid.Column="1"
-											Padding="8,2"
-											ClipToBounds="True"
-											Command="{Binding AddModelCommand}"
-											Content="+" />
-									</Grid>
-
-									<StackPanel
-										Grid.Row="2"
-										Grid.Column="1"
-										Margin="0,5,0,0">
-										<ItemsControl ItemsSource="{Binding Models}">
-											<ItemsControl.ItemTemplate>
-												<DataTemplate>
-													<Grid Margin="0,0,0,5" ColumnDefinitions="*, Auto">
-														<TextBox Text="{Binding Name}" Watermark="Model Name (e.g. gpt-4)" />
-														<Button
-															Grid.Column="1"
-															Margin="5,0,0,0"
-															Padding="8,5"
-															VerticalAlignment="Stretch"
-															Command="{Binding $parent[ItemsControl].DataContext.RemoveModelCommand}"
-															CommandParameter="{Binding}"
-															Content="X" />
-													</Grid>
-												</DataTemplate>
-											</ItemsControl.ItemTemplate>
-										</ItemsControl>
+											FontSize="16"
+											FontWeight="Bold"
+											Text="{Binding Supplier}" />
 									</StackPanel>
-								</Grid>
 
-								<StackPanel
-									HorizontalAlignment="Right"
-									Orientation="Horizontal"
-									Spacing="10">
-									<Button
-										Background="{DynamicResource SystemControlErrorTextForegroundBrush}"
-										Command="{Binding DeleteCommand}"
-										Content="Delete"
-										Foreground="{DynamicResource SystemControlBackgroundAltHighBrush}" />
-									<Button
-										Classes="accent"
-										Command="{Binding SaveCommand}"
-										Content="Save" />
-								</StackPanel>
-							</StackPanel>
-						</Border>
-					</DataTemplate>
-				</ItemsControl.ItemTemplate>
-			</ItemsControl>
-		</ScrollViewer>
+									<!--  Details  -->
+									<StackPanel Grid.Row="1" Margin="0,15">
+										<Grid Margin="0,0,0,5" ColumnDefinitions="Auto, *">
+											<TextBlock
+												Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+												Text="Endpoint: " />
+											<TextBlock
+												Grid.Column="1"
+												HorizontalAlignment="Right"
+												Text="{Binding EndpointDisplay}"
+												TextTrimming="CharacterEllipsis" />
+										</Grid>
+										<Grid Margin="0,0,0,5" ColumnDefinitions="Auto, *">
+											<TextBlock
+												Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+												Text="Key: " />
+											<TextBlock
+												Grid.Column="1"
+												HorizontalAlignment="Right"
+												FontFamily="Consolas, Monospace"
+												Text="{Binding KeyDisplay}" />
+										</Grid>
+										<Grid Margin="0,0,0,5" ColumnDefinitions="Auto, *">
+											<TextBlock
+												Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+												Text="Models: " />
+											<TextBlock
+												Grid.Column="1"
+												HorizontalAlignment="Right"
+												Text="{Binding ModelCount}" />
+										</Grid>
+									</StackPanel>
+
+									<!--  Actions  -->
+									<Grid Grid.Row="2" ColumnDefinitions="*, 10, *">
+										<Button
+											Grid.Column="0"
+											HorizontalAlignment="Stretch"
+											HorizontalContentAlignment="Center"
+											Command="{Binding $parent[UserControl].((vm:KeyManagementViewModel)DataContext).EditKeyCommand}"
+											CommandParameter="{Binding}"
+											Content="Edit" />
+										<Button
+											Grid.Column="2"
+											HorizontalAlignment="Stretch"
+											HorizontalContentAlignment="Center"
+											Command="{Binding $parent[UserControl].((vm:KeyManagementViewModel)DataContext).DeleteKeyCommand}"
+											CommandParameter="{Binding}"
+											Content="Delete"
+											Foreground="#FF5555" />
+									</Grid>
+								</Grid>
+							</Border>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ScrollViewer>
+		</Grid>
+
+		<!--  Modal Overlay  -->
+		<Grid IsVisible="{Binding IsModalOpen}">
+			<!--  Dimmed Background  -->
+			<Border Background="#80000000">
+				<!--  Optional: Close on background click  -->
+				<!--  <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding CloseModalCommand}" />
+                </Border.GestureRecognizers>  -->
+			</Border>
+
+			<!--  Upsert Modal  -->
+			<model:UpsertKeyModal IsVisible="{Binding IsEditorVisible}" />
+
+			<!--  Delete Confirm Modal  -->
+			<Border
+				Width="400"
+				VerticalAlignment="Center"
+				Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+				BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+				BorderThickness="1"
+				CornerRadius="8"
+				IsVisible="{Binding IsDeleteConfirmVisible}">
+				<Grid Margin="20" RowDefinitions="Auto, *, Auto">
+					<TextBlock
+						Grid.Row="0"
+						FontSize="20"
+						FontWeight="Bold"
+						Text="Delete Key" />
+					<TextBlock
+						Grid.Row="1"
+						Margin="0,15"
+						Text="Are you sure you want to delete this configuration? This action cannot be undone."
+						TextWrapping="Wrap" />
+					<StackPanel
+						Grid.Row="2"
+						HorizontalAlignment="Right"
+						Orientation="Horizontal"
+						Spacing="10">
+						<Button Command="{Binding CloseModalCommand}" Content="Cancel" />
+						<Button
+							Background="#AA0000"
+							Command="{Binding ConfirmDeleteAsyncCommand}"
+							Content="Delete"
+							Foreground="White" />
+					</StackPanel>
+				</Grid>
+			</Border>
+		</Grid>
 	</Grid>
 </UserControl>
