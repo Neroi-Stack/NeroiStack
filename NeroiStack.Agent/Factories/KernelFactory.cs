@@ -21,7 +21,7 @@ public class KernelFactory(IEnumerable<IKernelProviderStrategy> strategies, IEnu
 		var keys = await keyManageService.GetAllKeysAsync();
 		var key = keys.FirstOrDefault(k => k.Supplier == supplier);
 
-		if (supplier != SupplierEnum.LocalModel && (key == null || string.IsNullOrWhiteSpace(key.Key)))
+		if (supplier != SupplierEnum.Ollama && (key == null || string.IsNullOrWhiteSpace(key.Key)))
 		{
 			throw new Exception($"API Key not found for supplier {supplier}");
 		}

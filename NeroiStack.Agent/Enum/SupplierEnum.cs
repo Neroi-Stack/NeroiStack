@@ -6,5 +6,5 @@ public enum SupplierEnum
 	AzureOpenAI = 2,
 	Google = 3,
 	Anthropic = 4,
-	LocalModel = 5
+	Ollama = 5
 }
