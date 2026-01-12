@@ -1,0 +1,29 @@
+<UserControl
+	x:Class="NeroiStack.Views.SettingsView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<UserControl.Styles>
+		<Style Selector="Border.Card">
+			<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+			<Setter Property="CornerRadius" Value="8" />
+			<Setter Property="Padding" Value="15" />
+			<Setter Property="Margin" Value="10" />
+			<Setter Property="BoxShadow" Value="0 4 8 0 #000000" />
+		</Style>
+	</UserControl.Styles>
+
+	<Border Padding="12">
+		<StackPanel Spacing="8">
+			<SelectableTextBlock
+				FontSize="18"
+				FontWeight="Bold"
+				Text="Data Library" />
+			<SelectableTextBlock Opacity="0.9" Text="A simple placeholder for the Data Library page." />
+
+			<Border Classes="Card">
+				<SelectableTextBlock Text="List of datasets / resources" />
+			</Border>
+		</StackPanel>
+	</Border>
+
+</UserControl>

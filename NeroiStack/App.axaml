@@ -1,0 +1,38 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="NeroiStack.App"
+             xmlns:local="using:NeroiStack"
+             xmlns:conv="using:NeroiStack.ValueConverters"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+    </Application.DataTemplates>
+  
+    <Application.Styles>
+		<FluentTheme>
+			<FluentTheme.Palettes>
+				<ColorPaletteResources x:Key="Light" Accent="Orange" RegionColor="White" ErrorText="Red" />
+				<ColorPaletteResources x:Key="Dark" Accent="Purple" RegionColor="Black" ErrorText="Yellow" />
+			</FluentTheme.Palettes>
+		</FluentTheme>
+        
+        <!-- Global Cursor Styles -->
+        <Style Selector="Button">
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="ToggleSwitch">
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="CheckBox">
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="ComboBox">
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+        <Style Selector="MenuItem">
+            <Setter Property="Cursor" Value="Hand"/>
+        </Style>
+    </Application.Styles>
+</Application>

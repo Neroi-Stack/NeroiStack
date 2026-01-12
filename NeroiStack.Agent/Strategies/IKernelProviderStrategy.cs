@@ -1,0 +1,12 @@
+using Microsoft.SemanticKernel;
+using NeroiStack.Agent.Enum;
+using NeroiStack.Agent.Model;
+
+namespace NeroiStack.Agent.Strategies;
+
+public interface IKernelProviderStrategy
+{
+	bool CanHandle(SupplierEnum supplier);
+	void Configure(IKernelBuilder builder, string modelId, KeyVM apiKey);
+	PromptExecutionSettings CreateExecutionSettings(AgentVM? agent = null);
+}

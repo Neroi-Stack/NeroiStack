@@ -1,0 +1,65 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.2.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeroiStack", "NeroiStack\NeroiStack.csproj", "{2FF3FF38-2D09-D96D-1F2C-C65E8A07E0F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeroiStack.Agent", "NeroiStack.Agent\NeroiStack.Agent.csproj", "{926573B0-D0EC-4516-B1AD-16B1873C1C80}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeroiStack.Common", "NeroiStack.Common\NeroiStack.Common.csproj", "{D6512024-D430-4751-B01D-6692205EEE65}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2FF3FF38-2D09-D96D-1F2C-C65E8A07E0F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2FF3FF38-2D09-D96D-1F2C-C65E8A07E0F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2FF3FF38-2D09-D96D-1F2C-C65E8A07E0F3}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2FF3FF38-2D09-D96D-1F2C-C65E8A07E0F3}.Debug|x64.Build.0 = Debug|Any CPU
+		{2FF3FF38-2D09-D96D-1F2C-C65E8A07E0F3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2FF3FF38-2D09-D96D-1F2C-C65E8A07E0F3}.Debug|x86.Build.0 = Debug|Any CPU
+		{2FF3FF38-2D09-D96D-1F2C-C65E8A07E0F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2FF3FF38-2D09-D96D-1F2C-C65E8A07E0F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2FF3FF38-2D09-D96D-1F2C-C65E8A07E0F3}.Release|x64.ActiveCfg = Release|Any CPU
+		{2FF3FF38-2D09-D96D-1F2C-C65E8A07E0F3}.Release|x64.Build.0 = Release|Any CPU
+		{2FF3FF38-2D09-D96D-1F2C-C65E8A07E0F3}.Release|x86.ActiveCfg = Release|Any CPU
+		{2FF3FF38-2D09-D96D-1F2C-C65E8A07E0F3}.Release|x86.Build.0 = Release|Any CPU
+		{926573B0-D0EC-4516-B1AD-16B1873C1C80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{926573B0-D0EC-4516-B1AD-16B1873C1C80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{926573B0-D0EC-4516-B1AD-16B1873C1C80}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{926573B0-D0EC-4516-B1AD-16B1873C1C80}.Debug|x64.Build.0 = Debug|Any CPU
+		{926573B0-D0EC-4516-B1AD-16B1873C1C80}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{926573B0-D0EC-4516-B1AD-16B1873C1C80}.Debug|x86.Build.0 = Debug|Any CPU
+		{926573B0-D0EC-4516-B1AD-16B1873C1C80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{926573B0-D0EC-4516-B1AD-16B1873C1C80}.Release|Any CPU.Build.0 = Release|Any CPU
+		{926573B0-D0EC-4516-B1AD-16B1873C1C80}.Release|x64.ActiveCfg = Release|Any CPU
+		{926573B0-D0EC-4516-B1AD-16B1873C1C80}.Release|x64.Build.0 = Release|Any CPU
+		{926573B0-D0EC-4516-B1AD-16B1873C1C80}.Release|x86.ActiveCfg = Release|Any CPU
+		{926573B0-D0EC-4516-B1AD-16B1873C1C80}.Release|x86.Build.0 = Release|Any CPU
+		{D6512024-D430-4751-B01D-6692205EEE65}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6512024-D430-4751-B01D-6692205EEE65}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6512024-D430-4751-B01D-6692205EEE65}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{D6512024-D430-4751-B01D-6692205EEE65}.Debug|x64.Build.0 = Debug|Any CPU
+		{D6512024-D430-4751-B01D-6692205EEE65}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{D6512024-D430-4751-B01D-6692205EEE65}.Debug|x86.Build.0 = Debug|Any CPU
+		{D6512024-D430-4751-B01D-6692205EEE65}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6512024-D430-4751-B01D-6692205EEE65}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6512024-D430-4751-B01D-6692205EEE65}.Release|x64.ActiveCfg = Release|Any CPU
+		{D6512024-D430-4751-B01D-6692205EEE65}.Release|x64.Build.0 = Release|Any CPU
+		{D6512024-D430-4751-B01D-6692205EEE65}.Release|x86.ActiveCfg = Release|Any CPU
+		{D6512024-D430-4751-B01D-6692205EEE65}.Release|x86.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C4214CF6-068F-4324-9523-C4C750E0E96A}
+	EndGlobalSection
+EndGlobal

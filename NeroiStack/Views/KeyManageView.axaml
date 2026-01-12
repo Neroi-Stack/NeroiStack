@@ -1,0 +1,145 @@
+<UserControl
+	x:Class="NeroiStack.Views.KeyManagementView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:vm="using:NeroiStack.ViewModels"
+	d:DesignHeight="600"
+	d:DesignWidth="800"
+	x:DataType="vm:KeyManagementViewModel"
+	mc:Ignorable="d">
+
+	<Grid RowDefinitions="Auto, *">
+		<Button
+			Grid.Row="0"
+			Margin="20,10"
+			Classes="accent"
+			Command="{Binding AddKeyCommand}"
+			Content="Add Key" />
+
+		<ScrollViewer Grid.Row="1">
+			<ItemsControl Margin="20" ItemsSource="{Binding Keys}">
+				<ItemsControl.Styles>
+					<Style Selector="Border.Card">
+						<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+						<Setter Property="CornerRadius" Value="8" />
+						<Setter Property="Padding" Value="15" />
+						<Setter Property="Margin" Value="10" />
+						<Setter Property="BoxShadow" Value="0 4 8 0 #000000" />
+					</Style>
+				</ItemsControl.Styles>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate x:DataType="vm:KeyItemViewModel">
+						<Border Classes="Card">
+							<StackPanel Spacing="10">
+								<StackPanel
+									Margin="0,0,0,10"
+									Orientation="Horizontal"
+									Spacing="10">
+									<TextBlock
+										VerticalAlignment="Center"
+										FontWeight="Bold"
+										Text="Supplier:" />
+									<ComboBox
+										Width="200"
+										VerticalAlignment="Center"
+										ItemsSource="{Binding AvailableSuppliers}"
+										SelectedItem="{Binding Supplier}" />
+								</StackPanel>
+
+								<Grid
+									Margin="0,5"
+									ColumnDefinitions="100, *"
+									RowDefinitions="Auto, Auto, Auto">
+									<TextBlock
+										Grid.Row="0"
+										Grid.Column="0"
+										VerticalAlignment="Center"
+										FontWeight="Medium"
+										Text="Endpoint" />
+									<TextBox
+										Grid.Row="0"
+										Grid.Column="1"
+										Margin="0,0,0,10"
+										Text="{Binding Endpoint}"
+										Watermark="https://api.openai.com/v1 (Optional)" />
+
+									<TextBlock
+										Grid.Row="1"
+										Grid.Column="0"
+										VerticalAlignment="Center"
+										FontWeight="Medium"
+										Text="API Key" />
+									<TextBox
+										Grid.Row="1"
+										Grid.Column="1"
+										Margin="0,0,0,10"
+										PasswordChar="*"
+										Text="{Binding Key}"
+										Watermark="sk-..." />
+
+									<Grid
+										Grid.Row="2"
+										Grid.Column="0"
+										Margin="0,5,10,0"
+										VerticalAlignment="Top"
+										ColumnDefinitions="*, Auto">
+										<TextBlock
+											VerticalAlignment="Center"
+											FontWeight="Medium"
+											Text="Models" />
+										<Button
+											Grid.Column="1"
+											Padding="8,2"
+											ClipToBounds="True"
+											Command="{Binding AddModelCommand}"
+											Content="+" />
+									</Grid>
+
+									<StackPanel
+										Grid.Row="2"
+										Grid.Column="1"
+										Margin="0,5,0,0">
+										<ItemsControl ItemsSource="{Binding Models}">
+											<ItemsControl.ItemTemplate>
+												<DataTemplate>
+													<Grid Margin="0,0,0,5" ColumnDefinitions="*, Auto">
+														<TextBox Text="{Binding Name}" Watermark="Model Name (e.g. gpt-4)" />
+														<Button
+															Grid.Column="1"
+															Margin="5,0,0,0"
+															Padding="8,5"
+															VerticalAlignment="Stretch"
+															Command="{Binding $parent[ItemsControl].DataContext.RemoveModelCommand}"
+															CommandParameter="{Binding}"
+															Content="X" />
+													</Grid>
+												</DataTemplate>
+											</ItemsControl.ItemTemplate>
+										</ItemsControl>
+									</StackPanel>
+								</Grid>
+
+								<StackPanel
+									HorizontalAlignment="Right"
+									Orientation="Horizontal"
+									Spacing="10">
+									<Button
+										Background="{DynamicResource SystemControlErrorTextForegroundBrush}"
+										Command="{Binding DeleteCommand}"
+										Content="Delete"
+										Foreground="{DynamicResource SystemControlBackgroundAltHighBrush}" />
+									<Button
+										Classes="accent"
+										Command="{Binding SaveCommand}"
+										Content="Save" />
+								</StackPanel>
+							</StackPanel>
+						</Border>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</ScrollViewer>
+	</Grid>
+</UserControl>
