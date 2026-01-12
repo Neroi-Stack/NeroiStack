@@ -171,9 +171,9 @@
 	</Grid>
 
 	<!-- Modal Overlay -->
-	<Grid IsVisible="{Binding AgentCreationVM.IsModalOpen}">
+	<Grid IsVisible="{Binding KeyCreationVM.IsModalOpen}">
 		<Border Background="#80000000" />
-		<model:UpsertAgentModal DataContext="{Binding AgentCreationVM}" IsVisible="{Binding AgentCreationVM.IsEditorVisible}" />
+		<model:UpsertKeyModal DataContext="{Binding KeyCreationVM}" IsVisible="{Binding KeyCreationVM.IsEditorVisible}" />
 	</Grid>
 	</Grid>
 </UserControl>

@@ -78,7 +78,7 @@ public partial class ChatBotViewModel : ViewModelBase
 	private string messageInput = string.Empty;
 
 	[ObservableProperty]
-	private ObservableCollection<string> availableModels = ["➕ Add Local Model", "➕ Create Agent"];
+	private ObservableCollection<string> availableModels = ["➕ Add Local Model", "➕ Create Key"];
 
 	[ObservableProperty]
 	private string selectedModel = string.Empty;
@@ -87,12 +87,12 @@ public partial class ChatBotViewModel : ViewModelBase
 
 	partial void OnSelectedModelChanged(string value)
 	{
-		if (value == "➕ Create Agent")
+		if (value == "➕ Create Key")
 		{
-			// Open Modal via AgentCreationVM
-			AgentCreationVM.CreateCommand.Execute(null);
+			// Open Key modal via KeyCreationVM
+			KeyCreationVM.AddKeyCommand.Execute(null);
 			
-			SelectedModel = AvailableModels.FirstOrDefault(m => m != "➕ Create Agent") ?? string.Empty;
+			SelectedModel = AvailableModels.FirstOrDefault(m => m != "➕ Create Key") ?? string.Empty;
 		}
 	}
 
@@ -107,26 +107,22 @@ public partial class ChatBotViewModel : ViewModelBase
 	public IRelayCommand StopGenerationCommand => StopGenerationInternalCommand;
 
 	private readonly IKeyManageService _keyManageService;
-	private readonly IAgentManageService _agentService;
-	private readonly IPluginManageService _pluginService;
 
-	public AgentManageViewModel AgentCreationVM { get; }
+	public KeyManagementViewModel KeyCreationVM { get; }
 
-	public ChatBotViewModel(IChatService chatService, IServiceScopeFactory scopeFactory, IKeyManageService keyManageService, IAgentManageService agentService, IPluginManageService pluginService)
+	public ChatBotViewModel(IChatService chatService, IServiceScopeFactory scopeFactory, IKeyManageService keyManageService)
 	{
 		_chatService = chatService;
 		_scopeFactory = scopeFactory;
 		_keyManageService = keyManageService;
-		_agentService = agentService;
-		_pluginService = pluginService;
 		
-		AgentCreationVM = new AgentManageViewModel(_agentService, _pluginService);
+		KeyCreationVM = new KeyManagementViewModel(_keyManageService);
 
 		_ = LoadModelsAsync();
 	}
 
 	// Default constructor for previewer or fallback
-	public ChatBotViewModel() : this(null!, null!, null!, null!, null!) { }
+	public ChatBotViewModel() : this(null!, null!, null!) { }
 
 	private async Task LoadModelsAsync()
 	{
@@ -147,7 +143,7 @@ public partial class ChatBotViewModel : ViewModelBase
 			{
 				AvailableModels.Add(model);
 			}
-			AvailableModels.Add("➕ Create Agent");
+			AvailableModels.Add("➕ Create Key");
 
 			if (models.Any() && (string.IsNullOrEmpty(SelectedModel) || !models.Contains(SelectedModel)))
 			{

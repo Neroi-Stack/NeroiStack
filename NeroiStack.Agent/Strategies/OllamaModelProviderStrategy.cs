@@ -23,9 +23,9 @@ public class OllamaModelProviderStrategy : IKernelProviderStrategy
 		return new OllamaPromptExecutionSettings
 		{
 			Temperature = (float?)agent?.Temperature ?? 0.7f,
-			// TopK = (float?)agent?.TopK ?? 0f,
+			TopK = 0f,
 			TopP = (float?)agent?.TopP ?? 0.9f,
-			NumPredict = agent?.MaxTokens ?? 2048,
+			NumPredict = 2048,
 			FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 		};
 	}
