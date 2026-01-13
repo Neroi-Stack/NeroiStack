@@ -24,7 +24,7 @@ public class OpenApiPluginLoaderStrategy : IPluginLoaderStrategy
 		if (config != null && !string.IsNullOrEmpty(config.Uri))
 		{
 			await kernel.ImportPluginFromOpenApiAsync(
-			plugin.Name ?? $"OpenApi_{plugin.Id}",
+			plugin.Name ?? $"OpenApi{plugin.Id}",
 			uri: new Uri(config.Uri),
 			executionParameters: new OpenApiFunctionExecutionParameters
 			{

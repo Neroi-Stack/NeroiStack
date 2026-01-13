@@ -105,6 +105,7 @@
 											OnContent="On" />
 
 										<Button
+											IsVisible="{Binding IsEnabled}"
 											Grid.Column="2"
 											Padding="8,4"
 											Classes="accent"

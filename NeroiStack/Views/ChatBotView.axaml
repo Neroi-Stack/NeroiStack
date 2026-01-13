@@ -4,9 +4,42 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:fluenticons="using:FluentIcons.Avalonia"
 	xmlns:vm="using:NeroiStack.ViewModels"
-	x:DataType="vm:ChatBotViewModel">
+	xmlns:model="using:NeroiStack.Component.Model"
+	x:DataType="vm:ChatBotViewModel"
 
-	<Grid RowDefinitions="*, Auto">
+	xmlns:md="https://github.com/whistyun/Markdown.Avalonia"
+    xmlns:mdt="https://github.com/whistyun/Markdown.Avalonia.Tight">
+	<UserControl.Styles>
+		<Style Selector="Border.CodeBlock">
+			<Style.Setters>
+				<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+				<Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+				<Setter Property="BorderThickness" Value="1" /> 
+				<Setter Property="CornerRadius" Value="6" /> 
+				<Setter Property="Padding" Value="12,8" /> 
+				<Setter Property="Margin" Value="8,4,8,4" /> 
+			</Style.Setters>
+		</Style>
+
+		<Style Selector="TextBlock.CodeBlock">
+			<Style.Setters>
+				<Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" /> 
+				<Setter Property="FontFamily" Value="Consolas, Courier" /> 
+				<Setter Property="FontSize" Value="13" /> 
+				<Setter Property="TextWrapping" Value="Wrap" /> 
+			</Style.Setters>
+		</Style>
+		<Style Selector="Label.CodeLanguage">
+			<Style.Setters>
+				<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" /> 
+				<Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" /> 
+				<Setter Property="CornerRadius" Value="3" /> 
+				<Setter Property="Padding" Value="4,2" /> 
+			</Style.Setters>
+		</Style>
+	</UserControl.Styles>
+	<Grid>
+		<Grid RowDefinitions="*, Auto">
 
 		<ScrollViewer
 			Grid.Row="0"
@@ -33,10 +66,16 @@
 											Symbol="Bot" />
 									</Border>
 									<StackPanel Grid.Column="1" Spacing="8">
-										<SelectableTextBlock
-											FontSize="15"
-											Text="{Binding Text}"
-											TextWrapping="Wrap" />
+										<md:MarkdownScrollViewer
+											x:Name="MarkdownViewer"
+											SaveScrollValueWhenContentUpdated="True"
+											Markdown="{Binding Text}">
+											<md:MarkdownScrollViewer.Plugins>
+												<md:MdAvPlugins>
+													<mdt:ChatAISetup/>
+												</md:MdAvPlugins>
+											</md:MarkdownScrollViewer.Plugins>
+										</md:MarkdownScrollViewer>
 									</StackPanel>
 								</Grid>
 
@@ -166,5 +205,12 @@
 				</Grid>
 			</Grid>
 		</Border>
+	</Grid>
+
+	<!-- Modal Overlay -->
+	<Grid IsVisible="{Binding KeyCreationVM.IsModalOpen}">
+		<Border Background="#80000000" />
+		<model:UpsertKeyModal DataContext="{Binding KeyCreationVM}" IsVisible="{Binding KeyCreationVM.IsEditorVisible}" />
+	</Grid>
 	</Grid>
 </UserControl>

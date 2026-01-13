@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
+using NeroiStack.Agent.Enum;
 using NeroiStack.Agent.Interface;
 using NeroiStack.Agent.Model;
 using NeroiStack.Messages;
@@ -38,6 +39,30 @@ public sealed partial class AgentManageViewModel : ViewModelBase
 
 	[ObservableProperty]
 	private bool _isCreating;
+
+	[ObservableProperty]
+	private bool _isPluginEditorVisible;
+
+	[ObservableProperty]
+	private PluginBaseVM? _currentPlugin;
+
+	[ObservableProperty]
+	private PluginMcpHttpVM? _currentMcpHttp;
+	[ObservableProperty]
+	private ChPluginMcpStdioVM? _currentMcpStdio;
+	[ObservableProperty]
+	private ChPluginOpenApiVM? _currentOpenApi;
+
+	[ObservableProperty]
+	private string _mcpStdioArguments = string.Empty;
+
+	[ObservableProperty]
+	private bool _isPluginCreating;
+
+	[ObservableProperty]
+	private PluginType _selectedPluginType = PluginType.McpHttp;
+
+	public System.Collections.Generic.List<PluginType> PluginTypes { get; } = System.Enum.GetValues<PluginType>().Cast<PluginType>().ToList();
 
 	public AgentManageViewModel(IAgentManageService agentService, IPluginManageService pluginService)
 	{
@@ -128,8 +153,78 @@ public sealed partial class AgentManageViewModel : ViewModelBase
 	[RelayCommand]
 	private void CreatePlugin()
 	{
-		CloseModal();
-		WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(Views.PluginManageView)));
+		IsPluginCreating = true;
+		SelectedPluginType = PluginType.McpHttp;
+		InitializeNewPlugin(SelectedPluginType);
+		IsPluginEditorVisible = true;
+		// Ensure modal background is open if not already (it should be since we are in Agent Edit)
+		IsModalOpen = true; 
+	}
+
+	partial void OnSelectedPluginTypeChanged(PluginType value)
+	{
+		if (IsPluginCreating)
+		{
+			InitializeNewPlugin(value);
+		}
+	}
+
+	private void InitializeNewPlugin(PluginType type)
+	{
+		switch (type)
+		{
+			case PluginType.McpHttp:
+				CurrentPlugin = new PluginMcpHttpVM { Type = PluginType.McpHttp, Name = "New MCP HTTP", IsEnabled = true };
+				CurrentMcpHttp = (PluginMcpHttpVM)CurrentPlugin;
+				break;
+			case PluginType.McpStdio:
+				CurrentPlugin = new ChPluginMcpStdioVM { Type = PluginType.McpStdio, Name = "New MCP Stdio", IsEnabled = true, Arguments = new System.Collections.Generic.List<string>() };
+				CurrentMcpStdio = (ChPluginMcpStdioVM)CurrentPlugin;
+				McpStdioArguments = string.Empty;
+				break;
+			case PluginType.OpenApi:
+				CurrentPlugin = new ChPluginOpenApiVM { Type = PluginType.OpenApi, Name = "New OpenAPI", IsEnabled = true };
+				CurrentOpenApi = (ChPluginOpenApiVM)CurrentPlugin;
+				break;
+		}
+	}
+
+	[RelayCommand]
+	private void ClosePluginModal()
+	{
+		IsPluginEditorVisible = false;
+		// Do not set IsModalOpen=false, because we return to Agent Editor
+		CurrentPlugin = null;
+	}
+
+	[RelayCommand]
+	private async Task SavePluginAsync()
+	{
+		if (CurrentPlugin == null) return;
+
+		// Process fields back to model
+		if (CurrentPlugin is ChPluginMcpStdioVM mcpStdio)
+		{
+			mcpStdio.Arguments = McpStdioArguments
+				.Split(new[] { "\r\n", "\r", "\n" }, System.StringSplitOptions.RemoveEmptyEntries)
+				.ToList();
+		}
+
+		if (IsPluginCreating)
+		{
+			var id = await _pluginService.CreatePluginAsync(CurrentPlugin);
+			CurrentPlugin.Id = id;
+			// Refresh plugin list for agent editor
+			
+			// We want to add this plugin to the Checked list in Agent Editor?
+			// Or just refresh the available list.
+			var oldSelection = AvailablePlugins.Where(p => p.IsSelected).Select(p => p.Id).ToList();
+			oldSelection.Add(id);
+			await LoadPluginsForEditorAsync(oldSelection.ToArray());
+		}
+		// If editing (not implemented yet in this view, but for completeness)
+		
+		ClosePluginModal();
 	}
 
 	[RelayCommand]

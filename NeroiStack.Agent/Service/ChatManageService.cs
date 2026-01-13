@@ -86,7 +86,7 @@ public class ChatManageService(IChatContext chatContext) : IChatManageService
 		return vm;
 	}
 
-	public async Task UpdateAsync(ChatVM chatVm)
+	public async Task<ChatVM> UpdateAsync(ChatVM chatVm)
 	{
 		var chat = await chatContext.Chats.FindAsync(chatVm.Id) ?? throw new Exception($"Chat with ID {chatVm.Id} not found.");
 		chat.Name = chatVm.Name;
@@ -125,6 +125,7 @@ public class ChatManageService(IChatContext chatContext) : IChatManageService
 		}
 
 		await chatContext.SaveChangesAsync();
+		return chatVm;
 	}
 
 	public async Task DeleteAsync(int chatId)

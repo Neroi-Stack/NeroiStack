@@ -20,8 +20,8 @@ public class OpenAIProviderStrategy : IKernelProviderStrategy
 		return new OpenAIPromptExecutionSettings
 		{
 			Temperature = agent?.Temperature ?? 0.7,
-			TopP = agent?.TopP ?? 0.9,
-			MaxTokens = agent?.MaxTokens ?? 2048,
+			TopP = agent?.TopP ?? 40,
+			MaxTokens = agent?.MaxTokens,
 			PresencePenalty = agent?.PresencePenalty ?? 0,
 			FrequencyPenalty = agent?.FrequencyPenalty ?? 0,
 			ResponseFormat = null,

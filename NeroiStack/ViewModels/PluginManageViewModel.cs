@@ -45,7 +45,7 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 	private string _modalTitle = string.Empty;
 
 	[ObservableProperty]
-	private bool _isCreating;
+	private bool _isPluginCreating;
 
 	[ObservableProperty]
 	private PluginType _selectedPluginType = PluginType.McpHttp;
@@ -76,7 +76,7 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 	[RelayCommand]
 	private void Create()
 	{
-		IsCreating = true;
+		IsPluginCreating = true;
 		ModalTitle = "New Plugin";
 		SelectedPluginType = PluginType.McpHttp; // Default
 		InitializeNewPlugin(SelectedPluginType);
@@ -93,7 +93,7 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 
 	partial void OnSelectedPluginTypeChanged(PluginType value)
 	{
-		if (IsCreating)
+		if (IsPluginCreating)
 		{
 			InitializeNewPlugin(value);
 		}
@@ -123,7 +123,7 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 	[RelayCommand]
 	private async Task EditAsync(PluginBaseVM plugin)
 	{
-		IsCreating = false;
+		IsPluginCreating = false;
 		ModalTitle = "Edit Plugin";
 
 		// Fetch full details
@@ -168,11 +168,11 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 			await _pluginService.DeletePluginAsync(CurrentPlugin.Id);
 			Plugins.Remove(CurrentPlugin);
 		}
-		CloseModal();
+		ClosePluginModal();
 	}
 
 	[RelayCommand]
-	private async Task SaveAsync()
+	private async Task SavePluginAsync()
 	{
 		if (CurrentPlugin == null) return;
 
@@ -182,7 +182,7 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 			mcpStdio.Arguments = McpStdioArguments.Split(new[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries).ToList();
 		}
 
-		if (IsCreating)
+		if (IsPluginCreating)
 		{
 			var id = await _pluginService.CreatePluginAsync(CurrentPlugin);
 			CurrentPlugin.Id = id;
@@ -198,11 +198,11 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 				Plugins[index] = CurrentPlugin;
 			}
 		}
-		CloseModal();
+		ClosePluginModal();
 	}
 
 	[RelayCommand]
-	private void CloseModal()
+	private void ClosePluginModal()
 	{
 		IsModalOpen = false;
 		IsEditorVisible = false;

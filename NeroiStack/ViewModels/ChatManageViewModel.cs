@@ -332,7 +332,16 @@ public sealed partial class ChatManageViewModel : ViewModelBase
 	[RelayCommand]
 	private async Task ToggleEnableAsync(ChatVM chat)
 	{
-		await _chatService.UpdateAsync(chat);
+		var updatedChat = await _chatService.UpdateAsync(chat);
+		if (updatedChat != null)
+		{
+			var existing = Chats.FirstOrDefault(c => c.Id == updatedChat.Id);
+			if (existing != null)
+			{
+				var idx = Chats.IndexOf(existing);
+				if (idx >= 0) Chats[idx] = updatedChat;
+			}
+		}
 	}
 
 	private bool ValidateInput()

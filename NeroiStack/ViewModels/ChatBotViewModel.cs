@@ -78,7 +78,7 @@ public partial class ChatBotViewModel : ViewModelBase
 	private string messageInput = string.Empty;
 
 	[ObservableProperty]
-	private ObservableCollection<string> availableModels = ["➕ Add Local Model", "➕ Create Agent"];
+	private ObservableCollection<string> availableModels = ["➕ Add Local Model", "➕ Create Key"];
 
 	[ObservableProperty]
 	private string selectedModel = string.Empty;
@@ -87,10 +87,31 @@ public partial class ChatBotViewModel : ViewModelBase
 
 	partial void OnSelectedModelChanged(string value)
 	{
-		if (value == "➕ Create Agent")
+		if (value == "➕ Create Key")
 		{
-			WeakReferenceMessenger.Default.Send(new NavigationMessage(typeof(Views.AgentManageView)));
-			SelectedModel = AvailableModels.FirstOrDefault(m => m != "➕ Create Agent") ?? string.Empty;
+			// Open Key modal via KeyCreationVM
+			KeyCreationVM.AddKeyCommand.Execute(null);
+			
+			SelectedModel = AvailableModels.FirstOrDefault(m => m != "➕ Create Key") ?? string.Empty;
+		}
+		else if (!string.IsNullOrEmpty(value) && InstanceId > 0)
+		{
+			// Save selected model to database
+			_ = SaveSelectedModelAsync(value);
+		}
+	}
+
+	private async Task SaveSelectedModelAsync(string selectedModel)
+	{
+		if (_chatInstanceService == null || InstanceId <= 0) return;
+
+		try
+		{
+			await _chatInstanceService.UpdateSelectedModelAsync(InstanceId, selectedModel);
+		}
+		catch
+		{
+			// Log or handle error if needed
 		}
 	}
 
@@ -105,18 +126,24 @@ public partial class ChatBotViewModel : ViewModelBase
 	public IRelayCommand StopGenerationCommand => StopGenerationInternalCommand;
 
 	private readonly IKeyManageService _keyManageService;
+	private readonly IChatInstanceService _chatInstanceService;
 
-	public ChatBotViewModel(IChatService chatService, IServiceScopeFactory scopeFactory, IKeyManageService keyManageService)
+	public KeyManagementViewModel KeyCreationVM { get; }
+
+	public ChatBotViewModel(IChatService chatService, IServiceScopeFactory scopeFactory, IKeyManageService keyManageService, IChatInstanceService chatInstanceService)
 	{
 		_chatService = chatService;
 		_scopeFactory = scopeFactory;
 		_keyManageService = keyManageService;
+		_chatInstanceService = chatInstanceService;
+		
+		KeyCreationVM = new KeyManagementViewModel(_keyManageService);
 
 		_ = LoadModelsAsync();
 	}
 
 	// Default constructor for previewer or fallback
-	public ChatBotViewModel() : this(null!, null!, null!) { }
+	public ChatBotViewModel() : this(null!, null!, null!, null!) { }
 
 	private async Task LoadModelsAsync()
 	{
@@ -137,7 +164,7 @@ public partial class ChatBotViewModel : ViewModelBase
 			{
 				AvailableModels.Add(model);
 			}
-			AvailableModels.Add("➕ Create Agent");
+			AvailableModels.Add("➕ Create Key");
 
 			if (models.Any() && (string.IsNullOrEmpty(SelectedModel) || !models.Contains(SelectedModel)))
 			{
@@ -155,8 +182,36 @@ public partial class ChatBotViewModel : ViewModelBase
 		IsLoading = true;
 		Messages.Clear();
 
+		// Load selected model for this instance
+		_ = LoadSelectedModelAsync(instanceId);
+
 		// Fire and forget initialization
 		_ = InitializeSessionAsync(instanceId);
+	}
+
+	private async Task LoadSelectedModelAsync(int instanceId)
+	{
+		if (_chatInstanceService == null) return;
+
+		try
+		{
+			using (var scope = _scopeFactory.CreateScope())
+			{
+				var context = scope.ServiceProvider.GetRequiredService<IChatContext>();
+				var instance = await context.ChatInstances.FindAsync(instanceId);
+				if (instance?.SelectedModel != null && AvailableModels.Contains(instance.SelectedModel))
+				{
+					Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+					{
+						SelectedModel = instance.SelectedModel;
+					});
+				}
+			}
+		}
+		catch
+		{
+			// Log or handle error if needed
+		}
 	}
 
 	private async Task InitializeSessionAsync(int instanceId)
@@ -277,7 +332,7 @@ public partial class ChatBotViewModel : ViewModelBase
 			// For now hardcoded or basic detection.
 			// The service seems to look up config by "Group".
 
-			var (resultText, _) = await _chatService.ChatAsync(request);
+			var (resultText, _) = await Task.Run(() => _chatService.ChatAsync(request));
 
 			// Ensure message is added if no chunks were received (non-streaming agents)
 			if (!Messages.Contains(assistantMsg))
