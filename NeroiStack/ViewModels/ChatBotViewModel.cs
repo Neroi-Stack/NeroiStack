@@ -332,7 +332,7 @@ public partial class ChatBotViewModel : ViewModelBase
 			// For now hardcoded or basic detection.
 			// The service seems to look up config by "Group".
 
-			var (resultText, _) = await _chatService.ChatAsync(request);
+			var (resultText, _) = await Task.Run(() => _chatService.ChatAsync(request));
 
 			// Ensure message is added if no chunks were received (non-streaming agents)
 			if (!Messages.Contains(assistantMsg))
