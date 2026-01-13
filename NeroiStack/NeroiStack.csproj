@@ -30,6 +30,9 @@
     </PackageReference>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
+	
+	<PackageReference Include="ClassIsland.Markdown.Avalonia.Tight" Version="11.0.3.4" />
+	<PackageReference Include="ClassIsland.Markdown.Avalonia" Version="11.0.3.4" />
   </ItemGroup>
 
   <ItemGroup>
