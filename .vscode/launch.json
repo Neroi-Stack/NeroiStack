@@ -1,0 +1,15 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch NeroiStack",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            "program": "${workspaceFolder}/NeroiStack/bin/Debug/net10.0/NeroiStack.dll",
+            "cwd": "${workspaceFolder}/NeroiStack/bin/Debug/net10.0",
+            "console": "internalConsole",
+            "stopAtEntry": false
+        }
+    ]
+}
