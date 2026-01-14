@@ -482,3 +482,8 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+/neroi_chats.db
+/neroi_chats.db-wal
+/neroi_chats.db-shm
+*.db
