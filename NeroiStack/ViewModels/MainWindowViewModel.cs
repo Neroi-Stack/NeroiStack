@@ -13,6 +13,10 @@ public partial class MainWindowViewModel : ViewModelBase
 	private readonly IChatInstanceService? _instanceService;
 	public string Greeting { get; } = "Welcome to Avalonia!";
 
+	public object Home { get; set; } = new[]
+	{
+		new { Name = "Home", Text = "Home", Icon = "Home", ViewType = typeof(Views.HomeView) },
+	};
 	public object Menus { get; set; } = new[]
 	{
 		new { Name = "ChatClasses", Text = "Chat Classes", Icon = "SettingsChat", ViewType = typeof(Views.ChatManageView) },
@@ -23,7 +27,6 @@ public partial class MainWindowViewModel : ViewModelBase
 	public object SecondaryMenus { get; set; } = new[]
 	{
 		new { Name = "Key Management", Text = "Key Management", Icon = "Key", ViewType = typeof(Views.KeyManagementView) },
-		new { Name = "Settings", Text = "Settings", Icon = "Settings", ViewType = typeof(Views.SettingsView) },
 	};
 
 	public ObservableCollection<NavigationItem> ChatMenus { get; set; } = new();
@@ -72,6 +75,10 @@ public partial class MainWindowViewModel : ViewModelBase
 		});
 
 		InitializeAsync();
+		
+		// Set default page to Home
+		Title = "Home";
+		CurrentPage = new Views.HomeView();
 	}
 
 	// Default constructor for design/preview
