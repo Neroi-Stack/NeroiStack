@@ -66,56 +66,72 @@
 						FontSize="16"
 						FontWeight="Bold"
 						Text="NeroiStack" />
+					<StackPanel Margin="0,15,0,0">
+						<ItemsControl ItemsSource="{Binding Home}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<Button
+										HorizontalAlignment="Stretch"
+										Command="{Binding DataContext.MenuCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+										CommandParameter="{Binding}">
+										<StackPanel Orientation="Horizontal" Spacing="8">
+											<fluenticons:SymbolIcon
+												FontSize="14"
+												IconVariant="Regular"
+												Symbol="{Binding Icon}" />
+											<TextBlock VerticalAlignment="Center" Text="{Binding Text}" />
+										</StackPanel>
+									</Button>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+						<TextBlock
+							Margin="4,8"
+							Opacity="0.8"
+							Text="Agents" />
 
-                    <!-- Fixed Menus -->
-                    <StackPanel Margin="0,15,0,0">
-    					<TextBlock
-    						Margin="4,8"
-    						Opacity="0.8"
-    						Text="Agents" />
-    
-    					<ItemsControl ItemsSource="{Binding Menus}">
-    						<ItemsControl.ItemTemplate>
-    							<DataTemplate>
-    								<Button
-    									HorizontalAlignment="Stretch"
-    									Command="{Binding DataContext.MenuCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-    									CommandParameter="{Binding}">
-    									<StackPanel Orientation="Horizontal" Spacing="8">
-    										<fluenticons:SymbolIcon
-    											FontSize="14"
-    											IconVariant="Regular"
-    											Symbol="{Binding Icon}" />
-    										<TextBlock VerticalAlignment="Center" Text="{Binding Text}" />
-    									</StackPanel>
-    								</Button>
-    							</DataTemplate>
-    						</ItemsControl.ItemTemplate>
-    					</ItemsControl>
-    
-    					<TextBlock
-    						Margin="4,12,0,4"
-    						Opacity="0.8"
-    						Text="Settings" />
-    					<ItemsControl ItemsSource="{Binding SecondaryMenus}">
-    						<ItemsControl.ItemTemplate>
-    							<DataTemplate>
-    								<Button
-    									HorizontalAlignment="Stretch"
-    									Command="{Binding DataContext.MenuCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-    									CommandParameter="{Binding}">
-    									<StackPanel Orientation="Horizontal" Spacing="8">
-    										<fluenticons:SymbolIcon
-    											FontSize="14"
-    											IconVariant="Regular"
-    											Symbol="{Binding Icon}" />
-    										<TextBlock VerticalAlignment="Center" Text="{Binding Text}" />
-    									</StackPanel>
-    								</Button>
-    							</DataTemplate>
-    						</ItemsControl.ItemTemplate>
-    					</ItemsControl>
-                    </StackPanel>
+						<ItemsControl ItemsSource="{Binding Menus}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<Button
+										HorizontalAlignment="Stretch"
+										Command="{Binding DataContext.MenuCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+										CommandParameter="{Binding}">
+										<StackPanel Orientation="Horizontal" Spacing="8">
+											<fluenticons:SymbolIcon
+												FontSize="14"
+												IconVariant="Regular"
+												Symbol="{Binding Icon}" />
+											<TextBlock VerticalAlignment="Center" Text="{Binding Text}" />
+										</StackPanel>
+									</Button>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+
+						<TextBlock
+							Margin="4,12,0,4"
+							Opacity="0.8"
+							Text="Settings" />
+						<ItemsControl ItemsSource="{Binding SecondaryMenus}">
+							<ItemsControl.ItemTemplate>
+								<DataTemplate>
+									<Button
+										HorizontalAlignment="Stretch"
+										Command="{Binding DataContext.MenuCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+										CommandParameter="{Binding}">
+										<StackPanel Orientation="Horizontal" Spacing="8">
+											<fluenticons:SymbolIcon
+												FontSize="14"
+												IconVariant="Regular"
+												Symbol="{Binding Icon}" />
+											<TextBlock VerticalAlignment="Center" Text="{Binding Text}" />
+										</StackPanel>
+									</Button>
+								</DataTemplate>
+							</ItemsControl.ItemTemplate>
+						</ItemsControl>
+					</StackPanel>
 				</StackPanel>
 
 				<!--  Bottom: profile + small actions  -->
@@ -138,55 +154,63 @@
 					</StackPanel>
 				</StackPanel>
 
-                <!-- Middle Scrollable Area -->
+				<!--  Middle Scrollable Area  -->
 				<DockPanel Margin="0,12,0,12">
 					<TextBlock
-                        DockPanel.Dock="Top"
 						Margin="4,12,0,4"
+						DockPanel.Dock="Top"
 						Opacity="0.8"
 						Text="Chat Instances" />
-                    
-                        <ScrollViewer VerticalScrollBarVisibility="Auto" Padding="0,0,12,0">
+
+					<ScrollViewer Padding="0,0,12,0" VerticalScrollBarVisibility="Auto">
 						<ItemsControl ItemsSource="{Binding ChatMenus}">
 							<ItemsControl.ItemTemplate>
 								<DataTemplate>
-                                    <Grid ColumnDefinitions="*, Auto">
-    									<Button
-                                            HorizontalContentAlignment="Left"
-    										HorizontalAlignment="Stretch"
-    										Command="{Binding DataContext.MenuCommand, RelativeSource={RelativeSource AncestorType=Window}}"
-    										CommandParameter="{Binding}">
-    										<StackPanel Orientation="Horizontal" Spacing="8">
-    											<fluenticons:SymbolIcon
-    												FontSize="14"
-    												IconVariant="Regular"
-    												Symbol="{Binding Icon}" />
-    											<TextBlock VerticalAlignment="Center" Text="{Binding Text}" />
-    										</StackPanel>
-    									</Button>
-                                        
-                                        <Button Grid.Column="1" 
-                                                Background="Transparent" 
-                                                Margin="4,0,4,0"
-                                                Padding="4">
-                                            <Button.Flyout>
-                                                <MenuFlyout>
-                                                     <MenuItem Header="Delete" 
-                                                               Command="{Binding DeleteCommand}"
-                                                               CommandParameter="{Binding}">
-                                                        <MenuItem.Icon>
-                                                            <fluenticons:SymbolIcon Symbol="Delete" Foreground="#FF5555" FontSize="16"/>
-                                                        </MenuItem.Icon>
-                                                    </MenuItem>
-                                                </MenuFlyout>
-                                            </Button.Flyout>
-                                            <fluenticons:SymbolIcon Symbol="MoreVertical" FontSize="14" Foreground="#888888"/>
-                                        </Button>
-                                    </Grid>
+									<Grid ColumnDefinitions="*, Auto">
+										<Button
+											HorizontalAlignment="Stretch"
+											HorizontalContentAlignment="Left"
+											Command="{Binding DataContext.MenuCommand, RelativeSource={RelativeSource AncestorType=Window}}"
+											CommandParameter="{Binding}">
+											<StackPanel Orientation="Horizontal" Spacing="8">
+												<fluenticons:SymbolIcon
+													FontSize="14"
+													IconVariant="Regular"
+													Symbol="{Binding Icon}" />
+												<TextBlock VerticalAlignment="Center" Text="{Binding Text}" />
+											</StackPanel>
+										</Button>
+
+										<Button
+											Grid.Column="1"
+											Margin="4,0,4,0"
+											Padding="4"
+											Background="Transparent">
+											<Button.Flyout>
+												<MenuFlyout>
+													<MenuItem
+														Command="{Binding DeleteCommand}"
+														CommandParameter="{Binding}"
+														Header="Delete">
+														<MenuItem.Icon>
+															<fluenticons:SymbolIcon
+																FontSize="16"
+																Foreground="#FF5555"
+																Symbol="Delete" />
+														</MenuItem.Icon>
+													</MenuItem>
+												</MenuFlyout>
+											</Button.Flyout>
+											<fluenticons:SymbolIcon
+												FontSize="14"
+												Foreground="#888888"
+												Symbol="MoreVertical" />
+										</Button>
+									</Grid>
 								</DataTemplate>
 							</ItemsControl.ItemTemplate>
 						</ItemsControl>
-                    </ScrollViewer>
+					</ScrollViewer>
 				</DockPanel>
 			</DockPanel>
 		</Border>
