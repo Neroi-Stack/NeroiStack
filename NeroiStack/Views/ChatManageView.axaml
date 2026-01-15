@@ -3,6 +3,7 @@
 	xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:fluenticons="using:FluentIcons.Avalonia"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:vm="clr-namespace:NeroiStack.ViewModels"
 	d:DesignHeight="450"
@@ -17,62 +18,92 @@
 			<Setter Property="Cursor" Value="Hand" />
 		</Style>
 
+		<!--  Card Style Matching HomeView  -->
 		<Style Selector="Border.Card">
 			<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
-			<Setter Property="CornerRadius" Value="8" />
-			<Setter Property="Padding" Value="15" />
-			<Setter Property="Margin" Value="10" />
-			<Setter Property="BoxShadow" Value="0 4 8 0 #000000" />
+			<Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+			<Setter Property="BorderThickness" Value="1" />
+			<Setter Property="CornerRadius" Value="12" />
+			<Setter Property="Padding" Value="20" />
+			<Setter Property="Margin" Value="0,0,20,20" />
+			<Setter Property="Width" Value="300" />
+			<Setter Property="Height" Value="180" />
+			<Setter Property="Transitions">
+				<Transitions>
+					<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
+				</Transitions>
+			</Setter>
 		</Style>
 	</UserControl.Styles>
 
 	<Grid>
 		<Grid RowDefinitions="Auto, *">
 			<!--  Header  -->
-			<Grid
-				Grid.Row="0"
-				Margin="20"
-				ColumnDefinitions="*, Auto">
-				<SelectableTextBlock
-					VerticalAlignment="Center"
-					FontSize="24"
-					FontWeight="Bold"
-					Text="Chat Classes" />
-				<Button
-					Grid.Column="1"
-					Classes="accent"
-					Command="{Binding CreateCommand}"
-					Content="New Chat Class" />
-			</Grid>
+			<StackPanel Grid.Row="0" Margin="0,0,0,30">
+				<Grid Margin="0,0,20,0" ColumnDefinitions="*, Auto">
+					<TextBlock
+						FontSize="32"
+						FontWeight="Bold"
+						Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+						Text="Chat Classes" />
+					<Button
+						Grid.Column="1"
+						Classes="accent"
+						Command="{Binding CreateCommand}"
+						Content="New Chat Class" />
+				</Grid>
+				<TextBlock
+					Margin="0,8,0,0"
+					FontSize="16"
+					Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+					Opacity="0.6"
+					Text="Manage your chat behaviors and agent orchestrations." />
+			</StackPanel>
 
 			<!--  Content  -->
-			<ScrollViewer Grid.Row="1" Padding="20">
+			<ScrollViewer Grid.Row="1" Padding="0,0,0,20">
 				<ItemsControl ItemsSource="{Binding Chats}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
-							<WrapPanel ItemWidth="300" />
+							<WrapPanel />
 						</ItemsPanelTemplate>
 					</ItemsControl.ItemsPanel>
 					<ItemsControl.ItemTemplate>
 						<DataTemplate>
-							<Border
-								Width="280"
-								Height="150"
-								Classes="Card">
+							<Border Classes="Card">
 								<Grid RowDefinitions="Auto, *, Auto">
-									<Grid Grid.Row="0" ColumnDefinitions="*, Auto">
-										<StackPanel>
+									<Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto">
+										<!--  Icon  -->
+										<Border
+											Width="40"
+											Height="40"
+											Margin="0,0,12,0"
+											VerticalAlignment="Top"
+											Background="#202196F3"
+											CornerRadius="10">
+											<fluenticons:SymbolIcon
+												FontSize="20"
+												Foreground="#2196F3"
+												Symbol="SettingsChat" />
+										</Border>
+
+										<!--  Title and Date  -->
+										<StackPanel Grid.Column="1">
 											<SelectableTextBlock
 												FontSize="16"
-												FontWeight="Bold"
-												Text="{Binding Name}" />
+												FontWeight="SemiBold"
+												Text="{Binding Name}"
+												TextTrimming="CharacterEllipsis" />
 											<SelectableTextBlock
 												FontSize="12"
-												Foreground="Gray"
-												Text="{Binding CreatedAt, StringFormat='{}{0:yyyy-MM-dd HH:mm}'}" />
+												Opacity="0.6"
+												Text="{Binding CreatedAt, StringFormat='{}{0:yyyy-MM-dd}'}" />
 										</StackPanel>
+
+										<!--  Menu  -->
 										<Button
-											Grid.Column="1"
+											Grid.Column="2"
+											VerticalAlignment="Top"
 											Classes="Link"
 											Content="⋮">
 											<Button.Flyout>
@@ -89,13 +120,17 @@
 											</Button.Flyout>
 										</Button>
 									</Grid>
+
+									<!--  Description / Type  -->
 									<SelectableTextBlock
 										Grid.Row="1"
-										Margin="0,10"
-										Foreground="#CCCCCC"
+										Margin="0,12"
+										FontSize="13"
+										Opacity="0.7"
 										Text="{Binding AgentOrchestrationType}"
 										TextWrapping="Wrap" />
 
+									<!--  Actions Footer  -->
 									<Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto">
 										<ToggleSwitch
 											Command="{Binding $parent[UserControl].((vm:ChatManageViewModel)DataContext).ToggleEnableCommand}"
@@ -105,14 +140,14 @@
 											OnContent="On" />
 
 										<Button
-											IsVisible="{Binding IsEnabled}"
 											Grid.Column="2"
 											Padding="8,4"
 											Classes="accent"
 											Command="{Binding $parent[UserControl].((vm:ChatManageViewModel)DataContext).CreateInstanceCommand}"
 											CommandParameter="{Binding}"
 											Content="New Instance"
-											FontSize="12" />
+											FontSize="12"
+											IsVisible="{Binding IsEnabled}" />
 									</Grid>
 								</Grid>
 							</Border>

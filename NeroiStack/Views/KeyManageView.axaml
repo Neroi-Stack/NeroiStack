@@ -3,6 +3,7 @@
 	xmlns="https://github.com/avaloniaui"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:fluenticons="using:FluentIcons.Avalonia"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:model="clr-namespace:NeroiStack.Component.Model"
 	xmlns:vm="clr-namespace:NeroiStack.ViewModels"
@@ -11,108 +12,148 @@
 	x:DataType="vm:KeyManagementViewModel"
 	mc:Ignorable="d">
 
+	<UserControl.Styles>
+		<Style Selector="Button.Link">
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="BorderThickness" Value="0" />
+			<Setter Property="Padding" Value="5" />
+			<Setter Property="Cursor" Value="Hand" />
+		</Style>
+
+		<!--  Card Style Matching HomeView  -->
+		<Style Selector="Border.Card">
+			<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+			<Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+			<Setter Property="BorderThickness" Value="1" />
+			<Setter Property="CornerRadius" Value="12" />
+			<Setter Property="Padding" Value="20" />
+			<Setter Property="Margin" Value="0,0,20,20" />
+			<Setter Property="Width" Value="300" />
+			<Setter Property="Height" Value="180" />
+			<Setter Property="Transitions">
+				<Transitions>
+					<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
+				</Transitions>
+			</Setter>
+		</Style>
+	</UserControl.Styles>
+
 	<Grid>
 		<!--  Main Content  -->
 		<Grid RowDefinitions="Auto, *">
 			<!--  Header / Add Button  -->
-			<Grid
-				Grid.Row="0"
-				Margin="20,20,20,10"
-				ColumnDefinitions="*, Auto">
+			<StackPanel Grid.Row="0" Margin="0,0,0,30">
+				<Grid Margin="0,0,20,0" ColumnDefinitions="*, Auto">
+					<TextBlock
+						FontSize="32"
+						FontWeight="Bold"
+						Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+						Text="Key Management" />
+					<Button
+						Grid.Column="1"
+						Classes="accent"
+						Command="{Binding AddKeyCommand}"
+						Content="+ Add Key" />
+				</Grid>
 				<TextBlock
-					VerticalAlignment="Center"
-					FontSize="24"
-					FontWeight="SemiBold"
-					Text="Key Management" />
-				<Button
-					Grid.Column="1"
-					Classes="accent"
-					Command="{Binding AddKeyCommand}"
-					Content="+ Add Key" />
-			</Grid>
+					Margin="0,8,0,0"
+					FontSize="16"
+					Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+					Opacity="0.6"
+					Text="Manage API keys and model providers." />
+			</StackPanel>
 
 			<!--  Card List  -->
-			<ScrollViewer Grid.Row="1" Padding="10">
+			<ScrollViewer Grid.Row="1" Padding="0,0,0,20">
 				<ItemsControl ItemsSource="{Binding Keys}">
 					<ItemsControl.ItemsPanel>
 						<ItemsPanelTemplate>
 							<WrapPanel Orientation="Horizontal" />
 						</ItemsPanelTemplate>
 					</ItemsControl.ItemsPanel>
-					<ItemsControl.Styles>
-						<Style Selector="Border.Card">
-							<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
-							<Setter Property="CornerRadius" Value="8" />
-							<Setter Property="Padding" Value="15" />
-							<Setter Property="Margin" Value="10" />
-							<Setter Property="Width" Value="320" />
-							<Setter Property="BoxShadow" Value="0 4 8 0 #000000" />
-						</Style>
-					</ItemsControl.Styles>
 					<ItemsControl.ItemTemplate>
 						<DataTemplate x:DataType="vm:KeyItemViewModel">
 							<Border Classes="Card">
-								<Grid RowDefinitions="Auto, *, Auto">
+								<Grid RowDefinitions="Auto, *">
 									<!--  Header: Supplier Icon/Name  -->
-									<StackPanel Grid.Row="0" Orientation="Horizontal">
-										<!--  Maybe an icon based on Supplier later  -->
-										<TextBlock
-											FontSize="16"
-											FontWeight="Bold"
-											Text="{Binding Supplier}" />
-									</StackPanel>
+									<Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto">
+										<!--  Icon  -->
+										<Border
+											Width="40"
+											Height="40"
+											Margin="0,0,12,0"
+											VerticalAlignment="Top"
+											Background="#20FFC107"
+											CornerRadius="10">
+											<fluenticons:SymbolIcon
+												FontSize="20"
+												Foreground="#FFC107"
+												Symbol="Key" />
+										</Border>
 
-									<!--  Details  -->
-									<StackPanel Grid.Row="1" Margin="0,15">
-										<Grid Margin="0,0,0,5" ColumnDefinitions="Auto, *">
+										<StackPanel Grid.Column="1">
 											<TextBlock
-												Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
-												Text="Endpoint: " />
+												FontSize="16"
+												FontWeight="SemiBold"
+												Text="{Binding Supplier}"
+												TextTrimming="CharacterEllipsis" />
 											<TextBlock
-												Grid.Column="1"
-												HorizontalAlignment="Right"
+												FontSize="12"
+												Opacity="0.6"
 												Text="{Binding EndpointDisplay}"
 												TextTrimming="CharacterEllipsis" />
-										</Grid>
-										<Grid Margin="0,0,0,5" ColumnDefinitions="Auto, *">
+										</StackPanel>
+
+										<!--  Menu  -->
+										<Button
+											Grid.Column="2"
+											VerticalAlignment="Top"
+											Classes="Link"
+											Content="⋮">
+											<Button.Flyout>
+												<MenuFlyout>
+													<MenuItem
+														Command="{Binding $parent[UserControl].((vm:KeyManagementViewModel)DataContext).EditKeyCommand}"
+														CommandParameter="{Binding}"
+														Header="Edit" />
+													<MenuItem
+														Command="{Binding $parent[UserControl].((vm:KeyManagementViewModel)DataContext).DeleteKeyCommand}"
+														CommandParameter="{Binding}"
+														Header="Delete" />
+												</MenuFlyout>
+											</Button.Flyout>
+										</Button>
+									</Grid>
+
+									<!--  Details  -->
+									<StackPanel
+										Grid.Row="1"
+										Margin="0,15,0,0"
+										Spacing="5">
+										<Grid ColumnDefinitions="Auto, *">
 											<TextBlock
-												Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+												FontSize="13"
+												Opacity="0.7"
 												Text="Key: " />
 											<TextBlock
 												Grid.Column="1"
 												HorizontalAlignment="Right"
 												FontFamily="Consolas, Monospace"
+												FontSize="13"
 												Text="{Binding KeyDisplay}" />
 										</Grid>
-										<Grid Margin="0,0,0,5" ColumnDefinitions="Auto, *">
+										<Grid ColumnDefinitions="Auto, *">
 											<TextBlock
-												Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+												FontSize="13"
+												Opacity="0.7"
 												Text="Models: " />
 											<TextBlock
 												Grid.Column="1"
 												HorizontalAlignment="Right"
+												FontSize="13"
 												Text="{Binding ModelCount}" />
 										</Grid>
 									</StackPanel>
-
-									<!--  Actions  -->
-									<Grid Grid.Row="2" ColumnDefinitions="*, 10, *">
-										<Button
-											Grid.Column="0"
-											HorizontalAlignment="Stretch"
-											HorizontalContentAlignment="Center"
-											Command="{Binding $parent[UserControl].((vm:KeyManagementViewModel)DataContext).EditKeyCommand}"
-											CommandParameter="{Binding}"
-											Content="Edit" />
-										<Button
-											Grid.Column="2"
-											HorizontalAlignment="Stretch"
-											HorizontalContentAlignment="Center"
-											Command="{Binding $parent[UserControl].((vm:KeyManagementViewModel)DataContext).DeleteKeyCommand}"
-											CommandParameter="{Binding}"
-											Content="Delete"
-											Foreground="#FF5555" />
-									</Grid>
 								</Grid>
 							</Border>
 						</DataTemplate>
@@ -128,7 +169,7 @@
 				<!--  Optional: Close on background click  -->
 				<!--  <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding CloseModalCommand}" />
-                </Border.GestureRecognizers>  -->
+                </Border.GestureRecognizers>-->
 			</Border>
 
 			<!--  Upsert Modal  -->

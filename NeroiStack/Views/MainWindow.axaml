@@ -9,7 +9,8 @@
 	Title="NeroiStack"
 	d:DesignHeight="450"
 	d:DesignWidth="800"
-	Icon="/Assets/avalonia-logo.ico"
+	Icon="/Assets/neroiStack-logo.png"
+	WindowState="Maximized"
 	mc:Ignorable="d">
 
 	<Design.DataContext>
@@ -135,7 +136,7 @@
 				</StackPanel>
 
 				<!--  Bottom: profile + small actions  -->
-				<StackPanel
+				<!-- <StackPanel
 					Margin="0,8,0,0"
 					VerticalAlignment="Bottom"
 					DockPanel.Dock="Bottom"
@@ -152,7 +153,7 @@
 							Opacity="0.7"
 							Text="me@example.com" />
 					</StackPanel>
-				</StackPanel>
+				</StackPanel>-->
 
 				<!--  Middle Scrollable Area  -->
 				<DockPanel Margin="0,12,0,12">
