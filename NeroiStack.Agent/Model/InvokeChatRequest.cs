@@ -9,6 +9,7 @@ public class InvokeChatRequest
 	public SupplierEnum Supplier { get; init; } = SupplierEnum.OpenAI;
 	public int ModelId { get; init; }
 	public string ModelName { get; init; } = string.Empty;
+	public List<string> ImagePaths { get; init; } = [];
 	public Func<string, Task>? OnChunk { get; set; }
 	public CancellationToken Ct { get; init; } = default;
 }

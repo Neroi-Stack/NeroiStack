@@ -77,6 +77,7 @@ public partial class App : Application
 		services.AddScoped<IPluginManageService, PluginManageService>();
 		services.AddScoped<IChatInstanceService, ChatInstanceService>();
 		services.AddScoped<IEncryption, Encryption>();
+		services.AddScoped<IMimeType, MimeType>();
 
 		// Factories & Strategies
 		services.AddScoped<IKernelFactory, KernelFactory>();
