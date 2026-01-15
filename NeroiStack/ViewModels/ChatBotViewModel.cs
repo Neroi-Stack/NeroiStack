@@ -83,6 +83,11 @@ public partial class ChatBotViewModel : ViewModelBase
 	[ObservableProperty]
 	private string selectedModel = string.Empty;
 
+	[ObservableProperty]
+	private ObservableCollection<string> _selectedImages = [];
+
+	public Func<Task<IEnumerable<string>>>? OnAddFilesRequested { get; set; }
+
 	private CancellationTokenSource? _cancellationTokenSource;
 
 	partial void OnSelectedModelChanged(string value)
@@ -121,6 +126,22 @@ public partial class ChatBotViewModel : ViewModelBase
 		// Deprecated
 	}
 
+	[RelayCommand]
+	private async Task AddFilesAsync()
+	{
+		if (OnAddFilesRequested != null)
+		{
+			var files = await OnAddFilesRequested();
+			foreach (var file in files)
+			{
+				if (!SelectedImages.Contains(file))
+				{
+					SelectedImages.Add(file);
+				}
+			}
+		}
+	}
+
 	// Command properties not auto-generated must be declared if used in XAML
 	public IRelayCommand SendMessageCommand => SendMessageCommandInternalCommand;
 	public IRelayCommand StopGenerationCommand => StopGenerationInternalCommand;
@@ -144,6 +165,55 @@ public partial class ChatBotViewModel : ViewModelBase
 
 	// Default constructor for previewer or fallback
 	public ChatBotViewModel() : this(null!, null!, null!, null!) { }
+
+	public void AddImageFile(string path)
+	{
+		var ext = System.IO.Path.GetExtension(path).ToLower();
+		if (new[] { ".png", ".jpg", ".jpeg", ".bmp", ".webp" }.Contains(ext))
+		{
+			if (!SelectedImages.Contains(path))
+			{
+				SelectedImages.Add(path);
+			}
+		}
+	}
+
+	[RelayCommand]
+	private void RemoveImage(string path)
+	{
+		if (SelectedImages.Contains(path))
+		{
+			SelectedImages.Remove(path);
+		}
+	}
+
+	public async Task HandleImagePasteAsync(object? data)
+	{
+		if (data == null) return;
+
+		byte[]? bytes = null;
+
+		if (data is byte[] b) bytes = b;
+		else if (data is System.IO.Stream stream)
+		{
+			using var ms = new System.IO.MemoryStream();
+			await stream.CopyToAsync(ms);
+			bytes = ms.ToArray();
+		}
+
+		if (bytes != null)
+		{
+			var tempFolder = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "NeroiStack");
+			System.IO.Directory.CreateDirectory(tempFolder);
+			var filePath = System.IO.Path.Combine(tempFolder, $"paste_{DateTime.Now:yyyyMMddHHmmss}.png");
+			await System.IO.File.WriteAllBytesAsync(filePath, bytes);
+
+			if (!SelectedImages.Contains(filePath))
+			{
+				SelectedImages.Add(filePath);
+			}
+		}
+	}
 
 	private async Task LoadModelsAsync()
 	{
@@ -281,6 +351,8 @@ public partial class ChatBotViewModel : ViewModelBase
 
 		var userText = MessageInput;
 		MessageInput = string.Empty;
+		var currentImages = SelectedImages.ToList();
+		SelectedImages.Clear();
 
 		// User Message UI
 		Messages.Add(new ChatMessage(userText, true, "User"));
@@ -311,7 +383,8 @@ public partial class ChatBotViewModel : ViewModelBase
 				Text = userText,
 				Supplier = supplier,
 				ModelId = 0, // Not using ID anymore for string based models
-				ModelName = SelectedModel, // Need to pass name
+				ModelName = SelectedModel, 
+				ImagePaths = currentImages,
 				Ct = _cancellationTokenSource.Token,
 				OnChunk = async (chunk) =>
 				{

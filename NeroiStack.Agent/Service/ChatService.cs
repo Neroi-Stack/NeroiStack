@@ -12,6 +12,7 @@ using NeroiStack.Agent.Strategies.Orchestration;
 using NeroiStack.Agent.Strategies;
 using NeroiStack.Agent.Factories;
 using Microsoft.SemanticKernel;
+using NeroiStack.Common.Interface;
 
 namespace NeroiStack.Agent.Service;
 
@@ -131,10 +132,30 @@ public class ChatService(IServiceScopeFactory scopeFactory, IEnumerable<IOrchest
 			var chatContext = scope.ServiceProvider.GetRequiredService<IChatContext>();
 			var kernelFactory = scope.ServiceProvider.GetRequiredService<IKernelFactory>();
 			var strategies = scope.ServiceProvider.GetRequiredService<IEnumerable<IKernelProviderStrategy>>();
+			var mime = scope.ServiceProvider.GetRequiredService<IMimeType>();
 
 			await EnsureSessionReadyAsync(session, chatRequest, chatContext, kernelFactory, strategies);
 
-			session.History.AddUserMessage(chatRequest.Text);
+			var messageItems = new ChatMessageContentItemCollection
+			{
+				new TextContent(chatRequest.Text)
+			};
+
+			if (chatRequest.ImagePaths != null)
+			{
+				foreach (var path in chatRequest.ImagePaths)
+				{
+					if (File.Exists(path))
+					{
+						var bytes = await File.ReadAllBytesAsync(path, chatRequest.Ct);
+						var imageData = new ReadOnlyMemory<byte>(bytes);
+						var mimeType = await mime.Get(bytes);
+						messageItems.Add(new ImageContent(imageData, mimeType));
+					}
+				}
+			}
+
+			session.History.AddUserMessage(messageItems);
 
 			var strategy = orchestrationStrategies.FirstOrDefault(s => s.CanHandle(session.OrchestrationType));
 			if (strategy == null)

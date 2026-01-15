@@ -1,38 +1,47 @@
-<Application xmlns="https://github.com/avaloniaui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             x:Class="NeroiStack.App"
-             xmlns:local="using:NeroiStack"
-             xmlns:conv="using:NeroiStack.ValueConverters"
-             RequestedThemeVariant="Default">
-             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+<Application
+	x:Class="NeroiStack.App"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:conv="using:NeroiStack.ValueConverters"
+	xmlns:local="using:NeroiStack"
+	RequestedThemeVariant="Default">
+	<!--  "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options.  -->
 
-    <Application.DataTemplates>
-        <local:ViewLocator/>
-    </Application.DataTemplates>
-  
-    <Application.Styles>
+	<Application.DataTemplates>
+		<local:ViewLocator />
+	</Application.DataTemplates>
+
+	<Application.Styles>
 		<FluentTheme>
 			<FluentTheme.Palettes>
-				<ColorPaletteResources x:Key="Light" Accent="Orange" RegionColor="White" ErrorText="Red" />
-				<ColorPaletteResources x:Key="Dark" Accent="Purple" RegionColor="Black" ErrorText="Yellow" />
+				<ColorPaletteResources
+					x:Key="Light"
+					Accent="#81C0C0"
+					ErrorText="Red"
+					RegionColor="White" />
+				<ColorPaletteResources
+					x:Key="Dark"
+					Accent="#4F9D9D"
+					ErrorText="Red"
+					RegionColor="Black" />
 			</FluentTheme.Palettes>
 		</FluentTheme>
-        
-        <!-- Global Cursor Styles -->
-        <Style Selector="Button">
-            <Setter Property="Cursor" Value="Hand"/>
-        </Style>
-        <Style Selector="ToggleSwitch">
-            <Setter Property="Cursor" Value="Hand"/>
-        </Style>
-        <Style Selector="CheckBox">
-            <Setter Property="Cursor" Value="Hand"/>
-        </Style>
-        <Style Selector="ComboBox">
-            <Setter Property="Cursor" Value="Hand"/>
-        </Style>
-        <Style Selector="MenuItem">
-            <Setter Property="Cursor" Value="Hand"/>
-        </Style>
-    </Application.Styles>
+
+		<!--  Global Cursor Styles  -->
+		<Style Selector="Button">
+			<Setter Property="Cursor" Value="Hand" />
+		</Style>
+		<Style Selector="ToggleSwitch">
+			<Setter Property="Cursor" Value="Hand" />
+		</Style>
+		<Style Selector="CheckBox">
+			<Setter Property="Cursor" Value="Hand" />
+		</Style>
+		<Style Selector="ComboBox">
+			<Setter Property="Cursor" Value="Hand" />
+		</Style>
+		<Style Selector="MenuItem">
+			<Setter Property="Cursor" Value="Hand" />
+		</Style>
+	</Application.Styles>
 </Application>
