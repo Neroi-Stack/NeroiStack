@@ -1,7 +1,10 @@
 # NeroiStack
+
 A powerful AI agent application. 
 
 <img width="959" height="504" alt="image" src="https://github.com/user-attachments/assets/75833705-09cf-49d8-9521-2aac78708e9f" />
+
+[here is neroi stack wiki](https://github.com/Neroi-Stack/NeroiStack/wiki)
 
 ## Features
 - MCP-Plugin architecture for extensibility
