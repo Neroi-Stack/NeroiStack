@@ -5,6 +5,9 @@ using Avalonia.Controls;
 using CommunityToolkit.Mvvm.Messaging;
 using NeroiStack.Messages;
 using NeroiStack.Agent.Interface;
+using CommunityToolkit.Mvvm.Input;
+using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace NeroiStack.ViewModels;
 
@@ -115,8 +118,8 @@ public partial class MainWindowViewModel : ViewModelBase
 		}
 	}
 
-	[CommunityToolkit.Mvvm.Input.RelayCommand]
-	private async System.Threading.Tasks.Task DeleteChatInstanceAsync(NavigationItem item)
+	[RelayCommand]
+	private async Task DeleteChatInstanceAsync(NavigationItem item)
 	{
 		if (item?.Tag is ChatInstanceInfo info && _instanceService != null)
 		{
@@ -133,6 +136,25 @@ public partial class MainWindowViewModel : ViewModelBase
 			{
 				Console.WriteLine($"Error deleting instance: {ex.Message}");
 			}
+		}
+	}
+
+	[RelayCommand]
+	private static void OpenGitHub()
+	{
+		var url = "https://github.com/Neroi-Stack/NeroiStack/issues";
+		try
+		{
+			var psi = new ProcessStartInfo
+			{
+				FileName = url,
+				UseShellExecute = true
+			};
+			Process.Start(psi);
+		}
+		catch (Exception ex)
+		{
+			Console.WriteLine($"Failed to open URL {url}: {ex.Message}");
 		}
 	}
 

@@ -254,15 +254,18 @@
 			Padding="10"
 			Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}">
 			<DockPanel>
-				<TextBlock
+				<StackPanel
+					HorizontalAlignment="Left"
 					DockPanel.Dock="Left"
 					Opacity="0.7"
-					Text="NeroiStack. — v1.0" />
+					Orientation="Horizontal">
+					<Button Content="NeroiStack. — v1.0" />
+				</StackPanel>
 				<StackPanel
 					HorizontalAlignment="Right"
 					DockPanel.Dock="Right"
 					Orientation="Horizontal">
-					<Button Content="GitHub" />
+					<Button Content="Issue Report (GitHub)" Command="{Binding OpenGitHubCommand}" />
 				</StackPanel>
 			</DockPanel>
 		</Border>
