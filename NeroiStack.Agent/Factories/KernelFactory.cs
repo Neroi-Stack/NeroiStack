@@ -4,19 +4,21 @@ using NeroiStack.Agent.Strategies;
 using NeroiStack.Agent.Enum;
 using NeroiStack.Agent.Service;
 using NeroiStack.Agent.Data;
+using NeroiStack.Agent.Model;
 using NeroiStack.Common.Interface;
 
 namespace NeroiStack.Agent.Factories;
 
 public interface IKernelFactory
 {
-	Task<(Kernel kernel, PromptExecutionSettings settings)> CreateKernelAsync(IChatContext chatContext, int chatInstanceId, SupplierEnum supplier, string modelName, CancellationToken ct);
+	Task<(Kernel kernel, dynamic settings)> CreateKernelAsync(IChatContext chatContext, ChatSession session, SupplierEnum supplier, string modelName, CancellationToken ct);
 }
 
 public class KernelFactory(IEnumerable<IKernelProviderStrategy> strategies, IEnumerable<IPluginLoaderStrategy> pluginLoaders, IEncryption encryption) : IKernelFactory
 {
-	public async Task<(Kernel kernel, PromptExecutionSettings settings)> CreateKernelAsync(IChatContext chatContext, int chatInstanceId, SupplierEnum supplier, string modelName, CancellationToken ct)
+	public async Task<(Kernel kernel, dynamic settings)> CreateKernelAsync(IChatContext chatContext, ChatSession session, SupplierEnum supplier, string modelName, CancellationToken ct)
 	{
+		int chatInstanceId = session.ChatInstanceId;
 		var keyManageService = new KeyManageService(chatContext, encryption);
 		var keys = await keyManageService.GetAllKeysAsync();
 		var key = keys.FirstOrDefault(k => k.Supplier == supplier);
@@ -26,26 +28,24 @@ public class KernelFactory(IEnumerable<IKernelProviderStrategy> strategies, IEnu
 			throw new Exception($"API Key not found for supplier {supplier}");
 		}
 
-		if (key == null) key = new NeroiStack.Agent.Model.KeyVM { Key = "", Endpoint = "http://localhost:8080/v1/chat/completions" }; // Fallback for local
+		key ??= new KeyVM { Key = "", Endpoint = "http://localhost:8080/v1/chat/completions" }; // Fallback for local
 
-		var strategy = strategies.FirstOrDefault(s => s.CanHandle(supplier));
-		if (strategy == null)
-			throw new NotSupportedException($"Supplier {supplier} not supported");
-
+		var strategy = strategies.FirstOrDefault(s => s.CanHandle(supplier)) ?? throw new NotSupportedException($"Supplier {supplier} not supported");
 		var builder = Kernel.CreateBuilder();
 		strategy.Configure(builder, modelName, key);
 
 		var kernel = builder.Build();
 
-		await ImportPluginsAsync(kernel, chatContext, chatInstanceId, ct);
+		await ImportPluginsAsync(kernel, chatContext, session, ct);
 
 		var settings = strategy.CreateExecutionSettings();
 
 		return (kernel, settings);
 	}
 
-	private async Task ImportPluginsAsync(Kernel kernel, IChatContext chatContext, int chatInstanceId, CancellationToken ct)
+	private async Task ImportPluginsAsync(Kernel kernel, IChatContext chatContext, ChatSession session, CancellationToken ct)
 	{
+		int chatInstanceId = session.ChatInstanceId;
 		var agentToolLinks = await chatContext.ChatInstances
 			.Join(chatContext.Chats, ci => ci.ChatId, c => c.Id, (ci, c) => new { ci, c })
 			.Join(chatContext.ChatAgents, cc => cc.c.Id, ca => ca.ChatId, (cc, ca) => new { cc.ci, cc.c, ca })
@@ -66,7 +66,7 @@ public class KernelFactory(IEnumerable<IKernelProviderStrategy> strategies, IEnu
 				var loader = pluginLoaders.FirstOrDefault(l => l.CanHandle(plugin.Type));
 				if (loader != null)
 				{
-					await loader.LoadAsync(kernel, plugin, chatContext, ct);
+					await loader.LoadAsync(kernel, plugin, chatContext, session, ct);
 				}
 				else
 				{

@@ -15,7 +15,7 @@ public class OpenAIProviderStrategy : IKernelProviderStrategy
 		builder.AddOpenAIChatCompletion(modelId, apiKey?.Key ?? "");
 	}
 
-	public PromptExecutionSettings CreateExecutionSettings(AgentVM? agent = null)
+	public dynamic CreateExecutionSettings(AgentVM? agent = null)
 	{
 		return new OpenAIPromptExecutionSettings
 		{

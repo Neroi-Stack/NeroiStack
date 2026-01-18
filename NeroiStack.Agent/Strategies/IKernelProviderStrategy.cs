@@ -8,5 +8,5 @@ public interface IKernelProviderStrategy
 {
 	bool CanHandle(SupplierEnum supplier);
 	void Configure(IKernelBuilder builder, string modelId, KeyVM apiKey);
-	PromptExecutionSettings CreateExecutionSettings(AgentVM? agent = null);
+	dynamic CreateExecutionSettings(AgentVM? agent = null);
 }

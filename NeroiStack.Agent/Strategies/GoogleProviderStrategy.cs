@@ -15,7 +15,7 @@ public class GoogleProviderStrategy : IKernelProviderStrategy
 		builder.AddGoogleAIGeminiChatCompletion(modelId, apiKey?.Key ?? "");
 	}
 
-	public PromptExecutionSettings CreateExecutionSettings(AgentVM? agent = null)
+	public dynamic CreateExecutionSettings(AgentVM? agent = null)
 	{
 		return new GeminiPromptExecutionSettings
 		{

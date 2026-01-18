@@ -1,7 +1,6 @@
 #pragma warning disable SKEXP0070
 using Microsoft.SemanticKernel;
 using Microsoft.SemanticKernel.Connectors.HuggingFace;
-using Microsoft.SemanticKernel.Connectors.MistralAI;
 using NeroiStack.Agent.Enum;
 using NeroiStack.Agent.Model;
 
@@ -20,7 +19,7 @@ public class HuggingFaceProviderStrategy : IKernelProviderStrategy
 		);
 	}
 
-	public PromptExecutionSettings CreateExecutionSettings(AgentVM? agent = null)
+	public dynamic CreateExecutionSettings(AgentVM? agent = null)
 	{
 		return new HuggingFacePromptExecutionSettings
 		{
