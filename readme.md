@@ -16,6 +16,7 @@ A powerful AI agent application.
 - [ ] Expand plugin ecosystem for third-party integrations
 - [ ] Optimize performance for large-scale AI tasks
 - [ ] agentic workflows and collaboration features
+- [ ] STT-TTS support
 
 ## Installation
 1. Ensure you have `.NET 10 SDK` installed. You can download it from the [.NET website](https://dotnet.microsoft.com/download/dotnet/10.0).
