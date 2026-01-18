@@ -12,13 +12,14 @@ public class MistralAIProviderStrategy : IKernelProviderStrategy
 
 	public void Configure(IKernelBuilder builder, string modelId, KeyVM apiKey)
 	{
-		builder.AddOllamaChatCompletion(
+		builder.AddMistralChatCompletion(
 		   modelId: modelId,
-		   endpoint: new Uri(apiKey.Endpoint ?? "http://localhost:11434")
+		   apiKey: apiKey.Key ?? string.Empty,
+		   endpoint: apiKey.Endpoint != null ? new Uri(apiKey.Endpoint) : null
 		);
 	}
 
-	public PromptExecutionSettings CreateExecutionSettings(AgentVM? agent = null)
+	public dynamic CreateExecutionSettings(AgentVM? agent = null)
 	{
 		return new MistralAIPromptExecutionSettings
 		{

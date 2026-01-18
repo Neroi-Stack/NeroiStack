@@ -13,10 +13,19 @@ public class SingleOrchestrationStrategy : IOrchestrationStrategy
 	{
 		var agent = session.Agents.FirstOrDefault() ?? throw new Exception("No agent");
 		string resultText = string.Empty;
-		await foreach (StreamingChatMessageContent content in agent.InvokeStreamingAsync(session.History, cancellationToken: request.Ct))
+		try
 		{
-			resultText += content.Content;
-			if (request.OnChunk != null) await request.OnChunk(content.Content ?? "");
+			await foreach (StreamingChatMessageContent content in agent.InvokeStreamingAsync(session.History, cancellationToken: request.Ct))
+			{
+				resultText += content.Content;
+				if (request.OnChunk != null) await request.OnChunk(content.Content ?? "");
+			}
+		}
+		catch (Exception ex)
+		{
+			var errorMsg = $"\n\n[system error: {ex.Message}]";
+			resultText += errorMsg;
+			if (request.OnChunk != null) await request.OnChunk(errorMsg);
 		}
 		return resultText;
 	}

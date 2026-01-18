@@ -18,7 +18,7 @@ public class OllamaModelProviderStrategy : IKernelProviderStrategy
 		);
 	}
 
-	public PromptExecutionSettings CreateExecutionSettings(AgentVM? agent = null)
+	public dynamic CreateExecutionSettings(AgentVM? agent = null)
 	{
 		return new OllamaPromptExecutionSettings
 		{

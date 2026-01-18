@@ -1,4 +1,3 @@
-#pragma warning disable SKEXP0001, SKEXP0110
 using Microsoft.SemanticKernel.Agents;
 using Microsoft.SemanticKernel.ChatCompletion;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +22,13 @@ public class ChatService(IServiceScopeFactory scopeFactory, IEnumerable<IOrchest
 
 	public void ClearSession(int chatInstanceId)
 	{
-		_sessions.TryRemove(chatInstanceId, out _);
+		if (_sessions.TryRemove(chatInstanceId, out var session))
+		{
+			foreach (var res in session.Resources)
+			{
+				if (res is IDisposable d) d.Dispose();
+			}
+		}
 	}
 
 	public async Task InitializeAsync(int chatInstanceId, CancellationToken ct = default)
@@ -34,10 +39,10 @@ public class ChatService(IServiceScopeFactory scopeFactory, IEnumerable<IOrchest
 		var chatContext = scope.ServiceProvider.GetRequiredService<IChatContext>();
 
 		var instance = await chatContext.ChatInstances.FindAsync([chatInstanceId], ct)
-					   ?? throw new Exception($"Chat Instance {chatInstanceId} not found");
+			?? throw new Exception($"Chat Instance {chatInstanceId} not found");
 
 		var chatDef = await chatContext.Chats.FindAsync([instance.ChatId], ct)
-					  ?? throw new Exception("Chat definition not found");
+			?? throw new Exception("Chat definition not found");
 
 		var chatAgents = await chatContext.ChatAgents
 			.Where(ca => ca.ChatId == instance.ChatId)
@@ -74,38 +79,39 @@ public class ChatService(IServiceScopeFactory scopeFactory, IEnumerable<IOrchest
 
 	private async Task EnsureSessionReadyAsync(ChatSession session, InvokeChatRequest request, IChatContext ctx, IKernelFactory kernelFactory, IEnumerable<IKernelProviderStrategy> strategies)
 	{
-		if (session.Kernel != null) return;
+		if (session.Kernel != null && session.CurrentSupplier == request.Supplier && session.CurrentModelName == request.ModelName) return;
+
+		if (session.Kernel != null)
+		{
+			foreach (var res in session.Resources)
+			{
+				if (res is IDisposable d) d.Dispose();
+			}
+			session.Resources.Clear();
+		}
 
 		string modelName = request.ModelName;
 		SupplierEnum supplier = request.Supplier;
 
 		if (string.IsNullOrEmpty(modelName)) throw new Exception("Model Name is required");
 
-		var (kernel, settings) = await kernelFactory.CreateKernelAsync(ctx, session.ChatInstanceId, supplier, modelName, request.Ct);
+		var (kernel, settings) = await kernelFactory.CreateKernelAsync(ctx, session, supplier, modelName, request.Ct);
 
 		session.Kernel = kernel;
-		// session.ExecutionSettings = settings;
-
-		// Build Agents based on orchestration type
-		// Re-initialize only if null, but assuming single agent relies on Kernel directly.
-		// If we strictly follow Agent Pattern we should create Agent here.
-		// But for now keeping it simple as before: Just Kernel creation is enough for "EnsureSessionReady" in this context
-		// unless orchestration logic is here.
-
-		// Wait, looking at original code, it was trying to use `modelConfig` to create kernel.
-		// We already did that above.
+		session.CurrentSupplier = supplier;
+		session.CurrentModelName = modelName;
 		var instance = await ctx.ChatInstances.FindAsync([session.ChatInstanceId], request.Ct);
 		var agentDefs = await ctx.ChatAgents
-				.Join(ctx.Agents, ca => ca.AgentId, a => a.Id, (ca, a) => new { ca, a })
-				.Where(x => x.ca.ChatId == instance!.ChatId)
-				.OrderBy(x => x.ca.Order)
-				.ToListAsync(request.Ct);
+			.Join(ctx.Agents, ca => ca.AgentId, a => a.Id, (ca, a) => new { ca, a })
+			.Where(x => x.ca.ChatId == instance!.ChatId)
+			.OrderBy(x => x.ca.Order)
+			.ToListAsync(request.Ct);
 
 		var providerStrategy = strategies.FirstOrDefault(s => s.CanHandle(request.Supplier));
 
-		session.Agents = agentDefs.Select(x =>
+		session.Agents = [.. agentDefs.Select(x =>
 		{
-			var agentSettings = providerStrategy?.CreateExecutionSettings((AgentVM)x.a) ?? settings;
+			dynamic agentSettings = providerStrategy?.CreateExecutionSettings((AgentVM)x.a) ?? settings;
 			return new ChatCompletionAgent
 			{
 				Name = x.a.Name,
@@ -114,7 +120,7 @@ public class ChatService(IServiceScopeFactory scopeFactory, IEnumerable<IOrchest
 				Kernel = session.Kernel,
 				Arguments = new(agentSettings)
 			};
-		}).ToList();
+		})];
 	}
 
 	public async Task<(string text, Func<string, Task>)> ChatAsync(InvokeChatRequest chatRequest)
@@ -189,7 +195,6 @@ public class ChatService(IServiceScopeFactory scopeFactory, IEnumerable<IOrchest
 		}
 		catch (HttpOperationException ex)
 		{
-			// Capture the detailed error response from the AI provider
 			throw new Exception($"AI Provider Error ({ex.StatusCode}): {ex.ResponseContent}", ex);
 		}
 		catch (Exception ex)
@@ -197,5 +202,4 @@ public class ChatService(IServiceScopeFactory scopeFactory, IEnumerable<IOrchest
 			throw new Exception("handle error: " + ex.Message, ex);
 		}
 	}
-
 }
