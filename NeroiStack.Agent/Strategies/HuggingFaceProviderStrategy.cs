@@ -24,10 +24,12 @@ public class HuggingFaceProviderStrategy : IKernelProviderStrategy
 	{
 		return new HuggingFacePromptExecutionSettings
 		{
-			Temperature = (float?)agent?.Temperature ?? 1.0f,
-			TopK = 40,
-			TopP = (float?)agent?.TopP ?? 1f,
+			Temperature = (float)(agent?.Temperature ?? 1.0),
+			TopP = (float?)agent?.TopP,
+			TopK = agent?.TopK,
 			MaxTokens = agent?.MaxTokens,
+			Seed = agent?.Seed,
+			Stop = agent?.StopSequences != null ? new List<string>(agent.StopSequences.Split(';', StringSplitOptions.RemoveEmptyEntries)) : null,
 			FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 		};
 	}

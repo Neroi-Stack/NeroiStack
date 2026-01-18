@@ -161,7 +161,7 @@ public class ChatService(IServiceScopeFactory scopeFactory, IEnumerable<IOrchest
 			if (strategy == null)
 			{
 				// Fallback to default if not found, or throw
-				strategy = orchestrationStrategies.First(s => s.CanHandle(AgentOrchestrationType.Once));
+				strategy = orchestrationStrategies.First(s => s.CanHandle(AgentOrchestrationType.Single));
 			}
 
 			string resultText = await strategy.ExecuteAsync(session, chatRequest, chatContext);

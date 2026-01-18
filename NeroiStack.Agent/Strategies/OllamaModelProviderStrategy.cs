@@ -22,10 +22,11 @@ public class OllamaModelProviderStrategy : IKernelProviderStrategy
 	{
 		return new OllamaPromptExecutionSettings
 		{
-			Temperature = (float?)agent?.Temperature ?? 0.7f,
-			TopK = 40,
-			TopP = (float?)agent?.TopP ?? 0.9f,
-			NumPredict = 2048,
+			Temperature = (float?)agent?.Temperature,
+			TopP = (float?)agent?.TopP,
+			TopK = agent?.TopK,
+			NumPredict = agent?.MaxTokens,
+			Stop = agent?.StopSequences != null ? new List<string>(agent.StopSequences.Split(';', StringSplitOptions.RemoveEmptyEntries)) : null,
 			FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 		};
 	}

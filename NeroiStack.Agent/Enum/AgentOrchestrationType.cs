@@ -5,7 +5,7 @@ public enum AgentOrchestrationType
 	/// <summary>
 	/// Single agent handling the request.
 	/// </summary>
-	Once = 1,
+	Single = 1,
 
 	/// <summary>
 	/// Multiple agents generate different solutions to a problem, and their responses are collected for further analysis or selection.

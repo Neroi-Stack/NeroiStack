@@ -19,13 +19,15 @@ public class AzureOpenAIProviderStrategy : IKernelProviderStrategy
 	{
 		return new OpenAIPromptExecutionSettings
 		{
-			Temperature = agent?.Temperature ?? 0.7,
-			TopP = agent?.TopP ?? 0.9,
-			MaxTokens = agent?.MaxTokens ?? 2048,
-			PresencePenalty = agent?.PresencePenalty ?? 0,
-			FrequencyPenalty = agent?.FrequencyPenalty ?? 0,
-			ResponseFormat = null,
-			ChatSystemPrompt = null,
+			Temperature = agent?.Temperature,
+			TopP = agent?.TopP,
+			MaxTokens = agent?.MaxTokens,
+			PresencePenalty = agent?.PresencePenalty,
+			FrequencyPenalty = agent?.FrequencyPenalty,
+			Seed = agent?.Seed,
+			StopSequences = agent?.StopSequences?.Split(';', StringSplitOptions.RemoveEmptyEntries),
+			ResponseFormat = agent?.ResponseFormat, // Assuming string or object handling elsewhere, but property exists
+			ChatSystemPrompt = null, // System prompt usually handled in chat history
 			FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 		};
 	}

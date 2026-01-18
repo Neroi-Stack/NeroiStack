@@ -39,9 +39,12 @@ public class AgentManageService(IChatContext chatContext) : IAgentManageService
 			Kernel = agentRequest.Kernel,
 			Temperature = agentRequest.Temperature,
 			TopP = agentRequest.TopP,
+			TopK = agentRequest.TopK,
 			MaxTokens = agentRequest.MaxTokens,
 			PresencePenalty = agentRequest.PresencePenalty,
 			FrequencyPenalty = agentRequest.FrequencyPenalty,
+			Seed = agentRequest.Seed,
+			StopSequences = agentRequest.StopSequences,
 			ResponseFormat = agentRequest.ResponseFormat,
 			PromptTemplate = agentRequest.PromptTemplate,
 			IsEnabled = agentRequest.IsEnabled
@@ -66,9 +69,12 @@ public class AgentManageService(IChatContext chatContext) : IAgentManageService
 		agent.Kernel = agentVm.Kernel;
 		agent.Temperature = agentVm.Temperature;
 		agent.TopP = agentVm.TopP;
+		agent.TopK = agentVm.TopK;
 		agent.MaxTokens = agentVm.MaxTokens;
 		agent.PresencePenalty = agentVm.PresencePenalty;
 		agent.FrequencyPenalty = agentVm.FrequencyPenalty;
+		agent.Seed = agentVm.Seed;
+		agent.StopSequences = agentVm.StopSequences;
 		agent.ResponseFormat = agentVm.ResponseFormat;
 		agent.PromptTemplate = agentVm.PromptTemplate;
 		agent.IsEnabled = agentVm.IsEnabled;

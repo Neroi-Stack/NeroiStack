@@ -186,23 +186,24 @@
 									<TextBox Text="{Binding CurrentChat.Name}" />
 								</StackPanel>
 
-								<CheckBox
-									Grid.Row="0"
-									Grid.Column="2"
-									Margin="0,0,0,5"
-									VerticalAlignment="Bottom"
-									Content="Enabled"
-									IsChecked="{Binding CurrentChat.IsEnabled}" />
-
-								<StackPanel
-									Grid.Row="1"
-									Grid.Column="0"
-									Margin="0,10,0,0">
+								<StackPanel Grid.Row="0" Grid.Column="2">
 									<SelectableTextBlock Margin="0,0,0,5" Text="Orchestration Type" />
 									<ComboBox
 										HorizontalAlignment="Stretch"
 										ItemsSource="{Binding AgentOrchestrationTypes}"
 										SelectedItem="{Binding SelectedOrchestrationType}" />
+								</StackPanel>
+								<StackPanel
+									Grid.Row="1"
+									Grid.Column="0"
+									Grid.ColumnSpan="3"
+									Margin="0,10,0,0">
+									<SelectableTextBlock
+										Margin="0,5,0,0"
+										FontSize="12"
+										Foreground="Orange"
+										Text="Note: Currently, only the single orchestration type support for short-term memory and streaming reply."
+										TextWrapping="Wrap" />
 								</StackPanel>
 							</Grid>
 
@@ -571,8 +572,8 @@
 										</Border>
 									</StackPanel>
 
-									<!--  5. Once / Default / Handoff Mode  -->
-									<StackPanel HorizontalAlignment="Center" IsVisible="{Binding IsOnceMode}">
+									<!--  5. Single / Default / Handoff Mode  -->
+									<StackPanel HorizontalAlignment="Center" IsVisible="{Binding IsSingleMode}">
 										<Border
 											Margin="0,0,0,20"
 											Padding="20,8"

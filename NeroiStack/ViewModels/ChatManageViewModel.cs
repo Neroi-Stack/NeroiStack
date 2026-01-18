@@ -59,7 +59,7 @@ public sealed partial class ChatManageViewModel : ViewModelBase
 	// Helper properties for UI binding to switch views
 	public AgentOrchestrationType SelectedOrchestrationType
 	{
-		get => CurrentChat?.AgentOrchestrationType ?? AgentOrchestrationType.Once;
+		get => CurrentChat?.AgentOrchestrationType ?? AgentOrchestrationType.Single;
 		set
 		{
 			if (CurrentChat != null && CurrentChat.AgentOrchestrationType != value)
@@ -79,7 +79,7 @@ public sealed partial class ChatManageViewModel : ViewModelBase
 		ConfiguredHandoffs.Clear();
 	}
 
-	public bool IsOnceMode => SelectedOrchestrationType == AgentOrchestrationType.Once;
+	public bool IsSingleMode => SelectedOrchestrationType == AgentOrchestrationType.Single;
 	public bool IsSequentialMode => SelectedOrchestrationType == AgentOrchestrationType.Sequential;
 	public bool IsConcurrentMode => SelectedOrchestrationType == AgentOrchestrationType.Concurrent;
 	public bool IsGroupChatMode => SelectedOrchestrationType == AgentOrchestrationType.GroupChat;
@@ -94,7 +94,7 @@ public sealed partial class ChatManageViewModel : ViewModelBase
 
 	private void NotifyModeChanged()
 	{
-		OnPropertyChanged(nameof(IsOnceMode));
+		OnPropertyChanged(nameof(IsSingleMode));
 		OnPropertyChanged(nameof(IsSequentialMode));
 		OnPropertyChanged(nameof(IsConcurrentMode));
 		OnPropertyChanged(nameof(IsGroupChatMode));
@@ -276,7 +276,7 @@ public sealed partial class ChatManageViewModel : ViewModelBase
 	{
 		IsCreating = true;
 		ModalTitle = "New Chat Class";
-		CurrentChat = new ChatVM { Name = "New Chat", IsEnabled = true, AgentOrchestrationType = AgentOrchestrationType.Once };
+		CurrentChat = new ChatVM { Name = "New Chat", IsEnabled = true, AgentOrchestrationType = AgentOrchestrationType.Single };
 		await LoadEditorDataAsync(null);
 		OpenEditor();
 	}
@@ -360,7 +360,7 @@ public sealed partial class ChatManageViewModel : ViewModelBase
 		// Mode specific validation
 		switch (SelectedOrchestrationType)
 		{
-			case AgentOrchestrationType.Once:
+			case AgentOrchestrationType.Single:
 				if (ConfiguredAgents.Count < 1)
 				{
 					ValidationMessage = "Single Agent mode requires at least one agent.";
@@ -430,7 +430,7 @@ public sealed partial class ChatManageViewModel : ViewModelBase
 			{
 				AgentId = ca.Id,
 				// Primary is forced to false for modes that don't support IsPrimary property in logic
-				// But Handoff checks IsPrimary. GroupChat doesn't use it in existing logic. Once uses first.
+				// But Handoff checks IsPrimary. GroupChat doesn't use it in existing logic. Single uses first.
 				// We preserve it mainly for Handoff.
 				IsPrimary = IsHandoffMode ? ca.IsPrimary : false,
 				Order = ca.Order
