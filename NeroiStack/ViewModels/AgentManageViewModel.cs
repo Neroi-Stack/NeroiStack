@@ -158,7 +158,7 @@ public sealed partial class AgentManageViewModel : ViewModelBase
 		InitializeNewPlugin(SelectedPluginType);
 		IsPluginEditorVisible = true;
 		// Ensure modal background is open if not already (it should be since we are in Agent Edit)
-		IsModalOpen = true; 
+		IsModalOpen = true;
 	}
 
 	partial void OnSelectedPluginTypeChanged(PluginType value)
@@ -215,7 +215,7 @@ public sealed partial class AgentManageViewModel : ViewModelBase
 			var id = await _pluginService.CreatePluginAsync(CurrentPlugin);
 			CurrentPlugin.Id = id;
 			// Refresh plugin list for agent editor
-			
+
 			// We want to add this plugin to the Checked list in Agent Editor?
 			// Or just refresh the available list.
 			var oldSelection = AvailablePlugins.Where(p => p.IsSelected).Select(p => p.Id).ToList();
@@ -223,7 +223,7 @@ public sealed partial class AgentManageViewModel : ViewModelBase
 			await LoadPluginsForEditorAsync(oldSelection.ToArray());
 		}
 		// If editing (not implemented yet in this view, but for completeness)
-		
+
 		ClosePluginModal();
 	}
 
@@ -256,9 +256,12 @@ public sealed partial class AgentManageViewModel : ViewModelBase
 				Kernel = CurrentAgent.Kernel,
 				Temperature = CurrentAgent.Temperature,
 				TopP = CurrentAgent.TopP,
+				TopK = CurrentAgent.TopK,
 				MaxTokens = CurrentAgent.MaxTokens,
 				PresencePenalty = CurrentAgent.PresencePenalty,
 				FrequencyPenalty = CurrentAgent.FrequencyPenalty,
+				Seed = CurrentAgent.Seed,
+				StopSequences = CurrentAgent.StopSequences,
 				ResponseFormat = CurrentAgent.ResponseFormat,
 				PromptTemplate = CurrentAgent.PromptTemplate,
 				PluginIds = selectedPluginIds,

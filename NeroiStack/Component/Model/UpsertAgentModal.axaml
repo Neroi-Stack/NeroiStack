@@ -53,81 +53,139 @@
 					<Expander
 						Margin="0,10,0,0"
 						HorizontalAlignment="Stretch"
-						Header="Advanced Settings">
-						<StackPanel Spacing="10">
+						Header="Advanced Settings"
+						IsExpanded="False">
+						<StackPanel Spacing="15">
+							<StackPanel>
+								<SelectableTextBlock FontWeight="Bold" Foreground="Red" Text="* NOT All Model Parameters are Supported" />
+							</StackPanel>
+							<!-- Row 1: Core Sampling (Temp, TopP) -->
 							<Grid ColumnDefinitions="*, 10, *">
 								<StackPanel Grid.Column="0">
 									<SelectableTextBlock
 										FontSize="12"
 										Foreground="#AAA"
-										Text="Temperature (0-2)" />
+										Text="Temperature"
+										ToolTip.Tip="Controls randomness (0.0 - 2.0). Lower is more deterministic. Supported by: All."/>
 									<NumericUpDown
 										HorizontalAlignment="Stretch"
 										FormatString="0.0"
 										Increment="0.1"
 										Maximum="2"
 										Minimum="0"
+										Watermark="Default"
 										Value="{Binding CurrentAgent.Temperature}" />
 								</StackPanel>
 								<StackPanel Grid.Column="2">
 									<SelectableTextBlock
 										FontSize="12"
 										Foreground="#AAA"
-										Text="Top P (0-1)" />
+										Text="Top P"
+										ToolTip.Tip="Nucleus sampling (0.0 - 1.0). Works with Temperature. Supported by: All."/>
 									<NumericUpDown
 										HorizontalAlignment="Stretch"
 										FormatString="0.00"
 										Increment="0.05"
 										Maximum="1"
 										Minimum="0"
+										Watermark="Default"
 										Value="{Binding CurrentAgent.TopP}" />
 								</StackPanel>
 							</Grid>
 
+							<!-- Row 2: Advanced Sampling (TopK, Seed) -->
 							<Grid ColumnDefinitions="*, 10, *">
 								<StackPanel Grid.Column="0">
 									<SelectableTextBlock
 										FontSize="12"
 										Foreground="#AAA"
-										Text="Max Tokens" />
+										Text="Top K"
+										ToolTip.Tip="Limits selection to top K tokens. Supported by: Google, Ollama, HuggingFace, Mistral."/>
+									<NumericUpDown
+										HorizontalAlignment="Stretch"
+										Increment="1"
+										Minimum="0"
+										Watermark="Default"
+										Value="{Binding CurrentAgent.TopK}" />
+								</StackPanel>
+								<StackPanel Grid.Column="2">
+									<SelectableTextBlock
+										FontSize="12"
+										Foreground="#AAA"
+										Text="Seed" 
+										ToolTip.Tip="Integer for reproducible outputs. Supported by: OpenAI, Mistral."/>
+									<NumericUpDown
+										HorizontalAlignment="Stretch"
+										Increment="1"
+										Watermark="Default"
+										Value="{Binding CurrentAgent.Seed}" />
+								</StackPanel>
+							</Grid>
+
+							<!-- Row 3: Length & Constraints -->
+							<Grid ColumnDefinitions="*, 10, *">
+								<StackPanel Grid.Column="0">
+									<SelectableTextBlock
+										FontSize="12"
+										Foreground="#AAA"
+										Text="Max Tokens"
+										ToolTip.Tip="Maximum generation length. Supported by: All."/>
 									<NumericUpDown
 										HorizontalAlignment="Stretch"
 										Increment="128"
 										Maximum="128000"
 										Minimum="1"
+										Watermark="Default"
 										Value="{Binding CurrentAgent.MaxTokens}" />
+								</StackPanel>
+								<StackPanel Grid.Column="2">
+									<SelectableTextBlock
+										FontSize="12"
+										Foreground="#AAA"
+										Text="Stop Sequences" 
+										ToolTip.Tip="Sequences where generation stops (semicolon separated). Supported by: All."/>
+									<TextBox 
+										HorizontalAlignment="Stretch" 
+										Text="{Binding CurrentAgent.StopSequences}" 
+										Watermark="e.g. USER:;END"/>
 								</StackPanel>
 							</Grid>
 
+							<!-- Row 4: Penalties (OpenAI mainly) -->
 							<Grid ColumnDefinitions="*, 10, *">
 								<StackPanel Grid.Column="0">
 									<SelectableTextBlock
 										FontSize="12"
 										Foreground="#AAA"
-										Text="Presence Penalty" />
+										Text="Presence Penalty"
+										ToolTip.Tip="Penalizes new tokens based on presence (-2.0 to 2.0). Supported by: OpenAI, Azure."/>
 									<NumericUpDown
 										HorizontalAlignment="Stretch"
 										FormatString="0.0"
 										Increment="0.1"
 										Maximum="2"
 										Minimum="-2"
+										Watermark="Default"
 										Value="{Binding CurrentAgent.PresencePenalty}" />
 								</StackPanel>
 								<StackPanel Grid.Column="2">
 									<SelectableTextBlock
 										FontSize="12"
 										Foreground="#AAA"
-										Text="Frequency Penalty" />
+										Text="Frequency Penalty"
+										ToolTip.Tip="Penalizes new tokens based on frequency (-2.0 to 2.0). Supported by: OpenAI, Azure."/>
 									<NumericUpDown
 										HorizontalAlignment="Stretch"
 										FormatString="0.0"
 										Increment="0.1"
 										Maximum="2"
 										Minimum="-2"
+										Watermark="Default"
 										Value="{Binding CurrentAgent.FrequencyPenalty}" />
 								</StackPanel>
 							</Grid>
 
+							<!-- Extras -->
 							<SelectableTextBlock
 								FontSize="12"
 								Foreground="#AAA"

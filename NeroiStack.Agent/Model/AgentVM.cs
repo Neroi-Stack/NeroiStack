@@ -9,11 +9,15 @@ public class AgentVM
 	public string? Description { get; set; }
 	public string? Instructions { get; set; }
 	public string? Kernel { get; set; }
-	public double Temperature { get; set; } = 0.7;
-	public double TopP { get; set; } = 0.9;
-	public int MaxTokens { get; set; } = 2048;
-	public double PresencePenalty { get; set; }
-	public double FrequencyPenalty { get; set; }
+	public double? Temperature { get; set; }
+	public double? TopP { get; set; }
+	public int? TopK { get; set; }
+	public int? MaxTokens { get; set; }
+	public double? PresencePenalty { get; set; }
+	public double? FrequencyPenalty { get; set; }
+	public long? Seed { get; set; }
+	public string? StopSequences { get; set; }
+
 	public string? ResponseFormat { get; set; }
 	public string? PromptTemplate { get; set; }
 	public DateTime CreatedAt { get; set; }
@@ -29,9 +33,12 @@ public class AgentVM
 		Kernel = agent.Kernel,
 		Temperature = agent.Temperature,
 		TopP = agent.TopP,
+		TopK = agent.TopK,
 		MaxTokens = agent.MaxTokens,
 		PresencePenalty = agent.PresencePenalty,
 		FrequencyPenalty = agent.FrequencyPenalty,
+		Seed = agent.Seed,
+		StopSequences = agent.StopSequences,
 		ResponseFormat = agent.ResponseFormat,
 		PromptTemplate = agent.PromptTemplate,
 		CreatedAt = agent.CreatedAt,

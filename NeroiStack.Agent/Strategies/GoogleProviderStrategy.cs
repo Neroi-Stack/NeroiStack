@@ -19,9 +19,11 @@ public class GoogleProviderStrategy : IKernelProviderStrategy
 	{
 		return new GeminiPromptExecutionSettings
 		{
-			Temperature = agent?.Temperature ?? 0.7,
-			TopP = agent?.TopP ?? 1,
+			Temperature = agent?.Temperature,
+			TopP = agent?.TopP,
+			TopK = agent?.TopK,
 			MaxTokens = agent?.MaxTokens,
+			StopSequences = agent?.StopSequences?.Split(';', StringSplitOptions.RemoveEmptyEntries),
 			FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 		};
 	}

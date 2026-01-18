@@ -22,8 +22,11 @@ public class MistralAIProviderStrategy : IKernelProviderStrategy
 	{
 		return new MistralAIPromptExecutionSettings
 		{
-			Temperature = (float?)agent?.Temperature ?? 0.7f,
-			TopP = (float?)agent?.TopP ?? 1f,
+			Temperature = agent?.Temperature ?? 0.7,
+			TopP = agent?.TopP ?? 1.0,
+			RandomSeed = (int?)agent?.Seed,
+			MaxTokens = agent?.MaxTokens,
+			Stop = agent?.StopSequences != null ? new List<string>(agent.StopSequences.Split(';', StringSplitOptions.RemoveEmptyEntries)) : null,
 			ResponseFormat = agent?.ResponseFormat ?? "text",
 			FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 		};

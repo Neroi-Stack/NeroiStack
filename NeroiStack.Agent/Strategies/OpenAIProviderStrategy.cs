@@ -19,12 +19,14 @@ public class OpenAIProviderStrategy : IKernelProviderStrategy
 	{
 		return new OpenAIPromptExecutionSettings
 		{
-			Temperature = agent?.Temperature ?? 0.7,
-			TopP = agent?.TopP ?? 40,
+			Temperature = agent?.Temperature,
+			TopP = agent?.TopP,
 			MaxTokens = agent?.MaxTokens,
-			PresencePenalty = agent?.PresencePenalty ?? 0,
-			FrequencyPenalty = agent?.FrequencyPenalty ?? 0,
-			ResponseFormat = null,
+			PresencePenalty = agent?.PresencePenalty,
+			FrequencyPenalty = agent?.FrequencyPenalty,
+			Seed = agent?.Seed,
+			StopSequences = agent?.StopSequences?.Split(';', StringSplitOptions.RemoveEmptyEntries),
+			ResponseFormat = agent?.ResponseFormat,
 			ChatSystemPrompt = null,
 			FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 		};
