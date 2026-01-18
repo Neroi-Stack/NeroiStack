@@ -5,9 +5,9 @@ using NeroiStack.Agent.Model;
 
 namespace NeroiStack.Agent.Strategies.Orchestration;
 
-public class OnceOrchestrationStrategy : IOrchestrationStrategy
+public class SingleOrchestrationStrategy : IOrchestrationStrategy
 {
-	public bool CanHandle(AgentOrchestrationType type) => type == AgentOrchestrationType.Once;
+	public bool CanHandle(AgentOrchestrationType type) => type == AgentOrchestrationType.Single;
 
 	public async Task<string> ExecuteAsync(ChatSession session, InvokeChatRequest request, IChatContext chatContext)
 	{
