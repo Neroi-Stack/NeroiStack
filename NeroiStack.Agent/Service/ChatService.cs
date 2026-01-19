@@ -53,11 +53,11 @@ public class ChatService(IServiceScopeFactory scopeFactory, IEnumerable<IOrchest
 
 		// Load history
 		var history = new ChatHistory();
-		var mems = await chatContext.ChatMemories
+		var query = chatContext.ChatMemories
 			.Where(cm => cm.ChatInstanceId == chatInstanceId)
-			.OrderByDescending(cm => cm.CreatedAt)
-			.Take(20)
-			.ToListAsync(ct);
+			.OrderByDescending(cm => cm.CreatedAt);
+
+		var mems = await query.Take(20).ToListAsync(ct);
 		mems.Reverse();
 
 		foreach (var m in mems)

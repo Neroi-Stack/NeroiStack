@@ -38,6 +38,12 @@
 				<TextBox PasswordChar="*" Text="{Binding ApiKey}" />
 			</StackPanel>
 		</DataTemplate>
+		<DataTemplate DataType="{x:Type model:ChPluginLocalDllVM}">
+			<StackPanel>
+				<SelectableTextBlock Text="DLL Path" />
+				<TextBox Text="{Binding Source}" />
+			</StackPanel>
+		</DataTemplate>
 	</UserControl.DataTemplates>
 
 	<Border
