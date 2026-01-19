@@ -13,6 +13,7 @@ namespace NeroiStack.Agent.Data.Configurations
 			builder.HasKey(a => a.Id);
 			builder.Property(a => a.Id).HasColumnName("Id");
 			builder.Property(a => a.Name).HasColumnName("Name").HasColumnType("TEXT");
+			builder.Property(a => a.IsStreamable).HasColumnName("IsStreamable").HasDefaultValue(true);
 			builder.Property(a => a.AgentOrchestrationType).HasColumnName("AgentOrchestrationType").IsRequired();
 			builder.Property(a => a.CreatedAt).HasColumnName("CreatedAt").HasDefaultValueSql("CURRENT_TIMESTAMP");
 			builder.Property(a => a.IsEnabled).HasColumnName("IsEnabled").HasDefaultValue(true);

@@ -24,7 +24,9 @@ public class ChatInstanceService(IChatContext context) : IChatInstanceService
 			var chat = await _context.Chats.FindAsync(instance.ChatId);
 			if (chat != null)
 			{
-				vm.Name = chat.Name ?? $"Chat {instance.ChatId}";
+				vm.Name = !string.IsNullOrEmpty(instance.ChatInstanceName)
+					? instance.ChatInstanceName
+					: (chat.Name ?? $"Chat {instance.ChatId}");
 			}
 			viewModels.Add(vm);
 		}
@@ -67,6 +69,16 @@ public class ChatInstanceService(IChatContext context) : IChatInstanceService
 		if (entity != null)
 		{
 			entity.SelectedModel = selectedModel;
+			await _context.SaveChangesAsync();
+		}
+	}
+
+	public async Task UpdateChatInstanceNameAsync(int instanceId, string name)
+	{
+		var entity = await _context.ChatInstances.FindAsync(instanceId);
+		if (entity != null)
+		{
+			entity.ChatInstanceName = name;
 			await _context.SaveChangesAsync();
 		}
 	}

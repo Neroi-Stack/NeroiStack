@@ -180,7 +180,10 @@
 					<ScrollViewer Grid.Row="1" MaxHeight="600">
 						<StackPanel Spacing="10">
 							<!--  Top Form  -->
-							<Grid ColumnDefinitions="*, 20, *" RowDefinitions="Auto, Auto">
+							<Grid
+								ColumnDefinitions="*, 20, *"
+								RowDefinitions="Auto, Auto, Auto"
+								RowSpacing="10">
 								<StackPanel Grid.Row="0" Grid.Column="0">
 									<SelectableTextBlock Margin="0,0,0,5" Text="Name" />
 									<TextBox Text="{Binding CurrentChat.Name}" />
@@ -193,10 +196,18 @@
 										ItemsSource="{Binding AgentOrchestrationTypes}"
 										SelectedItem="{Binding SelectedOrchestrationType}" />
 								</StackPanel>
+
+								<StackPanel Grid.Row="1" Grid.Column="0">
+									<SelectableTextBlock Margin="0,5,0,5" Text="Is Streamable" />
+									<ToggleSwitch
+										IsChecked="{Binding CurrentChat.IsStreamable}"
+										OffContent="Off"
+										OnContent="On" />
+								</StackPanel>
+
 								<StackPanel
 									Grid.Row="1"
-									Grid.Column="0"
-									Grid.ColumnSpan="3"
+									Grid.Column="2"
 									Margin="0,10,0,0">
 									<SelectableTextBlock
 										Margin="0,5,0,0"
@@ -206,7 +217,6 @@
 										TextWrapping="Wrap" />
 								</StackPanel>
 							</Grid>
-
 							<!--  Dynamic Orchestration UI  -->
 							<Border
 								MinHeight="300"

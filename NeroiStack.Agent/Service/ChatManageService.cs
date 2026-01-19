@@ -36,6 +36,7 @@ public class ChatManageService(IChatContext chatContext) : IChatManageService
 		{
 			Name = createChatRequest.Name,
 			IsEnabled = createChatRequest.IsEnabled,
+			IsStreamable = createChatRequest.IsStreamable,
 			AgentOrchestrationType = createChatRequest.AgentOrchestrationType
 		};
 		await chatContext.Chats.AddAsync(chat);
@@ -91,6 +92,7 @@ public class ChatManageService(IChatContext chatContext) : IChatManageService
 		var chat = await chatContext.Chats.FindAsync(chatVm.Id) ?? throw new Exception($"Chat with ID {chatVm.Id} not found.");
 		chat.Name = chatVm.Name;
 		chat.IsEnabled = chatVm.IsEnabled;
+		chat.IsStreamable = chatVm.IsStreamable;
 		chat.AgentOrchestrationType = chatVm.AgentOrchestrationType;
 		await chatContext.SaveChangesAsync();
 

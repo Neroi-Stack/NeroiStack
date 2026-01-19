@@ -13,5 +13,6 @@ public class ChatInstanceInfo
 {
 	public int ChatId { get; set; } // The ID of the generic Chat Class/Config
 	public string Name { get; set; } = string.Empty;
+	public string? ChatInstanceName { get; set; }
 	public int InstanceId { get; set; } // Unique ID for this specific running instance
 }

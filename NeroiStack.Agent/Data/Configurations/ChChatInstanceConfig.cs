@@ -13,6 +13,7 @@ namespace NeroiStack.Agent.Data.Configurations
 			builder.HasKey(a => a.Id);
 			builder.Property(a => a.Id).HasColumnName("Id");
 			builder.Property(a => a.ChatId).HasColumnName("ChatId");
+			builder.Property(a => a.ChatInstanceName).HasColumnName("ChatInstanceName");
 			builder.Property(a => a.CreatedAt).HasColumnName("CreatedAt").HasDefaultValueSql("CURRENT_TIMESTAMP");
 		}
 	}

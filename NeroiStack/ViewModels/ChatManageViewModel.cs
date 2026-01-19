@@ -276,7 +276,7 @@ public sealed partial class ChatManageViewModel : ViewModelBase
 	{
 		IsCreating = true;
 		ModalTitle = "New Chat Class";
-		CurrentChat = new ChatVM { Name = "New Chat", IsEnabled = true, AgentOrchestrationType = AgentOrchestrationType.Single };
+		CurrentChat = new ChatVM { Name = "New Chat", IsEnabled = true, IsStreamable = true, AgentOrchestrationType = AgentOrchestrationType.Single };
 		await LoadEditorDataAsync(null);
 		OpenEditor();
 	}
@@ -454,6 +454,7 @@ public sealed partial class ChatManageViewModel : ViewModelBase
 			{
 				Name = CurrentChat.Name,
 				IsEnabled = CurrentChat.IsEnabled,
+				IsStreamable = CurrentChat.IsStreamable,
 				AgentOrchestrationType = CurrentChat.AgentOrchestrationType,
 				Agents = agentsToSave,
 				Handoffs = handoffsToSave
