@@ -20,10 +20,16 @@ public class GroupChatOrchestrationStrategy : IOrchestrationStrategy
 			if (request.OnChunk != null) await request.OnChunk(response.Content ?? "");
 		}
 
-		GroupChatOrchestration orchestration = new GroupChatOrchestration(
-		   new RoundRobinGroupChatManager { MaximumInvocationCount = 10 },
-		   session.Agents.Cast<SKAgent>().ToArray())
-		{ ResponseCallback = responseCallback };
+		GroupChatOrchestration orchestration = new(
+		   new RoundRobinGroupChatManager
+		   {
+			   MaximumInvocationCount = 10,
+		   },
+		   [.. session.Agents.Cast<SKAgent>()]
+		)
+		{
+			ResponseCallback = responseCallback,
+		};
 
 		InProcessRuntime runtime = new();
 		await runtime.StartAsync();

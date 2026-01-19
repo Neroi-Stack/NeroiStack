@@ -54,6 +54,12 @@
 				</StackPanel>
 			</StackPanel>
 		</DataTemplate>
+		<DataTemplate DataType="{x:Type model:ChPluginLocalDllVM}">
+			<StackPanel>
+				<SelectableTextBlock Text="DLL Path" />
+				<SelectableTextBlock Opacity="0.6" Text="{Binding Source}" />
+			</StackPanel>
+		</DataTemplate>
 	</UserControl.DataTemplates>
 
 	<UserControl.Styles>

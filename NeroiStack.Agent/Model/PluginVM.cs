@@ -18,7 +18,25 @@ public class PluginBaseVM
 			Name = plugin.Name,
 			Description = plugin.Description,
 			Type = plugin.Type,
-			IsEnabled = plugin.IsEnabled
+			IsEnabled = plugin.IsEnabled,
+			Source = plugin.Source
+		};
+	}
+	public string? Source { get; set; }
+}
+
+public class ChPluginLocalDllVM : PluginBaseVM
+{
+	public static explicit operator ChPluginLocalDllVM(ChPlugin plugin)
+	{
+		return new ChPluginLocalDllVM
+		{
+			Id = plugin.Id,
+			Name = plugin.Name,
+			Description = plugin.Description,
+			Type = plugin.Type,
+			IsEnabled = plugin.IsEnabled,
+			Source = plugin.Source
 		};
 	}
 }

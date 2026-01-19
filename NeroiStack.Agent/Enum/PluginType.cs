@@ -5,5 +5,5 @@ public enum PluginType
 	OpenApi = 1,
 	McpHttp = 2,
 	McpStdio = 3,
-	// McpHttpStreamable = 4 // If needed
+	LocalDll = 5
 }
