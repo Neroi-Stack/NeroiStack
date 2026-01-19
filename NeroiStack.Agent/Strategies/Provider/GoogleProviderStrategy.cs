@@ -4,7 +4,7 @@ using NeroiStack.Agent.Model;
 
 using Microsoft.SemanticKernel.Connectors.Google;
 
-namespace NeroiStack.Agent.Strategies;
+namespace NeroiStack.Agent.Strategies.Provider;
 
 public class GoogleProviderStrategy : IKernelProviderStrategy
 {

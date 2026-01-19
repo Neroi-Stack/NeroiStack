@@ -6,6 +6,8 @@ using NeroiStack.Agent.Service;
 using NeroiStack.Agent.Data;
 using NeroiStack.Agent.Model;
 using NeroiStack.Common.Interface;
+using NeroiStack.Agent.Strategies.Provider;
+using NeroiStack.Agent.Strategies.Plugin;
 
 namespace NeroiStack.Agent.Factories;
 

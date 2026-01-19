@@ -8,10 +8,10 @@ using NeroiStack.Agent.Model;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Concurrent;
 using NeroiStack.Agent.Strategies.Orchestration;
-using NeroiStack.Agent.Strategies;
 using NeroiStack.Agent.Factories;
 using Microsoft.SemanticKernel;
 using NeroiStack.Common.Interface;
+using NeroiStack.Agent.Strategies.Provider;
 
 namespace NeroiStack.Agent.Service;
 

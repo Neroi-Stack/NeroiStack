@@ -4,7 +4,7 @@ using Microsoft.SemanticKernel.Connectors.MistralAI;
 using NeroiStack.Agent.Enum;
 using NeroiStack.Agent.Model;
 
-namespace NeroiStack.Agent.Strategies;
+namespace NeroiStack.Agent.Strategies.Provider;
 
 public class MistralAIProviderStrategy : IKernelProviderStrategy
 {
