@@ -7,12 +7,14 @@ public class ChatInstanceVM
 	public int Id { get; set; }
 	public int ChatId { get; set; }
 	public string Name { get; set; } = string.Empty; // Name from the Chat Class
+	public string? ChatInstanceName { get; set; }
 	public DateTime CreatedAt { get; set; }
 
 	public static explicit operator ChatInstanceVM(ChChatInstance entity) => new()
 	{
 		Id = entity.Id,
 		ChatId = entity.ChatId,
+		ChatInstanceName = entity.ChatInstanceName,
 		CreatedAt = entity.CreatedAt
 	};
 }

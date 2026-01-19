@@ -8,4 +8,5 @@ public interface IChatInstanceService
 	Task<ChatInstanceVM> CreateInstanceAsync(int chatId);
 	Task DeleteInstanceAsync(int instanceId);
 	Task UpdateSelectedModelAsync(int instanceId, string selectedModel);
+	Task UpdateChatInstanceNameAsync(int instanceId, string name);
 }

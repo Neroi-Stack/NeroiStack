@@ -62,7 +62,7 @@ public partial class MainWindowViewModel : ViewModelBase
 			ChatMenus.Insert(0, new NavigationItem
 			{
 				Name = $"Instance_{info.InstanceId}",
-				Text = $"{info.Name} #{info.InstanceId}",
+				Text = string.IsNullOrEmpty(info.ChatInstanceName) ? $"{info.Name} #{info.InstanceId}" : info.ChatInstanceName,
 				Icon = "Bot",
 				ViewType = typeof(Views.ChatBotView),
 				Tag = info,
@@ -78,7 +78,7 @@ public partial class MainWindowViewModel : ViewModelBase
 		});
 
 		InitializeAsync();
-		
+
 		// Set default page to Home
 		Title = "Home";
 		CurrentPage = new Views.HomeView();
@@ -99,14 +99,15 @@ public partial class MainWindowViewModel : ViewModelBase
 				ChatMenus.Add(new NavigationItem
 				{
 					Name = $"Instance_{inst.Id}",
-					Text = $"{inst.Name} #{inst.Id}",
+					Text = string.IsNullOrEmpty(inst.ChatInstanceName) ? $"{inst.Name} #{inst.Id}" : inst.ChatInstanceName,
 					Icon = "Bot",
 					ViewType = typeof(Views.ChatBotView),
 					Tag = new ChatInstanceInfo
 					{
 						ChatId = inst.ChatId,
 						InstanceId = inst.Id,
-						Name = inst.Name
+						Name = inst.Name,
+						ChatInstanceName = inst.ChatInstanceName
 					},
 					DeleteCommand = DeleteChatInstanceCommand
 				});
@@ -180,7 +181,7 @@ public partial class MainWindowViewModel : ViewModelBase
 				// If it's a Chat instance, initialize the ViewModel
 				if (navItem.Tag is ChatInstanceInfo info && view.DataContext is ChatBotViewModel vm)
 				{
-					vm.InitializeChat(info.ChatId, info.InstanceId, info.Name);
+					vm.InitializeChat(info.ChatId, info.InstanceId, string.IsNullOrEmpty(info.ChatInstanceName) ? info.Name : info.ChatInstanceName);
 				}
 
 				CurrentPage = view;
