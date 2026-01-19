@@ -4,15 +4,15 @@ using NeroiStack.Agent.Model;
 
 using Microsoft.SemanticKernel.Connectors.OpenAI;
 
-namespace NeroiStack.Agent.Strategies;
+namespace NeroiStack.Agent.Strategies.Provider;
 
-public class OpenAIProviderStrategy : IKernelProviderStrategy
+public class AzureOpenAIProviderStrategy : IKernelProviderStrategy
 {
-	public bool CanHandle(SupplierEnum supplier) => supplier == SupplierEnum.OpenAI;
+	public bool CanHandle(SupplierEnum supplier) => supplier == SupplierEnum.AzureOpenAI;
 
 	public void Configure(IKernelBuilder builder, string modelId, KeyVM apiKey)
 	{
-		builder.AddOpenAIChatCompletion(modelId, apiKey?.Key ?? "");
+		builder.AddAzureOpenAIChatCompletion(modelId, apiKey?.Key ?? "", apiKey?.Endpoint ?? "");
 	}
 
 	public dynamic CreateExecutionSettings(AgentVM? agent = null)
@@ -26,8 +26,8 @@ public class OpenAIProviderStrategy : IKernelProviderStrategy
 			FrequencyPenalty = agent?.FrequencyPenalty,
 			Seed = agent?.Seed,
 			StopSequences = agent?.StopSequences?.Split(';', StringSplitOptions.RemoveEmptyEntries),
-			ResponseFormat = agent?.ResponseFormat,
-			ChatSystemPrompt = null,
+			ResponseFormat = agent?.ResponseFormat, // Assuming string or object handling elsewhere, but property exists
+			ChatSystemPrompt = null, // System prompt usually handled in chat history
 			FunctionChoiceBehavior = FunctionChoiceBehavior.Auto()
 		};
 	}
