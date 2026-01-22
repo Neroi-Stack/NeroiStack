@@ -3,7 +3,7 @@
 A powerful AI agent application. 
 `Still under development; pull requests are welcome.`
 
-<img width="959" height="504" alt="image" src="https://github.com/user-attachments/assets/75833705-09cf-49d8-9521-2aac78708e9f" />
+<img width="959" height="505" alt="image" src="https://github.com/user-attachments/assets/6bb5ef39-6938-456d-97bf-91f1a67537db" />
 
 [here is neroi stack wiki](https://github.com/Neroi-Stack/NeroiStack/wiki)
 
