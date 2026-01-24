@@ -5,7 +5,6 @@ public class CreateAgentRequest
 	public string? Name { get; set; }
 	public string? Description { get; set; }
 	public string? Instructions { get; set; }
-	public string? Kernel { get; set; }
 	public double? Temperature { get; set; }
 	public double? TopP { get; set; }
 	public int? TopK { get; set; }

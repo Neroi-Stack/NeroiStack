@@ -13,6 +13,7 @@ public class ChKeyConfig : IEntityTypeConfiguration<ChKey>
 		builder.Property(k => k.Id).HasColumnName("Id");
 		builder.Property(k => k.Supplier).HasColumnName("Supplier").IsRequired();
 		builder.Property(k => k.EncryptedKey).HasColumnName("EncryptedKey").HasColumnType("TEXT").IsRequired();
+		builder.Property(k => k.KeyType).HasColumnName("KeyType").IsRequired();
 		builder.Property(k => k.Endpoint).HasColumnName("Endpoint").HasColumnType("TEXT");
 
 		builder.HasMany(k => k.ModelsNav)

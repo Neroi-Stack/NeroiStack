@@ -13,6 +13,7 @@ using NeroiStack.Agent.Enum;
 using NeroiStack.Agent.Model;
 using NeroiStack.Agent.Data;
 using System.Threading;
+using System.IO;
 
 namespace NeroiStack.ViewModels;
 
@@ -166,7 +167,7 @@ public partial class ChatBotViewModel : ViewModelBase
 
 	public void AddImageFile(string path)
 	{
-		var ext = System.IO.Path.GetExtension(path).ToLower();
+		var ext = Path.GetExtension(path).ToLower();
 		if (new[] { ".png", ".jpg", ".jpeg", ".bmp", ".webp" }.Contains(ext))
 		{
 			if (!SelectedImages.Contains(path))
@@ -179,10 +180,7 @@ public partial class ChatBotViewModel : ViewModelBase
 	[RelayCommand]
 	private void RemoveImage(string path)
 	{
-		if (SelectedImages.Contains(path))
-		{
-			SelectedImages.Remove(path);
-		}
+		SelectedImages.Remove(path);
 	}
 
 	public async Task HandleImagePasteAsync(object? data)
@@ -201,10 +199,10 @@ public partial class ChatBotViewModel : ViewModelBase
 
 		if (bytes != null)
 		{
-			var tempFolder = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "NeroiStack");
-			System.IO.Directory.CreateDirectory(tempFolder);
-			var filePath = System.IO.Path.Combine(tempFolder, $"paste_{DateTime.Now:yyyyMMddHHmmss}.png");
-			await System.IO.File.WriteAllBytesAsync(filePath, bytes);
+			var tempFolder = Path.Combine(Path.GetTempPath(), "NeroiStack");
+			Directory.CreateDirectory(tempFolder);
+			var filePath = Path.Combine(tempFolder, $"paste_{DateTime.Now:yyyyMMddHHmmss}.png");
+			await File.WriteAllBytesAsync(filePath, bytes);
 
 			if (!SelectedImages.Contains(filePath))
 			{
@@ -218,14 +216,14 @@ public partial class ChatBotViewModel : ViewModelBase
 		if (_keyManageService == null) return;
 
 		var keys = await _keyManageService.GetAllKeysAsync();
+		var models = keys
+			.Where(k => k.KeyType == KeyType.Chat)
+			.SelectMany(k => k.Models)
+			.Distinct()
+			.OrderBy(m => m)
+			.ToList();
 
-		// Flatten all models from all keys
-		var models = keys.SelectMany(k => k.Models)
-						 .Distinct()
-						 .OrderBy(m => m)
-						 .ToList();
-
-		Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+		Dispatcher.UIThread.Post(() =>
 		{
 			AvailableModels.Clear();
 			foreach (var model in models)
@@ -234,7 +232,7 @@ public partial class ChatBotViewModel : ViewModelBase
 			}
 			AvailableModels.Add("➕ Create Key");
 
-			if (models.Any() && (string.IsNullOrEmpty(SelectedModel) || !models.Contains(SelectedModel)))
+			if (models.Count != 0 && (string.IsNullOrEmpty(SelectedModel) || !models.Contains(SelectedModel)))
 			{
 				SelectedModel = models.First();
 			}
@@ -269,7 +267,7 @@ public partial class ChatBotViewModel : ViewModelBase
 				var instance = await context.ChatInstances.FindAsync(instanceId);
 				if (instance?.SelectedModel != null && AvailableModels.Contains(instance.SelectedModel))
 				{
-					Avalonia.Threading.Dispatcher.UIThread.Post(() =>
+					Dispatcher.UIThread.Post(() =>
 					{
 						SelectedModel = instance.SelectedModel;
 					});

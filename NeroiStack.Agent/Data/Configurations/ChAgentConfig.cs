@@ -15,7 +15,6 @@ namespace NeroiStack.Agent.Data.Configurations
 			builder.Property(a => a.Name).HasColumnName("Name").HasColumnType("TEXT");
 			builder.Property(a => a.Description).HasColumnName("Description").HasColumnType("TEXT");
 			builder.Property(a => a.Instructions).HasColumnName("Instructions").HasColumnType("TEXT");
-			builder.Property(a => a.Kernel).HasColumnName("Kernel").HasColumnType("TEXT");
 			builder.Property(a => a.CreatedAt).HasColumnName("CreatedAt").HasDefaultValueSql("CURRENT_TIMESTAMP");
 			builder.Property(a => a.IsEnabled).HasColumnName("IsEnabled").HasDefaultValue(true);
 		}

@@ -97,7 +97,7 @@
 											<SelectableTextBlock
 												FontSize="12"
 												Opacity="0.6"
-												Text="{Binding Kernel}" />
+												Text="{Binding CreatedAt, StringFormat='{}{0:yyyy-MM-dd}'}" />
 										</StackPanel>
 										<Button
 											Grid.Column="2"
@@ -119,13 +119,24 @@
 										</Button>
 									</Grid>
 
-									<SelectableTextBlock
+									<!--  Details  -->
+									<StackPanel
 										Grid.Row="1"
-										Margin="0,12"
-										FontSize="13"
-										Opacity="0.7"
-										Text="{Binding Description}"
-										TextWrapping="Wrap" />
+										Margin="0,15,0,0"
+										Spacing="5">
+										<Grid ColumnDefinitions="Auto, *">
+											<SelectableTextBlock
+												FontSize="13"
+												Opacity="0.7"
+												Text="Description: " />
+											<SelectableTextBlock
+												Grid.Column="1"
+												HorizontalAlignment="Right"
+												FontFamily="Consolas, Monospace"
+												FontSize="13"
+												Text="{Binding Description}" />
+										</Grid>
+									</StackPanel>
 
 									<Grid Grid.Row="2" ColumnDefinitions="Auto, *">
 										<ToggleSwitch

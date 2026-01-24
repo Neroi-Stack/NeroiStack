@@ -23,6 +23,7 @@ public class KeyManageService(IChatContext context, IEncryption encryption) : IK
 		if (existing != null)
 		{
 			existing.Supplier = keyVM.Supplier;
+			existing.KeyType = keyVM.KeyType;
 			existing.EncryptedKey = encrypted;
 			existing.Endpoint = keyVM.Endpoint ?? string.Empty;
 
@@ -41,6 +42,7 @@ public class KeyManageService(IChatContext context, IEncryption encryption) : IK
 			var newKey = new ChKey
 			{
 				Supplier = keyVM.Supplier,
+				KeyType = keyVM.KeyType,
 				EncryptedKey = encrypted,
 				Endpoint = keyVM.Endpoint ?? string.Empty
 			};
@@ -66,6 +68,7 @@ public class KeyManageService(IChatContext context, IEncryption encryption) : IK
 				{
 					Id = entity.Id,
 					Supplier = entity.Supplier,
+					KeyType = entity.KeyType,
 					Endpoint = entity.Endpoint,
 					Key = _encryption.Decrypt(entity.EncryptedKey),
 					Models = entity.ModelsNav.Select(m => m.ModelId).ToList()

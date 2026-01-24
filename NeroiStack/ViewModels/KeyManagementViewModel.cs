@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,6 +30,9 @@ public partial class KeyItemViewModel : ObservableObject
 	private SupplierEnum _supplier;
 
 	[ObservableProperty]
+	private KeyType _keyType;
+
+	[ObservableProperty]
 	private string _keyDisplay = string.Empty;
 
 	[ObservableProperty]
@@ -41,6 +45,7 @@ public partial class KeyItemViewModel : ObservableObject
 	{
 		Id = vm.Id;
 		Supplier = vm.Supplier;
+		KeyType = vm.KeyType;
 		KeyDisplay = string.IsNullOrEmpty(vm.Key) ? "(No Key)" : (vm.Key.Length > 4 ? "..." + vm.Key[^4..] : "***");
 		EndpointDisplay = string.IsNullOrEmpty(vm.Endpoint) ? "(Default)" : vm.Endpoint;
 		ModelCount = vm.Models.Count;
@@ -51,7 +56,7 @@ public sealed partial class KeyManagementViewModel : ViewModelBase
 {
 	private readonly IKeyManageService _keyManageService;
 
-	public ObservableCollection<KeyItemViewModel> Keys { get; } = new();
+	public ObservableCollection<KeyItemViewModel> Keys { get; } = [];
 
 	[ObservableProperty]
 	private bool _isModalOpen;
@@ -75,9 +80,13 @@ public sealed partial class KeyManagementViewModel : ViewModelBase
 	private string _currentEndpointInput = string.Empty;
 	[ObservableProperty]
 	private SupplierEnum _currentSupplierInput;
+	[ObservableProperty]
+	private KeyType _currentKeyTypeInput;
 	public ObservableCollection<ModelItemViewModel> CurrentModels { get; } = new();
 
-	public System.Collections.Generic.List<SupplierEnum> AvailableSuppliers { get; } = System.Enum.GetValues(typeof(SupplierEnum)).Cast<SupplierEnum>().ToList();
+	public List<SupplierEnum> AvailableSuppliers { get; } = [.. Enum.GetValues<SupplierEnum>().Cast<SupplierEnum>()];
+
+	public List<KeyType> AvailableKeyTypes { get; } = [.. Enum.GetValues<KeyType>().Cast<KeyType>()];
 
 
 	public KeyManagementViewModel(IKeyManageService keyManageService)
@@ -101,7 +110,7 @@ public sealed partial class KeyManagementViewModel : ViewModelBase
 	public void AddKey()
 	{
 		ModalTitle = "Add Key";
-		CurrentKey = new KeyVM { Supplier = SupplierEnum.OpenAI };
+		CurrentKey = new KeyVM { Supplier = SupplierEnum.OpenAI, KeyType = NeroiStack.Agent.Enum.KeyType.Chat };
 		InitializeEditor(CurrentKey);
 		IsEditorVisible = true;
 		IsDeleteConfirmVisible = false;
@@ -135,6 +144,7 @@ public sealed partial class KeyManagementViewModel : ViewModelBase
 	private void InitializeEditor(KeyVM key)
 	{
 		CurrentSupplierInput = key.Supplier;
+		CurrentKeyTypeInput = key.KeyType;
 		CurrentKeyInput = key.Key ?? "";
 		CurrentEndpointInput = key.Endpoint ?? "";
 		CurrentModels.Clear();
@@ -199,6 +209,7 @@ public sealed partial class KeyManagementViewModel : ViewModelBase
 		{
 			Id = CurrentKey.Id,
 			Supplier = CurrentSupplierInput,
+			KeyType = CurrentKeyTypeInput,
 			Key = CurrentKeyInput,
 			Endpoint = CurrentEndpointInput,
 			Models = CurrentModels.Select(m => m.Name).Where(n => !string.IsNullOrWhiteSpace(n)).ToList()

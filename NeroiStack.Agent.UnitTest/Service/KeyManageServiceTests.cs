@@ -44,7 +44,7 @@ public class KeyManageServiceTests
 		var enc = new FakeEncryption();
 		var svc = new KeyManageService(ctx, enc);
 
-		var vm = new KeyVM { Supplier = SupplierEnum.OpenAI, Endpoint = "ep", Key = "secret", Models = new List<string> { "m1", "m2" } };
+		var vm = new KeyVM { Supplier = SupplierEnum.OpenAI, KeyType = KeyType.Chat, Endpoint = "ep", Key = "secret", Models = new List<string> { "m1", "m2" } };
 		await svc.SaveKeyAsync(vm);
 
 		var keys = await ctx.Keys.Include(k => k.ModelsNav).ToListAsync();
@@ -62,14 +62,14 @@ public class KeyManageServiceTests
 		using var ctx = CreateInMemoryContext();
 		var enc = new FakeEncryption();
 
-		var existing = new ChKey { Id = Guid.NewGuid(), Supplier = SupplierEnum.OpenAI, EncryptedKey = enc.Encrypt("old"), Endpoint = "e" };
+		var existing = new ChKey { Id = Guid.NewGuid(), Supplier = SupplierEnum.OpenAI, KeyType = KeyType.Chat, EncryptedKey = enc.Encrypt("old"), Endpoint = "e" };
 		existing.ModelsNav.Add(new ChKeyModel { ModelId = "old1" });
 		existing.ModelsNav.Add(new ChKeyModel { ModelId = "old2" });
 		await ctx.Keys.AddAsync(existing);
 		await ctx.SaveChangesAsync();
 
 		var svc = new KeyManageService(ctx, enc);
-		var vm = new KeyVM { Id = existing.Id, Supplier = SupplierEnum.AzureOpenAI, Endpoint = "e2", Key = "newk", Models = new List<string> { "new1" } };
+		var vm = new KeyVM { Id = existing.Id, Supplier = SupplierEnum.AzureOpenAI, KeyType = KeyType.Embedding, Endpoint = "e2", Key = "newk", Models = new List<string> { "new1" } };
 		await svc.SaveKeyAsync(vm);
 
 		var updated = await ctx.Keys.Include(k => k.ModelsNav).FirstOrDefaultAsync(k => k.Id == existing.Id);
@@ -86,9 +86,9 @@ public class KeyManageServiceTests
 		using var ctx = CreateInMemoryContext();
 		var enc = new FakeEncryption();
 
-		var good = new ChKey { Id = Guid.NewGuid(), Supplier = SupplierEnum.OpenAI, EncryptedKey = enc.Encrypt("g"), Endpoint = "e" };
+		var good = new ChKey { Id = Guid.NewGuid(), Supplier = SupplierEnum.OpenAI, KeyType = KeyType.Chat, EncryptedKey = enc.Encrypt("g"), Endpoint = "e" };
 		good.ModelsNav.Add(new ChKeyModel { ModelId = "m" });
-		var bad = new ChKey { Id = Guid.NewGuid(), Supplier = SupplierEnum.Google, EncryptedKey = "bad-enc", Endpoint = "e2" };
+		var bad = new ChKey { Id = Guid.NewGuid(), Supplier = SupplierEnum.Google, KeyType = KeyType.Chat, EncryptedKey = "bad-enc", Endpoint = "e2" };
 		await ctx.Keys.AddRangeAsync(good, bad);
 		await ctx.SaveChangesAsync();
 
@@ -106,7 +106,7 @@ public class KeyManageServiceTests
 		var enc = new FakeEncryption();
 		var svc = new KeyManageService(ctx, enc);
 
-		var k = new ChKey { Id = Guid.NewGuid(), Supplier = SupplierEnum.OpenAI, EncryptedKey = enc.Encrypt("x"), Endpoint = "e" };
+		var k = new ChKey { Id = Guid.NewGuid(), Supplier = SupplierEnum.OpenAI, KeyType = KeyType.Chat, EncryptedKey = enc.Encrypt("x"), Endpoint = "e" };
 		await ctx.Keys.AddAsync(k);
 		await ctx.SaveChangesAsync();
 
@@ -125,7 +125,7 @@ public class KeyManageServiceTests
 		var enc = new FakeEncryption();
 		var svc = new KeyManageService(ctx, enc);
 
-		var vm = new KeyVM { Supplier = SupplierEnum.OpenAI, Endpoint = "ep", Key = "secret", Models = new List<string>() };
+		var vm = new KeyVM { Supplier = SupplierEnum.OpenAI, KeyType = KeyType.Embedding, Endpoint = "ep", Key = "secret", Models = new List<string>() };
 		await svc.SaveKeyAsync(vm);
 
 		var keys = await ctx.Keys.Include(k => k.ModelsNav).ToListAsync();
@@ -139,13 +139,13 @@ public class KeyManageServiceTests
 		using var ctx = CreateInMemoryContext();
 		var enc = new FakeEncryption();
 
-		var existing = new ChKey { Id = Guid.NewGuid(), Supplier = SupplierEnum.OpenAI, EncryptedKey = enc.Encrypt("old"), Endpoint = "e" };
+		var existing = new ChKey { Id = Guid.NewGuid(), Supplier = SupplierEnum.OpenAI, KeyType = KeyType.TTS, EncryptedKey = enc.Encrypt("old"), Endpoint = "e" };
 		existing.ModelsNav.Add(new ChKeyModel { ModelId = "old1" });
 		await ctx.Keys.AddAsync(existing);
 		await ctx.SaveChangesAsync();
 
 		var svc = new KeyManageService(ctx, enc);
-		var vm = new KeyVM { Id = existing.Id, Supplier = SupplierEnum.OpenAI, Endpoint = "e", Key = "newk", Models = new List<string>() };
+		var vm = new KeyVM { Id = existing.Id, Supplier = SupplierEnum.OpenAI, KeyType = KeyType.TTS, Endpoint = "e", Key = "newk", Models = new List<string>() };
 		await svc.SaveKeyAsync(vm);
 
 		var updated = await ctx.Keys.Include(k => k.ModelsNav).FirstOrDefaultAsync(k => k.Id == existing.Id);
@@ -165,7 +165,7 @@ public class KeyManageServiceTests
 		using var ctx = CreateInMemoryContext();
 		var enc = new ThrowOnEncrypt();
 		var svc = new KeyManageService(ctx, enc);
-		var vm = new KeyVM { Supplier = SupplierEnum.OpenAI, Endpoint = "ep", Key = "secret", Models = new List<string> { "m" } };
+		var vm = new KeyVM { Supplier = SupplierEnum.OpenAI, KeyType = KeyType.Chat, Endpoint = "ep", Key = "secret", Models = new List<string> { "m" } };
 		await Assert.ThrowsAsync<Exception>(() => svc.SaveKeyAsync(vm));
 	}
 

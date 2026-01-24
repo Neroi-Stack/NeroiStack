@@ -120,15 +120,25 @@
 											</Button.Flyout>
 										</Button>
 									</Grid>
-
-									<!--  Description / Type  -->
-									<SelectableTextBlock
+									
+									<!--  Details  -->
+									<StackPanel
 										Grid.Row="1"
-										Margin="0,12"
-										FontSize="13"
-										Opacity="0.7"
-										Text="{Binding AgentOrchestrationType}"
-										TextWrapping="Wrap" />
+										Margin="0,15,0,0"
+										Spacing="5">
+										<Grid ColumnDefinitions="Auto, *">
+											<SelectableTextBlock
+												FontSize="13"
+												Opacity="0.7"
+												Text="Orchestration Type: " />
+											<SelectableTextBlock
+												Grid.Column="1"
+												HorizontalAlignment="Right"
+												FontFamily="Consolas, Monospace"
+												FontSize="13"
+												Text="{Binding AgentOrchestrationType}" />
+										</Grid>
+									</StackPanel>
 
 									<!--  Actions Footer  -->
 									<Grid Grid.Row="2" ColumnDefinitions="Auto, *, Auto">

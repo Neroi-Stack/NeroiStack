@@ -8,7 +8,6 @@ public class AgentVM
 	public string? Name { get; set; }
 	public string? Description { get; set; }
 	public string? Instructions { get; set; }
-	public string? Kernel { get; set; }
 	public double? Temperature { get; set; }
 	public double? TopP { get; set; }
 	public int? TopK { get; set; }
@@ -30,7 +29,6 @@ public class AgentVM
 		Name = agent.Name,
 		Description = agent.Description,
 		Instructions = agent.Instructions,
-		Kernel = agent.Kernel,
 		Temperature = agent.Temperature,
 		TopP = agent.TopP,
 		TopK = agent.TopK,

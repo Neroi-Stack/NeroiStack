@@ -6,7 +6,6 @@ public class ChAgent
 	public string? Name { get; set; }
 	public string? Description { get; set; }
 	public string? Instructions { get; set; }
-	public string? Kernel { get; set; }
 
 	// Model Parameters - Nullable to allow using model defaults
 	public double? Temperature { get; set; }

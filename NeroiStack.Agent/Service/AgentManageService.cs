@@ -36,7 +36,6 @@ public class AgentManageService(IChatContext chatContext) : IAgentManageService
 			Name = agentRequest.Name,
 			Description = agentRequest.Description,
 			Instructions = agentRequest.Instructions,
-			Kernel = agentRequest.Kernel,
 			Temperature = agentRequest.Temperature,
 			TopP = agentRequest.TopP,
 			TopK = agentRequest.TopK,
@@ -66,7 +65,6 @@ public class AgentManageService(IChatContext chatContext) : IAgentManageService
 		agent.Name = agentVm.Name;
 		agent.Description = agentVm.Description;
 		agent.Instructions = agentVm.Instructions;
-		agent.Kernel = agentVm.Kernel;
 		agent.Temperature = agentVm.Temperature;
 		agent.TopP = agentVm.TopP;
 		agent.TopK = agentVm.TopK;
