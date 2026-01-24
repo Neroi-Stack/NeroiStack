@@ -1,5 +1,6 @@
-namespace NeroiStack.Common.Service;
 using NeroiStack.Common.Interface;
+
+namespace NeroiStack.Common.Service;
 
 public class MimeType : IMimeType
 {

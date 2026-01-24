@@ -29,7 +29,7 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 	[ObservableProperty]
 	private ChPluginOpenApiVM? _currentOpenApi;
 	[ObservableProperty]
-	private ChPluginLocalDllVM? _currentLocalDll;
+	private ChPluginSqlVM? _currentSql;
 
 	[ObservableProperty]
 	private string _mcpStdioArguments = string.Empty;
@@ -118,9 +118,9 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 				CurrentPlugin = new ChPluginOpenApiVM { Type = PluginType.OpenApi, Name = "New OpenAPI", IsEnabled = true };
 				CurrentOpenApi = (ChPluginOpenApiVM)CurrentPlugin;
 				break;
-			case PluginType.LocalDll:
-				CurrentPlugin = new ChPluginLocalDllVM { Type = PluginType.LocalDll, Name = "New Local DLL", IsEnabled = true };
-				CurrentLocalDll = (ChPluginLocalDllVM)CurrentPlugin;
+			case PluginType.SqlAgentTool:
+				CurrentPlugin = new ChPluginSqlVM { Type = PluginType.SqlAgentTool, Name = "New SQL Agent", IsEnabled = true, Provider = "Sqlite" };
+				CurrentSql = (ChPluginSqlVM)CurrentPlugin;
 				break;
 		}
 		NotifyTypeVisibility();
@@ -151,8 +151,8 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 			case ChPluginOpenApiVM openApi:
 				CurrentOpenApi = openApi;
 				break;
-			case ChPluginLocalDllVM localDll:
-				CurrentLocalDll = localDll;
+			case ChPluginSqlVM sql:
+				CurrentSql = sql;
 				break;
 		}
 		NotifyTypeVisibility();
@@ -220,7 +220,7 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 		CurrentMcpHttp = null;
 		CurrentMcpStdio = null;
 		CurrentOpenApi = null;
-		CurrentLocalDll = null;
+		CurrentSql = null;
 	}
 
 	[RelayCommand]
@@ -235,7 +235,7 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 	[ObservableProperty] private bool _isMcpHttp;
 	[ObservableProperty] private bool _isMcpStdio;
 	[ObservableProperty] private bool _isOpenApi;
-	[ObservableProperty] private bool _isLocalDll;
+	[ObservableProperty] private bool _isSqlAgentTool;
 
 	// Helper for Auth Types visibility
 	public bool IsApiKeyAuth => CurrentOpenApi?.AuthType == 1;
@@ -262,11 +262,12 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 		IsMcpHttp = SelectedPluginType == PluginType.McpHttp;
 		IsMcpStdio = SelectedPluginType == PluginType.McpStdio;
 		IsOpenApi = SelectedPluginType == PluginType.OpenApi;
-		IsLocalDll = SelectedPluginType == PluginType.LocalDll;
+		IsSqlAgentTool = SelectedPluginType == PluginType.SqlAgentTool;
 
 		OnPropertyChanged(nameof(OpenApiAuthType));
 		OnPropertyChanged(nameof(IsApiKeyAuth));
 		OnPropertyChanged(nameof(IsBearerTokenAuth));
+		OnPropertyChanged(nameof(IsSqlAgentTool));
 	}
 
 	// Hook into property changes if needed, but for now specific updates are handled in methods

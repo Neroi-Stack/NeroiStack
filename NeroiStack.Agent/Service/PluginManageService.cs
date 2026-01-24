@@ -31,8 +31,10 @@ public class PluginManageService(IChatContext context, ILogger<PluginManageServi
 				var mcpHttp = await _context.PluginMcpHttps.FirstOrDefaultAsync(p => p.PluginId == id);
 				if (mcpHttp != null)
 				{
-					mcpHttp.ApiKey = mcpHttp.ApiKey == null ? null : _encryption.Decrypt(mcpHttp.ApiKey);
-					vm = (PluginMcpHttpVM)mcpHttp;
+					string decryptedApiKey = string.IsNullOrWhiteSpace(mcpHttp.ApiKey) ? string.Empty : _encryption.Decrypt(mcpHttp.ApiKey);
+					var tmpVm = (PluginMcpHttpVM)mcpHttp;
+					tmpVm.ApiKey = decryptedApiKey;
+					vm = tmpVm;
 				}
 				break;
 			case PluginType.McpStdio:
@@ -43,9 +45,22 @@ public class PluginManageService(IChatContext context, ILogger<PluginManageServi
 				var openApi = await _context.PluginOpenApis.FirstOrDefaultAsync(p => p.PluginId == id);
 				if (openApi != null)
 				{
-					openApi.ApiKey = openApi.ApiKey == null ? null : _encryption.Decrypt(openApi.ApiKey);
-					openApi.BearerToken = openApi.BearerToken == null ? null : _encryption.Decrypt(openApi.BearerToken);
-					vm = (ChPluginOpenApiVM)openApi;
+					string decryptedApiKey = string.IsNullOrWhiteSpace(openApi.ApiKey) ? string.Empty : _encryption.Decrypt(openApi.ApiKey);
+					string decryptedBearer = string.IsNullOrWhiteSpace(openApi.BearerToken) ? string.Empty : _encryption.Decrypt(openApi.BearerToken);
+					var tmpVm = (ChPluginOpenApiVM)openApi;
+					tmpVm.ApiKey = decryptedApiKey;
+					tmpVm.BearerToken = decryptedBearer;
+					vm = tmpVm;
+				}
+				break;
+			case PluginType.SqlAgentTool:
+				var sql = await _context.PluginSqls.FirstOrDefaultAsync(p => p.PluginId == id);
+				if (sql != null)
+				{
+					string decryptedConn = string.IsNullOrWhiteSpace(sql.ConnectionString) ? string.Empty : _encryption.Decrypt(sql.ConnectionString);
+					var tmpVm = (ChPluginSqlVM)sql;
+					tmpVm.ConnectionString = decryptedConn;
+					vm = tmpVm;
 				}
 				break;
 		}
@@ -119,6 +134,17 @@ public class PluginManageService(IChatContext context, ILogger<PluginManageServi
 					_context.PluginOpenApis.Add(pluginOpenApi);
 				}
 				break;
+			case PluginType.SqlAgentTool:
+				if (pluginVm is ChPluginSqlVM sqlVm)
+				{
+					_context.PluginSqls.Add(new ChPluginSql
+					{
+						PluginId = plugin.Id,
+						Provider = sqlVm.Provider ?? string.Empty,
+						ConnectionString = string.IsNullOrWhiteSpace(sqlVm.ConnectionString) ? string.Empty : _encryption.Encrypt(sqlVm.ConnectionString)
+					});
+				}
+				break;
 		}
 		await _context.SaveChangesAsync();
 		return plugin.Id;
@@ -171,6 +197,17 @@ public class PluginManageService(IChatContext context, ILogger<PluginManageServi
 					}
 				}
 				break;
+			case PluginType.SqlAgentTool:
+				if (pluginVm is ChPluginSqlVM sqlVm)
+				{
+					var entity = await _context.PluginSqls.FirstOrDefaultAsync(p => p.PluginId == plugin.Id);
+					if (entity != null)
+					{
+						entity.Provider = sqlVm.Provider ?? string.Empty;
+						entity.ConnectionString = string.IsNullOrWhiteSpace(sqlVm.ConnectionString) ? string.Empty : _encryption.Encrypt(sqlVm.ConnectionString);
+					}
+				}
+				break;
 		}
 		await _context.SaveChangesAsync();
 	}
@@ -193,6 +230,10 @@ public class PluginManageService(IChatContext context, ILogger<PluginManageServi
 			case PluginType.OpenApi:
 				var openApi = await _context.PluginOpenApis.FirstOrDefaultAsync(p => p.PluginId == id);
 				if (openApi != null) _context.PluginOpenApis.Remove(openApi);
+				break;
+			case PluginType.SqlAgentTool:
+				var sql = await _context.PluginSqls.FirstOrDefaultAsync(p => p.PluginId == id);
+				if (sql != null) _context.PluginSqls.Remove(sql);
 				break;
 		}
 

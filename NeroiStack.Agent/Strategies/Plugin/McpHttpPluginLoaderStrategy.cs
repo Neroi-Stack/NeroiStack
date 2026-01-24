@@ -18,6 +18,7 @@ public class McpHttpPluginLoaderStrategy : IPluginLoaderStrategy
 		{
 			var clientTransport = new HttpClientTransport(new()
 			{
+				Name = plugin.Name ?? $"McpHttp{plugin.Id}",
 				Endpoint = new Uri(config.Endpoint),
 				AdditionalHeaders = string.IsNullOrEmpty(config.ApiKey) ? null : new Dictionary<string, string>
 				{

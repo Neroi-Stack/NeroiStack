@@ -19,24 +19,6 @@ public class PluginBaseVM
 			Description = plugin.Description,
 			Type = plugin.Type,
 			IsEnabled = plugin.IsEnabled,
-			Source = plugin.Source
-		};
-	}
-	public string? Source { get; set; }
-}
-
-public class ChPluginLocalDllVM : PluginBaseVM
-{
-	public static explicit operator ChPluginLocalDllVM(ChPlugin plugin)
-	{
-		return new ChPluginLocalDllVM
-		{
-			Id = plugin.Id,
-			Name = plugin.Name,
-			Description = plugin.Description,
-			Type = plugin.Type,
-			IsEnabled = plugin.IsEnabled,
-			Source = plugin.Source
 		};
 	}
 }
@@ -111,6 +93,28 @@ public class ChPluginOpenApiVM : PluginBaseVM
 			AuthType = plugin.AuthType,
 			Uri = plugin.Uri,
 			FilePath = plugin.FilePath
+		};
+	}
+}
+
+
+public class ChPluginSqlVM : PluginBaseVM
+{
+	public int PluginSqlId { get; set; }
+	public int PluginId { get; set; }
+	public string? Provider { get; set; }
+	public string? ConnectionString { get; set; }
+	public static List<string> AvailableProviders { get; } =
+		[.. System.Enum.GetValues<SqlAgentToolType>().Select(e => e.ToString())];
+
+	public static explicit operator ChPluginSqlVM(ChPluginSql plugin)
+	{
+		return new ChPluginSqlVM
+		{
+			PluginSqlId = plugin.Id,
+			PluginId = plugin.Id,
+			Provider = plugin.Provider,
+			ConnectionString = plugin.ConnectionString
 		};
 	}
 }

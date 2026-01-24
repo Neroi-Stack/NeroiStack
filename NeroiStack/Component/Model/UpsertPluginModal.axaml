@@ -38,10 +38,15 @@
 				<TextBox PasswordChar="*" Text="{Binding ApiKey}" />
 			</StackPanel>
 		</DataTemplate>
-		<DataTemplate DataType="{x:Type model:ChPluginLocalDllVM}">
-			<StackPanel>
-				<SelectableTextBlock Text="DLL Path" />
-				<TextBox Text="{Binding Source}" />
+		<DataTemplate DataType="{x:Type model:ChPluginSqlVM}">
+			<StackPanel Spacing="5">
+				<SelectableTextBlock Text="Provider" />
+				<ComboBox 
+					HorizontalAlignment="Stretch" 
+					ItemsSource="{x:Static model:ChPluginSqlVM.AvailableProviders}"
+					SelectedItem="{Binding Provider}" />
+				<SelectableTextBlock Text="Connection String" />
+				<TextBox PasswordChar="*" Text="{Binding ConnectionString}" />
 			</StackPanel>
 		</DataTemplate>
 	</UserControl.DataTemplates>
