@@ -36,7 +36,7 @@ public partial class KeyItemViewModel : ObservableObject
 
 	[ObservableProperty]
 	private int _modelCount;
-	
+
 	public KeyItemViewModel(KeyVM vm)
 	{
 		Id = vm.Id;
@@ -194,7 +194,7 @@ public sealed partial class KeyManagementViewModel : ViewModelBase
 	public async Task SaveAsync()
 	{
 		if (CurrentKey == null) return;
-		
+
 		var vm = new KeyVM
 		{
 			Id = CurrentKey.Id,

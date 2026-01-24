@@ -94,7 +94,7 @@ public partial class ChatBotViewModel : ViewModelBase
 		{
 			// Open Key modal via KeyCreationVM
 			KeyCreationVM.AddKeyCommand.Execute(null);
-			
+
 			SelectedModel = AvailableModels.FirstOrDefault(m => m != "➕ Create Key") ?? string.Empty;
 		}
 		else if (!string.IsNullOrEmpty(value) && InstanceId > 0)
@@ -155,7 +155,7 @@ public partial class ChatBotViewModel : ViewModelBase
 		_scopeFactory = scopeFactory;
 		_keyManageService = keyManageService;
 		_chatInstanceService = chatInstanceService;
-		
+
 		KeyCreationVM = new KeyManagementViewModel(_keyManageService);
 
 		_ = LoadModelsAsync();
@@ -381,7 +381,7 @@ public partial class ChatBotViewModel : ViewModelBase
 				Text = userText,
 				Supplier = supplier,
 				ModelId = 0, // Not using ID anymore for string based models
-				ModelName = SelectedModel, 
+				ModelName = SelectedModel,
 				ImagePaths = currentImages,
 				Ct = _cancellationTokenSource.Token,
 				OnChunk = async (chunk) =>
