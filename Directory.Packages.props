@@ -1,0 +1,45 @@
+<Project>
+	<PropertyGroup>
+		<!-- Enable central package management,
+		https://learn.microsoft.com/en-us/nuget/consume-packages/Central-Package-Management -->
+		<ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageVersion Include="Avalonia" Version="11.3.10" />
+		<PackageVersion Include="Avalonia.Desktop" Version="11.3.10" />
+		<PackageVersion Include="Avalonia.Themes.Fluent" Version="11.3.10" />
+		<PackageVersion Include="Avalonia.Fonts.Inter" Version="11.3.10" />
+		<PackageVersion Include="FluentIcons.Avalonia" Version="2.0.316.1" />
+		<PackageVersion Include="Avalonia.Diagnostics" Version="11.3.10" />
+		<PackageVersion Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+		<PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
+		<PackageVersion Include="ClassIsland.Markdown.Avalonia.Tight" Version="11.0.3.4" />
+		<PackageVersion Include="ClassIsland.Markdown.Avalonia" Version="11.0.3.4" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageVersion Include="Microsoft.SemanticKernel" Version="1.69.0" />
+		<PackageVersion Include="Microsoft.SemanticKernel.Agents.Core" Version="1.69.0" />
+		<PackageVersion Include="Microsoft.SemanticKernel.Connectors.Google" Version="1.69.0-alpha" />
+		<PackageVersion Include="Microsoft.SemanticKernel.Plugins.OpenApi" Version="1.69.0" />
+		<PackageVersion Include="ModelContextProtocol" Version="0.4.0-preview.3" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore" Version="10.0.2" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="10.0.2" />
+		<PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.2" />
+		<PackageVersion Include="System.Security.Cryptography.ProtectedData" Version="10.0.2" />
+		<PackageVersion Include="Microsoft.SemanticKernel.Agents.Orchestration"
+			Version="1.69.0-preview" />
+		<PackageVersion Include="Microsoft.SemanticKernel.Agents.Magentic" Version="1.69.0-preview" />
+		<PackageVersion Include="Microsoft.SemanticKernel.Agents.Runtime.InProcess"
+			Version="1.69.0-preview" />
+		<PackageVersion Include="Microsoft.SemanticKernel.Connectors.Ollama" Version="1.69.0-alpha" />
+		<PackageVersion Include="Microsoft.SemanticKernel.Connectors.MistralAI"
+			Version="1.69.0-alpha" />
+		<PackageVersion Include="Microsoft.SemanticKernel.Connectors.HuggingFace"
+			Version="1.69.0-preview" />
+		<PackageVersion Include="SqlKata" Version="4.0.1" />
+		<PackageVersion Include="SqlKata.Execution" Version="4.0.1" />
+		<PackageVersion Include="MySql.Data" Version="9.6.0" />
+		<PackageVersion Include="Npgsql" Version="10.0.1" />
+		<PackageVersion Include="Microsoft.Data.Sqlite" Version="10.0.2" />
+	</ItemGroup>
+</Project>

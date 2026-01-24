@@ -1,4 +1,3 @@
-using NeroiStack.Agent.Enum;
 using NeroiStack.Agent.Model;
 
 namespace NeroiStack.Agent.Interface;

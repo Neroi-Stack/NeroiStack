@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.SemanticKernel;
-using Microsoft.SemanticKernel.Plugins.OpenApi;
 using NeroiStack.Agent.Data;
 using NeroiStack.Agent.Data.Entities;
 using NeroiStack.Agent.Enum;

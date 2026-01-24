@@ -1,9 +1,8 @@
 ﻿using Microsoft.SemanticKernel;
 using System.ComponentModel;
 using NeroiStack.Agent.Enum;
-using System.Text;
-using Dapper;
 using NeroiStack.Agent.Factories;
+using NeroiStack.Agent.Model;
 
 namespace NeroiStack.Agent.KernelFunc;
 
@@ -14,57 +13,33 @@ public class SqlAgentPlugin(string connectionString, string provider)
 
 	[KernelFunction, Description("Execute a query (supports join, where, order by, limit).")]
 	public async Task<string> ExecuteQuerySafe(
+		[Description("The table name")]
 		string tableName,
+		[Description("List of columns to select")]
 		IEnumerable<string> selectColumns,
-		Dictionary<string, object>? whereColumnsAndValues = null,
+		[Description("Dictionary of where columns and their values")]
+		IEnumerable<WhereCondition>? whereColumnsAndValues = null,
+		[Description("List of columns to order by")]
 		IEnumerable<string>? orderByColumns = null,
+		[Description("Limit the number of results returned")]
 		int limit = 0,
 		[Description("List of joins. Each join is a dictionary with keys: 'Table', 'On', and optional 'Type' (default 'INNER').")]
-		IEnumerable<Dictionary<string, string>>? joins = null)
+		IEnumerable<JoinCondition>? joins = null)
 	{
 		if (!System.Enum.TryParse<SqlAgentToolType>(_provider, true, out var dbType))
 		{
 			return $"Invalid provider: {_provider}";
 		}
 		var strategy = SqlStrategyFactory.GetStrategy(dbType);
-		var sql = new StringBuilder();
-		sql.Append("SELECT ");
-		sql.Append(selectColumns.Any() ? string.Join(", ", selectColumns) : "*");
-		sql.Append(" FROM ");
-		sql.Append(tableName);
-
-		if (joins != null)
-		{
-			foreach (var join in joins)
-			{
-				if (join.TryGetValue("Table", out var joinTable) && join.TryGetValue("On", out var joinOn))
-				{
-					var joinType = join.ContainsKey("Type") ? join["Type"] : "INNER";
-					sql.Append($" {joinType} JOIN {joinTable} ON {joinOn}");
-				}
-			}
-		}
-
-		var parameters = new DynamicParameters();
-
-		if (whereColumnsAndValues != null && whereColumnsAndValues.Count != 0)
-		{
-			var whereClause = new List<string>();
-			foreach (var kv in whereColumnsAndValues)
-			{
-				whereClause.Add($"{kv.Key} = @{kv.Key}");
-				parameters.Add($"@{kv.Key}", kv.Value);
-			}
-			sql.Append(" WHERE " + string.Join(" AND ", whereClause));
-		}
-		if (orderByColumns != null && orderByColumns.Any())
-		{
-			sql.Append(" ORDER BY " + string.Join(", ", orderByColumns));
-		}
-		if (limit > 0) sql.Append(" LIMIT @limit");
-		if (limit > 0) parameters.Add("@limit", limit);
-
-		var result = await strategy.ExecuteQueryAsync(_connectionString, sql.ToString(), parameters);
+		var result = await strategy.ExecuteQueryAsync(
+			_connectionString,
+			tableName,
+			selectColumns,
+			whereColumnsAndValues,
+			orderByColumns,
+			limit,
+			joins
+		);
 		return result;
 	}
 
@@ -84,6 +59,25 @@ public class SqlAgentPlugin(string connectionString, string provider)
 		catch (Exception ex)
 		{
 			return $"Error getting columns: {ex.Message}";
+		}
+	}
+
+	[KernelFunction, Description("Get list of schemas in the database.")]
+	public async Task<string> GetSchemas()
+	{
+		try
+		{
+			if (!System.Enum.TryParse<SqlAgentToolType>(_provider, true, out var dbType))
+			{
+				return $"Invalid provider: {_provider}";
+			}
+			var strategy = SqlStrategyFactory.GetStrategy(dbType);
+			var schemas = await strategy.GetSchemasAsync(_connectionString);
+			return string.Join(", ", schemas);
+		}
+		catch (Exception ex)
+		{
+			return $"Error getting schemas: {ex.Message}";
 		}
 	}
 
@@ -107,8 +101,7 @@ public class SqlAgentPlugin(string connectionString, string provider)
 	}
 
 	[KernelFunction, Description("Get schema of a table.")]
-	public async Task<string> GetTableSchema(
-		[Description("The table name")] string tableName)
+	public async Task<string> GetTableSchema([Description("The table name")] string tableName)
 	{
 		try
 		{

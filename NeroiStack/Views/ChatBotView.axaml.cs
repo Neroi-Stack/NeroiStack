@@ -1,6 +1,5 @@
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.Input.Platform;
 using Microsoft.Extensions.DependencyInjection;
 using NeroiStack.ViewModels;
 using System;

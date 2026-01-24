@@ -3,11 +3,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using CommunityToolkit.Mvvm.Messaging;
 using NeroiStack.Agent.Enum;
 using NeroiStack.Agent.Interface;
 using NeroiStack.Agent.Model;
-using NeroiStack.Messages;
 
 namespace NeroiStack.ViewModels;
 

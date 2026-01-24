@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using NeroiStack.Agent.Data.Entities;
-using NeroiStack.Agent.Model;
 
 namespace NeroiStack.Agent.Data;
 
