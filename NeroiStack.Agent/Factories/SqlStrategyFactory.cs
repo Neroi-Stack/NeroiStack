@@ -6,7 +6,7 @@ namespace NeroiStack.Agent.Factories;
 
 public static class SqlStrategyFactory
 {
-	private static readonly Dictionary<SqlAgentToolType, Type> _strategyTypes = [];
+	private static readonly Dictionary<SqlAgentToolType, ISqlStrategy> _strategies = new();
 
 	static SqlStrategyFactory()
 	{
@@ -21,23 +21,20 @@ public static class SqlStrategyFactory
 		{
 			if (Activator.CreateInstance(type) is ISqlStrategy instance)
 			{
-				_strategyTypes[instance.DbType] = type;
+				_strategies[instance.DbType] = instance;
 			}
 		}
 	}
 
 	public static ISqlStrategy GetStrategy(SqlAgentToolType dbType)
 	{
-		if (_strategyTypes.TryGetValue(dbType, out var strategyType))
+		if (_strategies.TryGetValue(dbType, out var strategy))
 		{
-			return (ISqlStrategy)Activator.CreateInstance(strategyType)!;
+			return strategy;
 		}
 
 		throw new ArgumentOutOfRangeException(nameof(dbType), dbType, $"No strategy found for database type: {dbType}");
 	}
 
-	public static IEnumerable<SqlAgentToolType> GetSupportedDatabaseTypes()
-	{
-		return _strategyTypes.Keys;
-	}
+	public static IEnumerable<SqlAgentToolType> GetSupportedDatabaseTypes() => _strategies.Keys;
 }
