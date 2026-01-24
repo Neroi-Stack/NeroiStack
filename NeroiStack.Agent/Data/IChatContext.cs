@@ -19,6 +19,7 @@ public interface IChatContext
 	public DbSet<ChPluginMcpHttp> PluginMcpHttps { get; }
 	public DbSet<ChPluginMcpStdio> PluginMcpStdios { get; }
 	public DbSet<ChPluginMcpHttpStreamable> PluginMcpHttpStreamables { get; }
+	public DbSet<ChPluginSql> PluginSqls { get; }
 	public DbSet<ChAgentPlugin> AgentPlugins { get; }
 	public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

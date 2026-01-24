@@ -54,10 +54,15 @@
 				</StackPanel>
 			</StackPanel>
 		</DataTemplate>
-		<DataTemplate DataType="{x:Type model:ChPluginLocalDllVM}">
-			<StackPanel>
-				<SelectableTextBlock Text="DLL Path" />
-				<SelectableTextBlock Opacity="0.6" Text="{Binding Source}" />
+		<DataTemplate DataType="{x:Type model:ChPluginSqlVM}">
+			<StackPanel Spacing="5">
+				<SelectableTextBlock Text="Provider" />
+				<ComboBox 
+					HorizontalAlignment="Stretch" 
+					ItemsSource="{x:Static model:ChPluginSqlVM.AvailableProviders}"
+					SelectedItem="{Binding Provider}" />
+				<SelectableTextBlock Text="Connection String" />
+				<TextBox Text="{Binding ConnectionString}" />
 			</StackPanel>
 		</DataTemplate>
 	</UserControl.DataTemplates>

@@ -18,6 +18,7 @@ public class McpStdioPluginLoaderStrategy : IPluginLoaderStrategy
 		{
 			var clientTransport = new StdioClientTransport(new()
 			{
+				Name = plugin.Name ?? $"McpStdio{plugin.Id}",
 				Command = config.Command,
 				Arguments = config.Arguments?.ToArray() ?? []
 			});

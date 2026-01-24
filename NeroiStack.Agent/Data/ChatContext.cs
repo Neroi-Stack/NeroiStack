@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using NeroiStack.Agent.Data.Entities;
+using NeroiStack.Agent.Model;
 
 namespace NeroiStack.Agent.Data;
 
@@ -19,6 +20,7 @@ public class ChatContext(DbContextOptions<ChatContext> options) : DbContext(opti
 	public DbSet<ChPluginMcpHttp> PluginMcpHttps { get; set; }
 	public DbSet<ChPluginMcpStdio> PluginMcpStdios { get; set; }
 	public DbSet<ChPluginMcpHttpStreamable> PluginMcpHttpStreamables { get; set; }
+	public DbSet<ChPluginSql> PluginSqls { get; set; }
 	public DbSet<ChAgentPlugin> AgentPlugins { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)

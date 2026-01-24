@@ -24,6 +24,13 @@
   </ItemGroup>
 
   <ItemGroup>
+  	<PackageReference Include="Dapper" Version="2.1.66" />
+    <PackageReference Include="MySql.Data" Version="9.6.0" />
+    <PackageReference Include="Npgsql" Version="10.0.1" />
+    <PackageReference Include="Microsoft.Data.Sqlite" Version="10.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
 	<ProjectReference Include="..\NeroiStack.Common\NeroiStack.Common.csproj" />
   </ItemGroup>
 </Project>
