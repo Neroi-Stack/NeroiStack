@@ -39,6 +39,21 @@
 							SelectedItem="{Binding CurrentSupplierInput}" />
 					</StackPanel>
 
+					<StackPanel
+						Margin="0,0,0,10"
+						Orientation="Horizontal"
+						Spacing="10">
+						<TextBlock
+							VerticalAlignment="Center"
+							FontWeight="Bold"
+							Text="Key Type:" />
+						<ComboBox
+							Width="200"
+							VerticalAlignment="Center"
+							ItemsSource="{Binding AvailableKeyTypes}"
+							SelectedItem="{Binding CurrentKeyTypeInput}" />
+					</StackPanel>
+
 					<Grid
 						Margin="0,5"
 						ColumnDefinitions="100, *"

@@ -106,7 +106,7 @@ public sealed partial class AgentManageViewModel : ViewModelBase
 	{
 		IsCreating = true;
 		ModalTitle = "New Agent";
-		CurrentAgent = new AgentVM { Name = "New Agent", Description = "Description", Instructions = "You are a helpful assistant.", Kernel = "LLM", IsEnabled = true };
+		CurrentAgent = new AgentVM { Name = "New Agent", Description = "Description", Instructions = "You are a helpful assistant.", IsEnabled = true };
 		await LoadPluginsForEditorAsync();
 		OpenEditor();
 	}
@@ -251,7 +251,6 @@ public sealed partial class AgentManageViewModel : ViewModelBase
 				Name = CurrentAgent.Name,
 				Description = CurrentAgent.Description,
 				Instructions = CurrentAgent.Instructions,
-				Kernel = CurrentAgent.Kernel,
 				Temperature = CurrentAgent.Temperature,
 				TopP = CurrentAgent.TopP,
 				TopK = CurrentAgent.TopK,

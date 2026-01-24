@@ -92,15 +92,15 @@
 										</Border>
 
 										<StackPanel Grid.Column="1">
-											<TextBlock
+											<SelectableTextBlock
 												FontSize="16"
 												FontWeight="SemiBold"
 												Text="{Binding Supplier}"
 												TextTrimming="CharacterEllipsis" />
-											<TextBlock
+											<SelectableTextBlock
 												FontSize="12"
 												Opacity="0.6"
-												Text="{Binding EndpointDisplay}"
+												Text="{Binding KeyType}"
 												TextTrimming="CharacterEllipsis" />
 										</StackPanel>
 
@@ -131,11 +131,23 @@
 										Margin="0,15,0,0"
 										Spacing="5">
 										<Grid ColumnDefinitions="Auto, *">
-											<TextBlock
+											<SelectableTextBlock
+												FontSize="13"
+												Opacity="0.7"
+												Text="End Point: " />
+											<SelectableTextBlock
+												Grid.Column="1"
+												HorizontalAlignment="Right"
+												FontFamily="Consolas, Monospace"
+												FontSize="13"
+												Text="{Binding EndpointDisplay}" />
+										</Grid>
+										<Grid ColumnDefinitions="Auto, *">
+											<SelectableTextBlock
 												FontSize="13"
 												Opacity="0.7"
 												Text="Key: " />
-											<TextBlock
+											<SelectableTextBlock
 												Grid.Column="1"
 												HorizontalAlignment="Right"
 												FontFamily="Consolas, Monospace"
@@ -143,11 +155,11 @@
 												Text="{Binding KeyDisplay}" />
 										</Grid>
 										<Grid ColumnDefinitions="Auto, *">
-											<TextBlock
+											<SelectableTextBlock
 												FontSize="13"
 												Opacity="0.7"
 												Text="Models: " />
-											<TextBlock
+											<SelectableTextBlock
 												Grid.Column="1"
 												HorizontalAlignment="Right"
 												FontSize="13"

@@ -8,5 +8,6 @@ public class ChKey
 	public SupplierEnum Supplier { get; set; }
 	public string EncryptedKey { get; set; } = string.Empty;
 	public string Endpoint { get; set; } = string.Empty;
+	public KeyType KeyType { get; set; }
 	public virtual ICollection<ChKeyModel> ModelsNav { get; set; } = new List<ChKeyModel>();
 }
