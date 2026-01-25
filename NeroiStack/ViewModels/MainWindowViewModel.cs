@@ -29,7 +29,7 @@ public partial class MainWindowViewModel : ViewModelBase
 
 	public object SecondaryMenus { get; set; } = new[]
 	{
-		new { Name = "Key Management", Text = "Key Management", Icon = "Key", ViewType = typeof(Views.KeyManagementView) },
+		new { Name = "Key Model", Text = "Key Model", Icon = "Key", ViewType = typeof(Views.KeyManagementView) },
 	};
 
 	public ObservableCollection<NavigationItem> ChatMenus { get; set; } = new();

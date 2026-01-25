@@ -40,23 +40,6 @@ public class PluginMcpHttpVM : PluginBaseVM
 	}
 }
 
-public class ChPluginMcpHttpStreamableVM : PluginBaseVM
-{
-	public int ChPluginMcpHttpStreamableId { get; set; }
-	public int PluginId { get; set; }
-	public string? Endpoint { get; set; }
-	public string? ApiKey { get; set; }
-	public static explicit operator ChPluginMcpHttpStreamableVM(ChPluginMcpHttpStreamable plugin)
-	{
-		return new ChPluginMcpHttpStreamableVM
-		{
-			ChPluginMcpHttpStreamableId = plugin.Id,
-			PluginId = plugin.PluginId,
-			Endpoint = plugin.Endpoint,
-		};
-	}
-}
-
 public class ChPluginMcpStdioVM : PluginBaseVM
 {
 	public int ChPluginMcpStdioId { get; set; }
@@ -115,6 +98,62 @@ public class ChPluginSqlVM : PluginBaseVM
 			PluginId = plugin.Id,
 			Provider = plugin.Provider,
 			ConnectionString = plugin.ConnectionString
+		};
+	}
+}
+
+public class ChPluginGoogleSearchVM : PluginBaseVM
+{
+	public int PluginGoogleSearchId { get; set; }
+	public int PluginId { get; set; }
+	public string? SearchEngineId { get; set; }
+	public string? ApiKey { get; set; }
+	public static explicit operator ChPluginGoogleSearchVM(ChPluginGoogleSearch plugin)
+	{
+		return new ChPluginGoogleSearchVM
+		{
+			PluginGoogleSearchId = plugin.Id,
+			PluginId = plugin.PluginId,
+			SearchEngineId = plugin.SearchEngineId,
+			ApiKey = plugin.ApiKey
+		};
+	}
+}
+
+public class ChPluginBingSearchVM : PluginBaseVM
+{
+	public int PluginBingSearchId { get; set; }
+	public int PluginId { get; set; }
+	public string? ApiKey { get; set; }
+	public static explicit operator ChPluginBingSearchVM(ChPluginBingSearch plugin)
+	{
+		return new ChPluginBingSearchVM
+		{
+			PluginBingSearchId = plugin.Id,
+			PluginId = plugin.PluginId,
+			ApiKey = plugin.ApiKey
+		};
+	}
+}
+
+public class ChPluginVectorDbSearchVM : PluginBaseVM
+{
+	public int PluginVectorDbSearchId { get; set; }
+	public int PluginId { get; set; }
+	public string? EmbeddedKeyId { get; set; }
+	public string? ModelName { get; set; }
+	public int Dimension { get; set; }
+	public VectorDbType DbType { get; set; }
+	public static explicit operator ChPluginVectorDbSearchVM(ChPluginVectorDbSearch plugin)
+	{
+		return new ChPluginVectorDbSearchVM
+		{
+			PluginVectorDbSearchId = plugin.Id,
+			PluginId = plugin.PluginId,
+			EmbeddedKeyId = plugin.EmbeddedKeyId,
+			ModelName = plugin.ModelName,
+			Dimension = plugin.Dimension,
+			DbType = plugin.DbType
 		};
 	}
 }

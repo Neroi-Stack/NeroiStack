@@ -48,7 +48,7 @@
 						FontSize="32"
 						FontWeight="Bold"
 						Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
-						Text="Key Management" />
+						Text="Key Model Management" />
 					<Button
 						Grid.Column="1"
 						Classes="accent"

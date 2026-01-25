@@ -49,6 +49,33 @@
 				<TextBox PasswordChar="*" Text="{Binding ConnectionString}" />
 			</StackPanel>
 		</DataTemplate>
+		<DataTemplate DataType="{x:Type model:ChPluginVectorDbSearchVM}">
+			<!-- <StackPanel Spacing="5">
+				<SelectableTextBlock Text="Database Type" />
+				<ComboBox 
+					HorizontalAlignment="Stretch" 
+					ItemsSource="{x:Static model:ChPluginVectorDbSearchVM.AvailableDbTypes}"
+					SelectedItem="{Binding DbType}" />
+				<SelectableTextBlock Text="Connection String" />
+				<TextBox PasswordChar="*" Text="{Binding ConnectionString}" />
+				<SelectableTextBlock Text="Collection Name" />
+				<TextBox Text="{Binding CollectionName}" />
+			</StackPanel> -->
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type model:ChPluginBingSearchVM}">
+			<StackPanel Spacing="5">
+				<SelectableTextBlock Text="API Key" />
+				<TextBox PasswordChar="*" Text="{Binding ApiKey}" />
+			</StackPanel>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type model:ChPluginGoogleSearchVM}">
+			<StackPanel Spacing="5">
+				<SelectableTextBlock Text="API Key" />
+				<TextBox PasswordChar="*" Text="{Binding ApiKey}" />
+				<SelectableTextBlock Text="CX" />
+				<TextBox Text="{Binding Cx}" />
+			</StackPanel>
+		</DataTemplate>
 	</UserControl.DataTemplates>
 
 	<Border

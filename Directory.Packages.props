@@ -19,6 +19,7 @@
 	<ItemGroup>
 		<PackageVersion Include="Microsoft.SemanticKernel" Version="1.69.0" />
 		<PackageVersion Include="Microsoft.SemanticKernel.Agents.Core" Version="1.69.0" />
+		<PackageVersion Include="Microsoft.SemanticKernel.Plugins.Web" Version="1.70.0-alpha" />
 		<PackageVersion Include="Microsoft.SemanticKernel.Connectors.Google" Version="1.69.0-alpha" />
 		<PackageVersion Include="Microsoft.SemanticKernel.Plugins.OpenApi" Version="1.69.0" />
 		<PackageVersion Include="ModelContextProtocol" Version="0.4.0-preview.3" />
@@ -36,6 +37,7 @@
 			Version="1.69.0-alpha" />
 		<PackageVersion Include="Microsoft.SemanticKernel.Connectors.HuggingFace"
 			Version="1.69.0-preview" />
+		<PackageVersion Include="Microsoft.SemanticKernel.Connectors.Redis" Version="1.70.0-preview" />
 		<PackageVersion Include="SqlKata" Version="4.0.1" />
 		<PackageVersion Include="SqlKata.Execution" Version="4.0.1" />
 		<PackageVersion Include="MySql.Data" Version="9.6.0" />

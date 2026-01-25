@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NeroiStack.Agent.Strategies.Orchestration;
 using NeroiStack.Agent.Strategies.Provider;
 using NeroiStack.Agent.Strategies.Plugin;
+using NeroiStack.Agent.Strategies.Plugin.VectorDb;
 
 namespace NeroiStack.Agent.Extensions;
 
@@ -39,6 +40,16 @@ public static class ServiceCollectionExtensions
 		foreach (var type in orchestrationStrategies)
 		{
 			services.AddScoped(orchestrationType, type);
+		}
+
+		// Scan and register IVectorDbStrategy implementations
+		var vectorDbType = typeof(IVectorDbStrategy);
+		var vectorDbStrategies = assembly.GetTypes()
+			.Where(t => vectorDbType.IsAssignableFrom(t) && !t.IsInterface && !t.IsAbstract);
+
+		foreach (var type in vectorDbStrategies)
+		{
+			services.AddScoped(vectorDbType, type);
 		}
 
 		return services;
