@@ -18,8 +18,11 @@ public interface IChatContext
 	public DbSet<ChPluginOpenApi> PluginOpenApis { get; }
 	public DbSet<ChPluginMcpHttp> PluginMcpHttps { get; }
 	public DbSet<ChPluginMcpStdio> PluginMcpStdios { get; }
-	public DbSet<ChPluginMcpHttpStreamable> PluginMcpHttpStreamables { get; }
 	public DbSet<ChPluginSql> PluginSqls { get; }
+	public DbSet<ChPluginGoogleSearch> PluginGoogleSearches { get; }
+	public DbSet<ChPluginBingSearch> PluginBingSearches { get; }
+	public DbSet<ChPluginVectorDbSearch> PluginVectorDbSearches { get; }
+	public DbSet<ChPluginVectorRedisSearch> PluginVectorRedisSearches { get; }
 	public DbSet<ChAgentPlugin> AgentPlugins { get; }
 	public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 }

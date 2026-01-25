@@ -18,8 +18,11 @@ public class ChatContext(DbContextOptions<ChatContext> options) : DbContext(opti
 	public DbSet<ChPluginOpenApi> PluginOpenApis { get; set; }
 	public DbSet<ChPluginMcpHttp> PluginMcpHttps { get; set; }
 	public DbSet<ChPluginMcpStdio> PluginMcpStdios { get; set; }
-	public DbSet<ChPluginMcpHttpStreamable> PluginMcpHttpStreamables { get; set; }
 	public DbSet<ChPluginSql> PluginSqls { get; set; }
+	public DbSet<ChPluginGoogleSearch> PluginGoogleSearches { get; set; }
+	public DbSet<ChPluginBingSearch> PluginBingSearches { get; set; }
+	public DbSet<ChPluginVectorDbSearch> PluginVectorDbSearches { get; set; }
+	public DbSet<ChPluginVectorRedisSearch> PluginVectorRedisSearches { get; set; }
 	public DbSet<ChAgentPlugin> AgentPlugins { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -30,6 +30,12 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 	private ChPluginOpenApiVM? _currentOpenApi;
 	[ObservableProperty]
 	private ChPluginSqlVM? _currentSql;
+	[ObservableProperty]
+	private ChPluginGoogleSearchVM? _currentGoogleSearch;
+	[ObservableProperty]
+	private ChPluginBingSearchVM? _currentBingSearch;
+	[ObservableProperty]
+	private ChPluginVectorDbSearchVM? _currentVectorDbSearch;
 
 	[ObservableProperty]
 	private string _mcpStdioArguments = string.Empty;
@@ -122,6 +128,18 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 				CurrentPlugin = new ChPluginSqlVM { Type = PluginType.SqlAgentTool, Name = "New SQL Agent", IsEnabled = true, Provider = "Sqlite" };
 				CurrentSql = (ChPluginSqlVM)CurrentPlugin;
 				break;
+			case PluginType.BingSearch:
+				CurrentPlugin = new ChPluginBingSearchVM { Type = PluginType.BingSearch, Name = "New Bing Search", IsEnabled = true };
+				CurrentBingSearch = (ChPluginBingSearchVM)CurrentPlugin;
+				break;
+			case PluginType.GoogleSearch:
+				CurrentPlugin = new ChPluginGoogleSearchVM { Type = PluginType.GoogleSearch, Name = "New Google Search", IsEnabled = true };
+				CurrentGoogleSearch = (ChPluginGoogleSearchVM)CurrentPlugin;
+				break;
+			case PluginType.VectorDbSearch:
+				CurrentPlugin = new ChPluginVectorDbSearchVM { Type = PluginType.VectorDbSearch, Name = "New Vector DB Search", IsEnabled = true };
+				CurrentVectorDbSearch = (ChPluginVectorDbSearchVM)CurrentPlugin;
+				break;
 		}
 		NotifyTypeVisibility();
 	}
@@ -153,6 +171,15 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 				break;
 			case ChPluginSqlVM sql:
 				CurrentSql = sql;
+				break;
+			case ChPluginGoogleSearchVM googleSearch:
+				CurrentGoogleSearch = googleSearch;
+				break;
+			case ChPluginBingSearchVM bingSearch:
+				CurrentBingSearch = bingSearch;
+				break;
+			case ChPluginVectorDbSearchVM vectorDbSearch:
+				CurrentVectorDbSearch = vectorDbSearch;
 				break;
 		}
 		NotifyTypeVisibility();
@@ -221,6 +248,9 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 		CurrentMcpStdio = null;
 		CurrentOpenApi = null;
 		CurrentSql = null;
+		CurrentBingSearch = null;
+		CurrentGoogleSearch = null;
+		CurrentVectorDbSearch = null;
 	}
 
 	[RelayCommand]
@@ -236,6 +266,9 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 	[ObservableProperty] private bool _isMcpStdio;
 	[ObservableProperty] private bool _isOpenApi;
 	[ObservableProperty] private bool _isSqlAgentTool;
+	[ObservableProperty] private bool _isBingSearch;
+	[ObservableProperty] private bool _isGoogleSearch;
+	[ObservableProperty] private bool _isVectorDbSearch;
 
 	// Helper for Auth Types visibility
 	public bool IsApiKeyAuth => CurrentOpenApi?.AuthType == 1;
@@ -263,11 +296,17 @@ public sealed partial class PluginManageViewModel : ViewModelBase
 		IsMcpStdio = SelectedPluginType == PluginType.McpStdio;
 		IsOpenApi = SelectedPluginType == PluginType.OpenApi;
 		IsSqlAgentTool = SelectedPluginType == PluginType.SqlAgentTool;
+		IsBingSearch = SelectedPluginType == PluginType.BingSearch;
+		IsGoogleSearch = SelectedPluginType == PluginType.GoogleSearch;
+		IsVectorDbSearch = SelectedPluginType == PluginType.VectorDbSearch;
 
 		OnPropertyChanged(nameof(OpenApiAuthType));
 		OnPropertyChanged(nameof(IsApiKeyAuth));
 		OnPropertyChanged(nameof(IsBearerTokenAuth));
 		OnPropertyChanged(nameof(IsSqlAgentTool));
+		OnPropertyChanged(nameof(IsBingSearch));
+		OnPropertyChanged(nameof(IsGoogleSearch));
+		OnPropertyChanged(nameof(IsVectorDbSearch));
 	}
 
 	// Hook into property changes if needed, but for now specific updates are handled in methods

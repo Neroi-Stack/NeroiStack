@@ -63,6 +63,29 @@ public class PluginManageService(IChatContext context, ILogger<PluginManageServi
 					vm = tmpVm;
 				}
 				break;
+			case PluginType.GoogleSearch:
+				var googleSearch = await _context.PluginGoogleSearches.FirstOrDefaultAsync(p => p.PluginId == id);
+				if (googleSearch != null)
+				{
+					string decryptedApiKey = string.IsNullOrWhiteSpace(googleSearch.ApiKey) ? string.Empty : _encryption.Decrypt(googleSearch.ApiKey);
+					var tmpVm = (ChPluginGoogleSearchVM)googleSearch;
+					tmpVm.ApiKey = decryptedApiKey;
+					vm = tmpVm;
+				}
+				break;
+			case PluginType.BingSearch:
+				var bingSearch = await _context.PluginBingSearches.FirstOrDefaultAsync(p => p.PluginId == id);
+				if (bingSearch != null)
+				{
+					string decryptedApiKey = string.IsNullOrWhiteSpace(bingSearch.ApiKey) ? string.Empty : _encryption.Decrypt(bingSearch.ApiKey);
+					var tmpVm = (ChPluginBingSearchVM)bingSearch;
+					tmpVm.ApiKey = decryptedApiKey;
+					vm = tmpVm;
+				}
+				break;
+			case PluginType.VectorDbSearch:
+				break;
+
 		}
 
 		if (vm == null)
@@ -145,6 +168,29 @@ public class PluginManageService(IChatContext context, ILogger<PluginManageServi
 					});
 				}
 				break;
+			case PluginType.GoogleSearch:
+				if (pluginVm is ChPluginGoogleSearchVM googleSearchVm)
+				{
+					_context.PluginGoogleSearches.Add(new ChPluginGoogleSearch
+					{
+						PluginId = plugin.Id,
+						ApiKey = string.IsNullOrWhiteSpace(googleSearchVm.ApiKey) ? string.Empty : _encryption.Encrypt(googleSearchVm.ApiKey),
+						SearchEngineId = googleSearchVm.SearchEngineId ?? string.Empty
+					});
+				}
+				break;
+			case PluginType.BingSearch:
+				if (pluginVm is ChPluginBingSearchVM bingSearchVm)
+				{
+					_context.PluginBingSearches.Add(new ChPluginBingSearch
+					{
+						PluginId = plugin.Id,
+						ApiKey = string.IsNullOrWhiteSpace(bingSearchVm.ApiKey) ? string.Empty : _encryption.Encrypt(bingSearchVm.ApiKey),
+					});
+				}
+				break;
+			case PluginType.VectorDbSearch:
+				break;
 		}
 		await _context.SaveChangesAsync();
 		return plugin.Id;
@@ -208,6 +254,26 @@ public class PluginManageService(IChatContext context, ILogger<PluginManageServi
 					}
 				}
 				break;
+			case PluginType.GoogleSearch:
+				if (pluginVm is ChPluginGoogleSearchVM googleSearchVm)
+				{
+					var entity = await _context.PluginGoogleSearches.FirstOrDefaultAsync(p => p.PluginId == plugin.Id);
+					if (entity != null)
+					{
+						entity.ApiKey = string.IsNullOrWhiteSpace(googleSearchVm.ApiKey) ? string.Empty : _encryption.Encrypt(googleSearchVm.ApiKey);
+						entity.SearchEngineId = googleSearchVm.SearchEngineId ?? string.Empty;
+					}
+				}
+				break;
+			case PluginType.BingSearch:
+				if (pluginVm is ChPluginBingSearchVM bingSearchVm)
+				{
+					var entity = await _context.PluginBingSearches.FirstOrDefaultAsync(p => p.PluginId == plugin.Id);
+					entity?.ApiKey = string.IsNullOrWhiteSpace(bingSearchVm.ApiKey) ? string.Empty : _encryption.Encrypt(bingSearchVm.ApiKey);
+				}
+				break;
+			case PluginType.VectorDbSearch:
+				break;
 		}
 		await _context.SaveChangesAsync();
 	}
@@ -234,6 +300,16 @@ public class PluginManageService(IChatContext context, ILogger<PluginManageServi
 			case PluginType.SqlAgentTool:
 				var sql = await _context.PluginSqls.FirstOrDefaultAsync(p => p.PluginId == id);
 				if (sql != null) _context.PluginSqls.Remove(sql);
+				break;
+			case PluginType.GoogleSearch:
+				var googleSearch = await _context.PluginGoogleSearches.FirstOrDefaultAsync(p => p.PluginId == id);
+				if (googleSearch != null) _context.PluginGoogleSearches.Remove(googleSearch);
+				break;
+			case PluginType.BingSearch:
+				var bingSearch = await _context.PluginBingSearches.FirstOrDefaultAsync(p => p.PluginId == id);
+				if (bingSearch != null) _context.PluginBingSearches.Remove(bingSearch);
+				break;
+			case PluginType.VectorDbSearch:
 				break;
 		}
 
