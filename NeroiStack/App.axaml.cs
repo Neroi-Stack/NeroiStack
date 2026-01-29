@@ -15,6 +15,9 @@ using NeroiStack.Common.Interface;
 using NeroiStack.Common.Service;
 using NeroiStack.Agent.Factories;
 using NeroiStack.Agent.Extensions;
+using NeroiStack.Agent.AutomationTest.Services;
+using NeroiStack.ViewModels.AutomationTest;
+
 
 namespace NeroiStack;
 
@@ -78,6 +81,7 @@ public partial class App : Application
 		services.AddScoped<IChatInstanceService, ChatInstanceService>();
 		services.AddScoped<IEncryption, Encryption>();
 		services.AddScoped<IMimeType, MimeType>();
+		services.AddScoped<IAutomationTestService, AutomationTestService>();
 
 		// Factories & Strategies
 		services.AddScoped<IKernelFactory, KernelFactory>();
@@ -92,6 +96,9 @@ public partial class App : Application
 		services.AddTransient<AgentManageViewModel>();
 		services.AddTransient<ChatManageViewModel>();
 		services.AddTransient<KeyManagementViewModel>();
+		services.AddTransient<AutomationTestViewModel>();
+		services.AddTransient<TestCaseListViewModel>();
+		services.AddTransient<TestCaseDetailViewModel>();
 	}
 
 	private void DisableAvaloniaDataAnnotationValidation()

@@ -1,0 +1,166 @@
+<UserControl
+	x:Class="NeroiStack.Views.AutomationTest.TestCaseDetailView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:fluenticons="using:FluentIcons.Avalonia"
+	xmlns:vm="clr-namespace:NeroiStack.ViewModels.AutomationTest"
+	x:DataType="vm:TestCaseDetailViewModel">
+	<UserControl.Styles>
+		<Style Selector="DataGrid">
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="BorderThickness" Value="0" />
+			<Setter Property="GridLinesVisibility" Value="None" />
+			<Setter Property="RowBackground" Value="Transparent" />
+			<Setter Property="FontSize" Value="13" />
+		</Style>
+		<Style Selector="DataGridColumnHeader">
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="Padding" Value="12,10" />
+			<Setter Property="FontWeight" Value="SemiBold" />
+			<Setter Property="FontSize" Value="12" />
+			<Setter Property="Opacity" Value="0.6" />
+		</Style>
+		<Style Selector="DataGridRow">
+			<Setter Property="CornerRadius" Value="4" />
+		</Style>
+		<Style Selector="TextBox.Embed">
+			<Setter Property="BorderThickness" Value="0" />
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="Padding" Value="0" />
+			<Setter Property="FontSize" Value="13" />
+		</Style>
+		<Style Selector="TextBox.Embed:focus /template/ Border#PART_BorderElement">
+			<Setter Property="BorderThickness" Value="0" />
+			<Setter Property="Background" Value="Transparent" />
+		</Style>
+	</UserControl.Styles>
+
+	<Grid RowDefinitions="Auto, *">
+		<!--  Header  -->
+		<Border Grid.Row="0" Margin="24">
+			<StackPanel Spacing="24">
+				<Grid ColumnDefinitions="*, Auto">
+					<TextBox
+						Classes="Embed"
+						FontSize="28"
+						FontWeight="Bold"
+						Text="{Binding TestCase.Name, FallbackValue='Untitled Test'}"
+						Watermark="Test Case Name" />
+					<StackPanel
+						Grid.Column="1"
+						Orientation="Horizontal"
+						Spacing="12">
+						<Button Classes="accent" Command="{Binding RunTestCommand}">
+							<StackPanel Orientation="Horizontal" Spacing="8">
+								<fluenticons:SymbolIcon FontSize="16" Symbol="Play" />
+								<TextBlock VerticalAlignment="Center" Text="Run Test" />
+							</StackPanel>
+						</Button>
+						<Button Command="{Binding SaveCommand}">
+							<StackPanel Orientation="Horizontal" Spacing="8">
+								<fluenticons:SymbolIcon FontSize="16" Symbol="Save" />
+								<TextBlock VerticalAlignment="Center" Text="Save" />
+							</StackPanel>
+						</Button>
+					</StackPanel>
+				</Grid>
+
+				<StackPanel Spacing="8">
+					<TextBlock
+						FontSize="12"
+						FontWeight="SemiBold"
+						Opacity="0.5"
+						Text="Target URL" />
+					<TextBox
+						Classes="Embed"
+						FontSize="16"
+						Text="{Binding TestCase.Url, FallbackValue=''}"
+						Watermark="https://example.com" />
+					<Border
+						Height="1"
+						Background="{DynamicResource SystemControlForegroundBaseLowBrush}"
+						Opacity="0.3" />
+				</StackPanel>
+
+				<Grid ColumnDefinitions="*, Auto">
+					<TextBlock
+						VerticalAlignment="Center"
+						FontSize="18"
+						FontWeight="SemiBold"
+						Text="Test Steps" />
+					<Button
+						Grid.Column="1"
+						Background="Transparent"
+						Command="{Binding AddStepCommand}">
+						<StackPanel Orientation="Horizontal" Spacing="4">
+							<fluenticons:SymbolIcon FontSize="14" Symbol="Add" />
+							<TextBlock FontSize="13" Text="Add Step" />
+						</StackPanel>
+					</Button>
+				</Grid>
+			</StackPanel>
+		</Border>
+
+		<!--  Steps DataGrid  -->
+		<DataGrid
+			Grid.Row="1"
+			Margin="24,0,24,24"
+			BorderThickness="0"
+			CanUserSortColumns="False"
+			IsReadOnly="False"
+			ItemsSource="{Binding Steps}"
+			RowHeight="48">
+			<DataGrid.Columns>
+				<DataGridTextColumn
+					Width="150"
+					Binding="{Binding Title}"
+					Header="Title" />
+				<DataGridTextColumn
+					Width="*"
+					Binding="{Binding Action}"
+					Header="Action" />
+				<DataGridTextColumn
+					Width="*"
+					Binding="{Binding Expectation}"
+					Header="Expectation" />
+				<DataGridTemplateColumn Width="120" Header="Result">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<Border
+								Margin="4"
+								Padding="8,4"
+								HorizontalAlignment="Left"
+								CornerRadius="4">
+								<TextBlock
+									FontSize="12"
+									FontWeight="Medium"
+									Text="{Binding Result}" />
+							</Border>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+				<DataGridTextColumn
+					Width="150"
+					Binding="{Binding Note}"
+					Header="Note"
+					IsReadOnly="True" />
+				<DataGridTemplateColumn Width="60" Header="">
+					<DataGridTemplateColumn.CellTemplate>
+						<DataTemplate>
+							<Button
+								HorizontalAlignment="Center"
+								Background="Transparent"
+								Command="{Binding $parent[UserControl].((vm:TestCaseDetailViewModel)DataContext).RemoveStepCommand}"
+								CommandParameter="{Binding}">
+								<fluenticons:SymbolIcon
+									FontSize="14"
+									Opacity="0.4"
+									Symbol="Dismiss" />
+							</Button>
+						</DataTemplate>
+					</DataGridTemplateColumn.CellTemplate>
+				</DataGridTemplateColumn>
+			</DataGrid.Columns>
+		</DataGrid>
+	</Grid>
+</UserControl>

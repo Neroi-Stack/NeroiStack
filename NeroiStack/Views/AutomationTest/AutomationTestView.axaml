@@ -1,0 +1,66 @@
+<UserControl
+	x:Class="NeroiStack.Views.AutomationTest.AutomationTestView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:fluenticons="using:FluentIcons.Avalonia"
+	xmlns:views="clr-namespace:NeroiStack.Views.AutomationTest"
+	xmlns:vm="clr-namespace:NeroiStack.ViewModels.AutomationTest"
+	x:DataType="vm:AutomationTestViewModel">
+	<Grid RowDefinitions="Auto, *">
+		<TextBlock
+			Grid.Row="0"
+			Margin="0,0,0,20"
+			FontSize="24"
+			FontWeight="Bold"
+			Text="Automation Test" />
+
+		<Border
+			Grid.Row="1"
+			Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+			BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+			BorderThickness="1"
+			ClipToBounds="True"
+			CornerRadius="16">
+			<Grid ColumnDefinitions="200, Auto, *">
+				<!--  List View  -->
+				<views:TestCaseListView
+					Grid.Column="0"
+					Background="{DynamicResource SystemControlBackgroundChromeLowBrush}"
+					DataContext="{Binding ListViewModel}" />
+
+
+				<!--  Splitter  -->
+				<GridSplitter
+					Grid.Column="1"
+					Width="1"
+					HorizontalAlignment="Center"
+					Background="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+
+				<!--  Detail View  -->
+				<views:TestCaseDetailView
+					Grid.Column="2"
+					DataContext="{Binding DetailViewModel}"
+					IsVisible="{Binding !!ListViewModel.SelectedTestCase}" />
+
+
+				<!--  Empty State  -->
+				<StackPanel
+					Grid.Column="2"
+					HorizontalAlignment="Center"
+					VerticalAlignment="Center"
+					IsVisible="{Binding !ListViewModel.SelectedTestCase}"
+					Spacing="20">
+					<fluenticons:SymbolIcon
+						FontSize="64"
+						Opacity="0.2"
+						Symbol="WindowDevTools" />
+					<TextBlock
+						FontSize="16"
+						Opacity="0.4"
+						Text="Select a test case to view details" />
+				</StackPanel>
+			</Grid>
+		</Border>
+
+	</Grid>
+</UserControl>

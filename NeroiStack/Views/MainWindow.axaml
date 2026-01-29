@@ -53,7 +53,12 @@
 		</Style>
 	</Window.Styles>
 
-	<Grid ColumnDefinitions="260,*" RowDefinitions="Auto,*,Auto">
+	<Grid x:Name="RootGrid" RowDefinitions="Auto,*,Auto">
+		<Grid.ColumnDefinitions>
+			<ColumnDefinition Width="260" />
+			<ColumnDefinition Width="Auto" />
+			<ColumnDefinition Width="*" />
+		</Grid.ColumnDefinitions>
 		<!--  Sidebar  -->
 		<Border
 			Grid.RowSpan="3"
@@ -215,31 +220,48 @@
 				</DockPanel>
 			</DockPanel>
 		</Border>
-
+		<GridSplitter
+			x:Name="Splitter"
+			Grid.Row="0"
+			Grid.RowSpan="3"
+			Grid.Column="1"
+			Width="0"
+			HorizontalAlignment="Center"
+			Background="{DynamicResource SystemControlForegroundBaseLowBrush}" />
 		<!--  Header row  -->
 		<Border
 			Grid.Row="0"
-			Grid.Column="1"
+			Grid.Column="2"
 			Padding="12"
 			Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}">
-			<DockPanel LastChildFill="False">
+			<Grid ColumnDefinitions="Auto, Auto, *">
+				<Button
+					Grid.Column="0"
+					Margin="0,0,12,0"
+					VerticalAlignment="Center"
+					Command="{Binding OpenSidebarCommand}">
+					<fluenticons:SymbolIcon FontSize="16" Symbol="AlignSpaceEvenlyVertical" />
+				</Button>
+
 				<TextBlock
-					DockPanel.Dock="Left"
+					Grid.Column="1"
+					VerticalAlignment="Center"
 					FontSize="20"
 					FontWeight="Bold"
 					Text="{Binding Title}" />
+
 				<StackPanel
+					Grid.Column="2"
 					HorizontalAlignment="Right"
-					DockPanel.Dock="Right"
 					Orientation="Horizontal"
 					Spacing="8" />
-			</DockPanel>
+			</Grid>
 		</Border>
 
 		<!--  Main content area  -->
 		<Border
 			Grid.Row="1"
-			Grid.Column="1"
+			Grid.Column="2"
 			Padding="16"
 			Background="{DynamicResource SystemControlBackgroundBaseLowBrush}">
 			<DockPanel LastChildFill="True">
@@ -250,7 +272,7 @@
 		<!--  Footer  -->
 		<Border
 			Grid.Row="2"
-			Grid.Column="1"
+			Grid.Column="2"
 			Padding="10"
 			Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}">
 			<DockPanel>
@@ -265,7 +287,7 @@
 					HorizontalAlignment="Right"
 					DockPanel.Dock="Right"
 					Orientation="Horizontal">
-					<Button Content="Issue Report (GitHub)" Command="{Binding OpenGitHubCommand}" />
+					<Button Command="{Binding OpenGitHubCommand}" Content="Issue Report (GitHub)" />
 				</StackPanel>
 			</DockPanel>
 		</Border>

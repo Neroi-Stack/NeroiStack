@@ -25,7 +25,9 @@ public partial class MainWindowViewModel : ViewModelBase
 		new { Name = "ChatClasses", Text = "Chat Classes", Icon = "SettingsChat", ViewType = typeof(Views.ChatManageView) },
 		new { Name = "Agents", Text = "Agents", Icon = "Person", ViewType = typeof(Views.AgentManageView) },
 		new { Name = "Plugins", Text = "Plugins", Icon = "PuzzlePiece", ViewType = typeof(Views.PluginManageView) },
+		new { Name = "Automation Test", Text = "Automation Test", Icon = "Play", ViewType = typeof(Views.AutomationTest.AutomationTestView) },
 	};
+
 
 	public object SecondaryMenus { get; set; } = new[]
 	{
@@ -157,6 +159,12 @@ public partial class MainWindowViewModel : ViewModelBase
 		{
 			Console.WriteLine($"Failed to open URL {url}: {ex.Message}");
 		}
+	}
+
+	[RelayCommand]
+	private void OpenSidebar()
+	{
+		WeakReferenceMessenger.Default.Send(new ToggleSidebarMessage());
 	}
 
 	private void NavigateTo(Type viewType)

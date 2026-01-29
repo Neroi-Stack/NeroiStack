@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeroiStack.Common", "NeroiS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeroiStack.Agent.UnitTest", "NeroiStack.Agent.UnitTest\NeroiStack.Agent.UnitTest.csproj", "{59B70265-6482-4D16-922E-EDB3D86F2538}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeroiStack.Agent.AutomationTest", "NeroiStack.Agent.AutomationTest\NeroiStack.Agent.AutomationTest.csproj", "{6F9DBEC0-359F-4C62-BDFA-44011D71BF55}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,18 @@ Global
 		{59B70265-6482-4D16-922E-EDB3D86F2538}.Release|x64.Build.0 = Release|Any CPU
 		{59B70265-6482-4D16-922E-EDB3D86F2538}.Release|x86.ActiveCfg = Release|Any CPU
 		{59B70265-6482-4D16-922E-EDB3D86F2538}.Release|x86.Build.0 = Release|Any CPU
+		{6F9DBEC0-359F-4C62-BDFA-44011D71BF55}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F9DBEC0-359F-4C62-BDFA-44011D71BF55}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F9DBEC0-359F-4C62-BDFA-44011D71BF55}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6F9DBEC0-359F-4C62-BDFA-44011D71BF55}.Debug|x64.Build.0 = Debug|Any CPU
+		{6F9DBEC0-359F-4C62-BDFA-44011D71BF55}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{6F9DBEC0-359F-4C62-BDFA-44011D71BF55}.Debug|x86.Build.0 = Debug|Any CPU
+		{6F9DBEC0-359F-4C62-BDFA-44011D71BF55}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F9DBEC0-359F-4C62-BDFA-44011D71BF55}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F9DBEC0-359F-4C62-BDFA-44011D71BF55}.Release|x64.ActiveCfg = Release|Any CPU
+		{6F9DBEC0-359F-4C62-BDFA-44011D71BF55}.Release|x64.Build.0 = Release|Any CPU
+		{6F9DBEC0-359F-4C62-BDFA-44011D71BF55}.Release|x86.ActiveCfg = Release|Any CPU
+		{6F9DBEC0-359F-4C62-BDFA-44011D71BF55}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
