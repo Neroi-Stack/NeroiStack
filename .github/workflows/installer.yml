@@ -42,7 +42,7 @@ jobs:
                   dotnet publish NeroiStack/NeroiStack.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -o ./publish
 
             - name: Install Qt Installer Framework
-              uses: miurahr/install-qt-action@v3
+              uses: jurplel/install-qt-action@v4
               with:
                   version: "6.5.0"
                   tools: "qtifw"
