@@ -49,7 +49,7 @@
 						Text="Agents" />
 					<Button
 						Grid.Column="1"
-						Classes="accent"
+						Classes="Success"
 						Command="{Binding CreateCommand}"
 						Content="New Agent" />
 				</Grid>
@@ -189,10 +189,9 @@
 						Spacing="10">
 						<Button Command="{Binding CloseModalCommand}" Content="Cancel" />
 						<Button
-							Background="{DynamicResource SystemControlErrorTextForegroundBrush}"
+							Classes="Danger"
 							Command="{Binding ConfirmDeleteCommand}"
-							Content="Delete"
-							Foreground="{DynamicResource SystemControlBackgroundAltHighBrush}" />
+							Content="Delete"/>
 					</StackPanel>
 				</Grid>
 			</Border>
