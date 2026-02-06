@@ -60,18 +60,27 @@ jobs:
             - name: Build Installer
               shell: bash
               run: |
-                  IFW_BIN=$(find $HOME/Qt/Tools/QtInstallerFramework -name "bin" -type d | head -n 1)
+                  if [ "$RUNNER_OS" == "Linux" ]; then
+                    sudo apt-get update
+                    sudo apt-get install -y libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xinput0 libxcb-shape0
+                  fi
+                  if [ "$RUNNER_OS" == "Windows" ]; then
+                    IFW_BIN=$(find $HOME/Qt/Tools/QtInstallerFramework -name "bin" -type d | head -n 1)
+                  else
+                    IFW_BIN=$(find $HOME/Qt -name "bin" -type d | grep QtInstallerFramework | head -n 1)
+                  fi
+
                   if [ -z "$IFW_BIN" ]; then
                     echo "Error: Could not find IFW bin directory"
                     exit 1
                   fi
                   export PATH="$PATH:$IFW_BIN"
                   echo "PATH set to: $IFW_BIN"
+
                   if [ "$RUNNER_OS" == "Linux" ]; then
                     [ -f installer/packages/com.neroi.stack/data/NeroiStack ] && chmod +x installer/packages/com.neroi.stack/data/NeroiStack
                   fi
 
-                  binarycreator --version
                   binarycreator -v -c installer/config/config.xml -p installer/packages NeroiStack-Installer-${{ matrix.runtime }}${{ matrix.installer_ext }}
 
             - name: Upload Installer to Artifacts
