@@ -1,9 +1,18 @@
 using System;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace NeroiStack.ViewModels;
 
-public class NavigationItem
+public partial class NavigationItem : ObservableObject
 {
+	[ObservableProperty]
+	private bool _isSelected;
+
+	public NavigationItem()
+	{
+
+	}
+
 	public string Name { get; set; } = string.Empty;
 	public string Text { get; set; } = string.Empty;
 	public string Icon { get; set; } = "Chat";

@@ -129,7 +129,7 @@
 				Spacing="10">
 				<Button Command="{Binding ClosePluginModalCommand}" Content="Cancel" />
 				<Button
-					Classes="accent"
+					Classes="Success"
 					Command="{Binding SavePluginCommand}"
 					Content="Save" />
 			</StackPanel>

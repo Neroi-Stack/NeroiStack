@@ -51,7 +51,7 @@
 						Text="Key Model Management" />
 					<Button
 						Grid.Column="1"
-						Classes="accent"
+						Classes="Success"
 						Command="{Binding AddKeyCommand}"
 						Content="+ Add Key" />
 				</Grid>
@@ -214,10 +214,9 @@
 						Spacing="10">
 						<Button Command="{Binding CloseModalCommand}" Content="Cancel" />
 						<Button
-							Background="#AA0000"
+							Classes="Danger"
 							Command="{Binding ConfirmDeleteAsyncCommand}"
-							Content="Delete"
-							Foreground="White" />
+							Content="Delete" />
 					</StackPanel>
 				</Grid>
 			</Border>

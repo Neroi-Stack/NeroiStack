@@ -16,20 +16,20 @@ public partial class MainWindowViewModel : ViewModelBase
 	private readonly IChatInstanceService? _instanceService;
 	public string Greeting { get; } = "Welcome to Avalonia!";
 
-	public object Home { get; set; } = new[]
+	public ObservableCollection<NavigationItem> Home { get; set; } = new ObservableCollection<NavigationItem>
 	{
-		new { Name = "Home", Text = "Home", Icon = "Home", ViewType = typeof(Views.HomeView) },
+		new NavigationItem { Name = "Home", Text = "Home", Icon = "Home", ViewType = typeof(Views.HomeView) },
 	};
-	public object Menus { get; set; } = new[]
+	public ObservableCollection<NavigationItem> Menus { get; set; } = new ObservableCollection<NavigationItem>
 	{
-		new { Name = "ChatClasses", Text = "Chat Classes", Icon = "SettingsChat", ViewType = typeof(Views.ChatManageView) },
-		new { Name = "Agents", Text = "Agents", Icon = "Person", ViewType = typeof(Views.AgentManageView) },
-		new { Name = "Plugins", Text = "Plugins", Icon = "PuzzlePiece", ViewType = typeof(Views.PluginManageView) },
+		new NavigationItem { Name = "ChatClasses", Text = "Chat Classes", Icon = "SettingsChat", ViewType = typeof(Views.ChatManageView) },
+		new NavigationItem { Name = "Agents", Text = "Agents", Icon = "Person", ViewType = typeof(Views.AgentManageView) },
+		new NavigationItem { Name = "Plugins", Text = "Plugins", Icon = "PuzzlePiece", ViewType = typeof(Views.PluginManageView) },
 	};
 
-	public object SecondaryMenus { get; set; } = new[]
+	public ObservableCollection<NavigationItem> SecondaryMenus { get; set; } = new ObservableCollection<NavigationItem>
 	{
-		new { Name = "Key Model", Text = "Key Model", Icon = "Key", ViewType = typeof(Views.KeyManagementView) },
+		new NavigationItem { Name = "Key Model", Text = "Key Model", Icon = "Key", ViewType = typeof(Views.KeyManagementView) },
 	};
 
 	public ObservableCollection<NavigationItem> ChatMenus { get; set; } = new();
@@ -173,6 +173,15 @@ public partial class MainWindowViewModel : ViewModelBase
 
 		if (item is NavigationItem navItem)
 		{
+			// Deselect all
+			foreach (var i in Home) i.IsSelected = false;
+			foreach (var i in Menus) i.IsSelected = false;
+			foreach (var i in SecondaryMenus) i.IsSelected = false;
+			foreach (var i in ChatMenus) i.IsSelected = false;
+
+			// Select current
+			navItem.IsSelected = true;
+
 			Title = navItem.Text;
 			if (navItem.ViewType != null && typeof(Control).IsAssignableFrom(navItem.ViewType))
 			{
@@ -189,6 +198,7 @@ public partial class MainWindowViewModel : ViewModelBase
 			return;
 		}
 
+		// Fallback for untyped or different types (should not happen with new standardization)
 		var textProp = item.GetType().GetProperty("Text");
 		if (textProp?.GetValue(item) is string t) Title = t;
 

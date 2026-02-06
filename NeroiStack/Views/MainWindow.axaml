@@ -35,6 +35,30 @@
 			<Setter Property="BorderBrush" Value="Transparent" />
 			<Setter Property="Padding" Value="8" />
 		</Style>
+
+        <!-- Active Sidebar Button Style -->
+        <Style Selector="Button.SidebarButton">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseMediumBrush}" />
+        </Style>
+        <Style Selector="Button.SidebarButton[Tag=True]">
+            <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrush}" />
+            <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrush}" />
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+
+        <Style Selector="Button.SidebarButton TextBlock">
+            <Setter Property="Foreground" Value="{Binding $parent[Button].Foreground}" />
+        </Style>
+        
+        <!-- Fix sidebar hover specificity issue -->
+        <Style Selector="Button.SidebarButton:pointerover TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrush}" />
+        </Style>
+        <Style Selector="Button.SidebarButton:pointerover fluenticons|SymbolIcon">
+            <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrush}" />
+        </Style>
+
 		<Style Selector="ListBox#SidebarMenu">
 			<Setter Property="Background" Value="Transparent" />
 			<Setter Property="BorderBrush" Value="Transparent" />
@@ -72,6 +96,8 @@
 							<ItemsControl.ItemTemplate>
 								<DataTemplate>
 									<Button
+                                        Classes="SidebarButton"
+                                        Tag="{Binding IsSelected}"
 										HorizontalAlignment="Stretch"
 										Command="{Binding DataContext.MenuCommand, RelativeSource={RelativeSource AncestorType=Window}}"
 										CommandParameter="{Binding}">
@@ -95,6 +121,8 @@
 							<ItemsControl.ItemTemplate>
 								<DataTemplate>
 									<Button
+                                        Classes="SidebarButton"
+                                        Tag="{Binding IsSelected}"
 										HorizontalAlignment="Stretch"
 										Command="{Binding DataContext.MenuCommand, RelativeSource={RelativeSource AncestorType=Window}}"
 										CommandParameter="{Binding}">
@@ -118,6 +146,8 @@
 							<ItemsControl.ItemTemplate>
 								<DataTemplate>
 									<Button
+                                        Classes="SidebarButton"
+                                        Tag="{Binding IsSelected}"
 										HorizontalAlignment="Stretch"
 										Command="{Binding DataContext.MenuCommand, RelativeSource={RelativeSource AncestorType=Window}}"
 										CommandParameter="{Binding}">
@@ -169,6 +199,8 @@
 								<DataTemplate>
 									<Grid ColumnDefinitions="*, Auto">
 										<Button
+                                            Classes="SidebarButton"
+                                            Tag="{Binding IsSelected}"
 											HorizontalAlignment="Stretch"
 											HorizontalContentAlignment="Left"
 											Command="{Binding DataContext.MenuCommand, RelativeSource={RelativeSource AncestorType=Window}}"

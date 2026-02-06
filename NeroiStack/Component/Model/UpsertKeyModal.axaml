@@ -137,7 +137,7 @@
 				Spacing="10">
 				<Button Command="{Binding CloseModalCommand}" Content="Cancel" />
 				<Button
-					Classes="accent"
+					Classes="Success"
 					Command="{Binding SaveCommand}"
 					Content="Save" />
 			</StackPanel>
