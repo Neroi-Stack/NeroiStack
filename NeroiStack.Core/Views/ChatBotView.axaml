@@ -1,0 +1,266 @@
+<UserControl
+	x:Class="NeroiStack.Views.ChatBotView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:converters="using:NeroiStack.Converters"
+	xmlns:fluenticons="using:FluentIcons.Avalonia"
+	xmlns:md="https://github.com/whistyun/Markdown.Avalonia"
+	xmlns:mdt="https://github.com/whistyun/Markdown.Avalonia.Tight"
+	xmlns:model="using:NeroiStack.Component.Model"
+	xmlns:vm="using:NeroiStack.ViewModels"
+	x:DataType="vm:ChatBotViewModel">
+	<UserControl.Resources>
+		<converters:PathToBitmapConverter x:Key="PathToBitmapConverter" />
+	</UserControl.Resources>
+	<UserControl.Styles>
+		<Style Selector="Border.CodeBlock">
+			<Style.Setters>
+				<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+				<Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+				<Setter Property="BorderThickness" Value="1" />
+				<Setter Property="CornerRadius" Value="6" />
+				<Setter Property="Padding" Value="12,8" />
+				<Setter Property="Margin" Value="8,4,8,4" />
+			</Style.Setters>
+		</Style>
+
+		<Style Selector="TextBlock.CodeBlock">
+			<Style.Setters>
+				<Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+				<Setter Property="FontFamily" Value="Consolas, Courier" />
+				<Setter Property="FontSize" Value="13" />
+				<Setter Property="TextWrapping" Value="Wrap" />
+			</Style.Setters>
+		</Style>
+		<Style Selector="Label.CodeLanguage">
+			<Style.Setters>
+				<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+				<Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+				<Setter Property="CornerRadius" Value="3" />
+				<Setter Property="Padding" Value="4,2" />
+			</Style.Setters>
+		</Style>
+	</UserControl.Styles>
+	<Grid>
+		<Grid RowDefinitions="*, Auto">
+
+			<ScrollViewer
+				Grid.Row="0"
+				HorizontalScrollBarVisibility="Disabled"
+				VerticalScrollBarVisibility="Auto">
+
+				<StackPanel>
+					<ItemsControl Margin="10,0" ItemsSource="{Binding Messages}">
+						<ItemsControl.ItemTemplate>
+							<DataTemplate x:DataType="vm:ChatMessage">
+								<Grid Margin="0,12">
+									<Grid ColumnDefinitions="Auto, *" IsVisible="{Binding !IsMe}">
+										<Border
+											Grid.Column="0"
+											Width="32"
+											Height="32"
+											Margin="0,4,12,0"
+											VerticalAlignment="Top"
+											Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+											CornerRadius="16">
+											<fluenticons:SymbolIcon
+												FontSize="18"
+												Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+												Symbol="Bot" />
+										</Border>
+										<StackPanel Grid.Column="1" Spacing="8">
+											<md:MarkdownScrollViewer
+												x:Name="MarkdownViewer"
+												Markdown="{Binding Text}"
+												SaveScrollValueWhenContentUpdated="True">
+												<md:MarkdownScrollViewer.Plugins>
+													<md:MdAvPlugins>
+														<mdt:ChatAISetup />
+													</md:MdAvPlugins>
+												</md:MarkdownScrollViewer.Plugins>
+											</md:MarkdownScrollViewer>
+										</StackPanel>
+									</Grid>
+
+									<StackPanel HorizontalAlignment="Right" IsVisible="{Binding IsMe}">
+										<Border
+											MaxWidth="500"
+											Padding="16,10"
+											Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+											BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+											BorderThickness="1"
+											CornerRadius="12">
+											<SelectableTextBlock
+												FontSize="15"
+												Text="{Binding Text}"
+												TextWrapping="Wrap" />
+										</Border>
+									</StackPanel>
+								</Grid>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+
+					<!--  Loading Indicator  -->
+					<Grid
+						Margin="10,12"
+						ColumnDefinitions="Auto, *"
+						IsVisible="{Binding IsLoading}">
+						<Border
+							Grid.Column="0"
+							Width="32"
+							Height="32"
+							Margin="0,4,12,0"
+							VerticalAlignment="Top"
+							Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+							CornerRadius="16">
+							<fluenticons:SymbolIcon
+								FontSize="18"
+								Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+								Symbol="Bot" />
+						</Border>
+						<StackPanel
+							Grid.Column="1"
+							VerticalAlignment="Center"
+							Spacing="5">
+							<SelectableTextBlock
+								FontStyle="Italic"
+								Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+								Text="Thinking..." />
+							<ProgressBar
+								MaxWidth="150"
+								HorizontalAlignment="Left"
+								Foreground="{DynamicResource SystemControlForegroundBaseMediumBrush}"
+								IsIndeterminate="True" />
+						</StackPanel>
+					</Grid>
+				</StackPanel>
+			</ScrollViewer>
+
+			<Border
+				Grid.Row="1"
+				Margin="0,16,0,0"
+				Padding="16,12,16,8"
+				Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+				BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+				BorderThickness="1"
+				CornerRadius="20">
+				<Grid RowDefinitions="Auto, Auto, Auto">
+					<!--  Image Thumbnails Preview  -->
+					<ItemsControl
+						Grid.Row="0"
+						Margin="12,0,12,8"
+						ItemsSource="{Binding SelectedImages}">
+						<ItemsControl.ItemsPanel>
+							<ItemsPanelTemplate>
+								<StackPanel Orientation="Horizontal" Spacing="8" />
+							</ItemsPanelTemplate>
+						</ItemsControl.ItemsPanel>
+						<ItemsControl.ItemTemplate>
+							<DataTemplate>
+								<Border
+									Width="50"
+									Height="50"
+									BorderBrush="#30ffffff"
+									BorderThickness="1"
+									ClipToBounds="True"
+									CornerRadius="4">
+									<Grid>
+										<Image Source="{Binding ., Converter={StaticResource PathToBitmapConverter}}" Stretch="UniformToFill" />
+										<Button
+											Width="16"
+											Height="16"
+											Margin="2"
+											Padding="0"
+											HorizontalAlignment="Right"
+											VerticalAlignment="Top"
+											Background="#80000000"
+											Command="{Binding $parent[UserControl].DataContext.RemoveImageCommand}"
+											CommandParameter="{Binding .}"
+											CornerRadius="8">
+											<fluenticons:SymbolIcon
+												FontSize="10"
+												Foreground="White"
+												Symbol="Dismiss" />
+										</Button>
+									</Grid>
+								</Border>
+							</DataTemplate>
+						</ItemsControl.ItemTemplate>
+					</ItemsControl>
+
+					<TextBox
+						x:Name="MessageInput"
+						Grid.Row="1"
+						MinHeight="60"
+						AcceptsReturn="True"
+						Background="Transparent"
+						BorderThickness="0"
+						Text="{Binding MessageInput}"
+						TextWrapping="Wrap"
+						Watermark="Ask anything..." />
+
+					<Grid
+						Grid.Row="2"
+						Margin="0,8,0,0"
+						ColumnDefinitions="Auto, *, Auto">
+						<Button
+							Grid.Column="0"
+							Padding="4,2"
+							Background="Transparent"
+							BorderThickness="0"
+							Command="{Binding AddFilesCommand}">
+							<StackPanel Orientation="Horizontal" Spacing="12">
+								<fluenticons:SymbolIcon
+									FontSize="18"
+									Foreground="#a1a1aa"
+									Symbol="Add" />
+								<TextBlock
+									VerticalAlignment="Center"
+									FontSize="12"
+									Foreground="#a1a1aa"
+									Text="Add Files" />
+							</StackPanel>
+						</Button>
+						<ComboBox
+							Grid.Column="1"
+							MinWidth="120"
+							Margin="0,0,10,0"
+							HorizontalAlignment="Right"
+							VerticalAlignment="Center"
+							ItemsSource="{Binding AvailableModels}"
+							SelectedItem="{Binding SelectedModel}" />
+						<Panel Grid.Column="2">
+							<Button
+								Padding="8"
+								Background="Transparent"
+								Command="{Binding SendMessageCommand}"
+								IsVisible="{Binding !IsGenerating}">
+								<fluenticons:SymbolIcon
+									FontSize="20"
+									Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+									Symbol="Send" />
+							</Button>
+							<Button
+								Padding="8"
+								Background="Transparent"
+								Command="{Binding StopGenerationCommand}"
+								IsVisible="{Binding IsGenerating}">
+								<fluenticons:SymbolIcon
+									FontSize="20"
+									Foreground="#FF5555"
+									Symbol="Stop" />
+							</Button>
+						</Panel>
+					</Grid>
+				</Grid>
+			</Border>
+		</Grid>
+
+		<!--  Modal Overlay  -->
+		<Grid IsVisible="{Binding KeyCreationVM.IsModalOpen}">
+			<Border Background="#80000000" />
+			<model:UpsertKeyModal DataContext="{Binding KeyCreationVM}" IsVisible="{Binding KeyCreationVM.IsEditorVisible}" />
+		</Grid>
+	</Grid>
+</UserControl>

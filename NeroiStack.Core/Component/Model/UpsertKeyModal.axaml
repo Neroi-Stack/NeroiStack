@@ -1,0 +1,146 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:NeroiStack.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="600"
+             x:Class="NeroiStack.Component.Model.UpsertKeyModal">
+	
+	<Border
+		Width="500"
+		HorizontalAlignment="Center"
+		VerticalAlignment="Center"
+		Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+		BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+		BorderThickness="1"
+		CornerRadius="8">
+		<Grid Margin="20" RowDefinitions="Auto, *, Auto">
+			<SelectableTextBlock
+				Grid.Row="0"
+				Margin="0,0,0,15"
+				FontSize="20"
+				FontWeight="Bold"
+				Text="{Binding ModalTitle}" />
+
+			<ScrollViewer Grid.Row="1" MaxHeight="500">
+				<StackPanel Spacing="10">
+					<StackPanel
+						Margin="0,0,0,10"
+						Orientation="Horizontal"
+						Spacing="10">
+						<TextBlock
+							VerticalAlignment="Center"
+							FontWeight="Bold"
+							Text="Supplier:" />
+						<ComboBox
+							Width="200"
+							VerticalAlignment="Center"
+							ItemsSource="{Binding AvailableSuppliers}"
+							SelectedItem="{Binding CurrentSupplierInput}" />
+					</StackPanel>
+
+					<StackPanel
+						Margin="0,0,0,10"
+						Orientation="Horizontal"
+						Spacing="10">
+						<TextBlock
+							VerticalAlignment="Center"
+							FontWeight="Bold"
+							Text="Key Type:" />
+						<ComboBox
+							Width="200"
+							VerticalAlignment="Center"
+							ItemsSource="{Binding AvailableKeyTypes}"
+							SelectedItem="{Binding CurrentKeyTypeInput}" />
+					</StackPanel>
+
+					<Grid
+						Margin="0,5"
+						ColumnDefinitions="100, *"
+						RowDefinitions="Auto, Auto, Auto">
+						<TextBlock
+							Grid.Row="0"
+							Grid.Column="0"
+							VerticalAlignment="Center"
+							FontWeight="Medium"
+							Text="Endpoint" />
+						<TextBox
+							Grid.Row="0"
+							Grid.Column="1"
+							Margin="0,0,0,10"
+							Text="{Binding CurrentEndpointInput}"
+							Watermark="https://api.openai.com/v1 (Optional)" />
+
+						<TextBlock
+							Grid.Row="1"
+							Grid.Column="0"
+							VerticalAlignment="Center"
+							FontWeight="Medium"
+							Text="API Key" />
+						<TextBox
+							Grid.Row="1"
+							Grid.Column="1"
+							Margin="0,0,0,10"
+							PasswordChar="*"
+							Text="{Binding CurrentKeyInput}"
+							Watermark="sk-..." />
+
+						<Grid
+							Grid.Row="2"
+							Grid.Column="0"
+							Margin="0,5,10,0"
+							VerticalAlignment="Top"
+							ColumnDefinitions="*, Auto">
+							<TextBlock
+								VerticalAlignment="Center"
+								FontWeight="Medium"
+								Text="Models" />
+							<Button
+								Grid.Column="1"
+								Padding="8,2"
+								ClipToBounds="True"
+								Command="{Binding AddModelToCurrentCommand}"
+								Content="+" />
+						</Grid>
+
+						<StackPanel
+							Grid.Row="2"
+							Grid.Column="1"
+							Margin="0,5,0,0">
+							<ItemsControl ItemsSource="{Binding CurrentModels}">
+								<ItemsControl.ItemTemplate>
+									<DataTemplate>
+										<Grid Margin="0,0,0,5" ColumnDefinitions="*, Auto">
+											<TextBox Text="{Binding Name}" Watermark="Model Name (e.g. gpt-4)" />
+											<Button
+												Grid.Column="1"
+												Margin="5,0,0,0"
+												Padding="8,5"
+												VerticalAlignment="Stretch"
+												Command="{Binding $parent[UserControl].((vm:KeyManagementViewModel)DataContext).RemoveModelFromCurrentCommand}"
+												CommandParameter="{Binding}"
+												Content="X" />
+										</Grid>
+									</DataTemplate>
+								</ItemsControl.ItemTemplate>
+							</ItemsControl>
+						</StackPanel>
+					</Grid>
+				</StackPanel>
+			</ScrollViewer>
+
+			<StackPanel
+				Grid.Row="2"
+				Margin="0,15,0,0"
+				HorizontalAlignment="Right"
+				Orientation="Horizontal"
+				Spacing="10">
+				<Button Command="{Binding CloseModalCommand}" Content="Cancel" />
+				<Button
+					Classes="Success"
+					Command="{Binding SaveCommand}"
+					Content="Save" />
+			</StackPanel>
+		</Grid>
+	</Border>
+</UserControl>

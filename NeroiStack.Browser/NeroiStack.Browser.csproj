@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+    <Nullable>enable</Nullable>
+    <WasmMainJSPath>AppBundle\main.js</WasmMainJSPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia.Browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NeroiStack.Core\NeroiStack.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="AppBundle\**" />
+  </ItemGroup>
+</Project>

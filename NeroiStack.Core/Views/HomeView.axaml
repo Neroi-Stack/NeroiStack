@@ -1,0 +1,122 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:fluenticons="using:FluentIcons.Avalonia"
+             xmlns:vm="using:NeroiStack.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="600"
+             x:Class="NeroiStack.Views.HomeView"
+             x:DataType="vm:HomeViewModel">
+
+    <UserControl.Styles>
+        <Style Selector="Button.DashboardCard">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+            <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="CornerRadius" Value="12" />
+            <Setter Property="Padding" Value="20" />
+            <Setter Property="Margin" Value="0,0,20,20" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="VerticalAlignment" Value="Stretch" />
+            <Setter Property="Height" Value="140" />
+            <Setter Property="Width" Value="225" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Transitions">
+                <Transitions>
+                    <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
+                </Transitions>
+            </Setter>
+        </Style>
+        <Style Selector="Button.DashboardCard:pointerover /template/ ContentPresenter">
+            <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumBrush}" />
+            <Setter Property="RenderTransform" Value="scale(1.02)" />
+        </Style>
+        <Style Selector="Button.DashboardCard:pressed /template/ ContentPresenter">
+             <Setter Property="RenderTransform" Value="scale(0.98)" />
+        </Style>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="Auto, *">
+        <!-- Header Section -->
+        <StackPanel Grid.Row="0" Margin="0,0,0,30">
+            
+            <TextBlock Text="Welcome to NeroiStack" 
+                       FontSize="32" 
+                       FontWeight="Bold" 
+                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+            <TextBlock Text="Your personal AI agent orchestration platform." 
+                       FontSize="16" 
+                       Opacity="0.6" 
+                       Margin="0,8,0,0" 
+                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+        </StackPanel>
+
+        <!-- Quick Access Cards -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBlock Text="Quick Access" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,15" Opacity="0.8" />
+                
+                <WrapPanel Orientation="Horizontal">
+                    <!-- Manage Agents -->
+                    <Button Classes="DashboardCard" Command="{Binding NavigateToAgentsCommand}">
+                        <StackPanel Spacing="12">
+                            <Border Width="40" Height="40" CornerRadius="10" Background="#204CAF50" HorizontalAlignment="Left">
+                                <fluenticons:SymbolIcon Symbol="Person" FontSize="20" Foreground="#4CAF50" />
+                            </Border>
+                            <TextBlock Text="Manage Agents" FontWeight="SemiBold" FontSize="16" />
+                            <TextBlock Text="Create and configure AI agents." FontSize="12" Opacity="0.6" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Chat Classes -->
+                    <Button Classes="DashboardCard" Command="{Binding NavigateToChatsCommand}">
+                        <StackPanel Spacing="12">
+                            <Border Width="40" Height="40" CornerRadius="10" Background="#202196F3" HorizontalAlignment="Left">
+                                <fluenticons:SymbolIcon Symbol="SettingsChat" FontSize="20" Foreground="#2196F3" />
+                            </Border>
+                            <TextBlock Text="Chat Classes" FontWeight="SemiBold" FontSize="16" />
+                            <TextBlock Text="Define chat behaviors." FontSize="12" Opacity="0.6" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Plugins -->
+                    <Button Classes="DashboardCard" Command="{Binding NavigateToPluginsCommand}">
+                        <StackPanel Spacing="12">
+                            <Border Width="40" Height="40" CornerRadius="10" Background="#209C27B0" HorizontalAlignment="Left">
+                                <fluenticons:SymbolIcon Symbol="PuzzlePiece" FontSize="20" Foreground="#9C27B0" />
+                            </Border>
+                            <TextBlock Text="Plugins" FontWeight="SemiBold" FontSize="16" />
+                            <TextBlock Text="Extend limits with plugins." FontSize="12" Opacity="0.6" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Button>
+                    
+                     <!-- Key Management (Optional link, reusing Settings command effectively or add new one, let's stick to Settings for now to keep it simple, or add a dedicated one later) -->
+                     <Button Classes="DashboardCard" Command="{Binding NavigateToSettingsCommand}">
+                        <StackPanel Spacing="12">
+                            <Border Width="40" Height="40" CornerRadius="10" Background="#20FFC107" HorizontalAlignment="Left">
+                                <fluenticons:SymbolIcon Symbol="Key" FontSize="20" Foreground="#FFC107" />
+                            </Border>
+                            <TextBlock Text="Key Management" FontWeight="SemiBold" FontSize="16" />
+                            <TextBlock Text="App preferences and keys." FontSize="12" Opacity="0.6" TextWrapping="Wrap" />
+                        </StackPanel>
+                    </Button>
+
+                </WrapPanel>
+
+                <!-- Some Info Section -->
+                <TextBlock Text="System Status" FontSize="18" FontWeight="SemiBold" Margin="0,20,0,15" Opacity="0.8" />
+                <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" 
+                        CornerRadius="12" Padding="20" Margin="0,0,20,0">
+                    <Grid ColumnDefinitions="*, Auto">
+                        <StackPanel Spacing="5">
+                             <TextBlock Text="All systems operational." FontWeight="Medium" />
+                             <TextBlock Text="NeroiStack is running locally on your machine." FontSize="12" Opacity="0.6" />
+                        </StackPanel>
+                        <fluenticons:SymbolIcon Grid.Column="1" Symbol="CheckmarkCircle" Foreground="#4CAF50" FontSize="24" />
+                    </Grid>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

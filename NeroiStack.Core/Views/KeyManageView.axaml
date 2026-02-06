@@ -1,0 +1,225 @@
+<UserControl
+	x:Class="NeroiStack.Views.KeyManagementView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:fluenticons="using:FluentIcons.Avalonia"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:model="clr-namespace:NeroiStack.Component.Model"
+	xmlns:vm="clr-namespace:NeroiStack.ViewModels"
+	d:DesignHeight="600"
+	d:DesignWidth="800"
+	x:DataType="vm:KeyManagementViewModel"
+	mc:Ignorable="d">
+
+	<UserControl.Styles>
+		<Style Selector="Button.Link">
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="BorderThickness" Value="0" />
+			<Setter Property="Padding" Value="5" />
+			<Setter Property="Cursor" Value="Hand" />
+		</Style>
+
+		<!--  Card Style Matching HomeView  -->
+		<Style Selector="Border.Card">
+			<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+			<Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+			<Setter Property="BorderThickness" Value="1" />
+			<Setter Property="CornerRadius" Value="12" />
+			<Setter Property="Padding" Value="20" />
+			<Setter Property="Margin" Value="0,0,20,20" />
+			<Setter Property="Width" Value="300" />
+			<Setter Property="Height" Value="180" />
+			<Setter Property="Transitions">
+				<Transitions>
+					<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
+				</Transitions>
+			</Setter>
+		</Style>
+	</UserControl.Styles>
+
+	<Grid>
+		<!--  Main Content  -->
+		<Grid RowDefinitions="Auto, *">
+			<!--  Header / Add Button  -->
+			<StackPanel Grid.Row="0" Margin="0,0,0,30">
+				<Grid Margin="0,0,20,0" ColumnDefinitions="*, Auto">
+					<TextBlock
+						FontSize="32"
+						FontWeight="Bold"
+						Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+						Text="Key Model Management" />
+					<Button
+						Grid.Column="1"
+						Classes="Success"
+						Command="{Binding AddKeyCommand}"
+						Content="+ Add Key" />
+				</Grid>
+				<TextBlock
+					Margin="0,8,0,0"
+					FontSize="16"
+					Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+					Opacity="0.6"
+					Text="Manage API keys and model providers." />
+			</StackPanel>
+
+			<!--  Card List  -->
+			<ScrollViewer Grid.Row="1" Padding="0,0,0,20">
+				<ItemsControl ItemsSource="{Binding Keys}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel Orientation="Horizontal" />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate x:DataType="vm:KeyItemViewModel">
+							<Border Classes="Card">
+								<Grid RowDefinitions="Auto, *">
+									<!--  Header: Supplier Icon/Name  -->
+									<Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto">
+										<!--  Icon  -->
+										<Border
+											Width="40"
+											Height="40"
+											Margin="0,0,12,0"
+											VerticalAlignment="Top"
+											Background="#20FFC107"
+											CornerRadius="10">
+											<fluenticons:SymbolIcon
+												FontSize="20"
+												Foreground="#FFC107"
+												Symbol="Key" />
+										</Border>
+
+										<StackPanel Grid.Column="1">
+											<SelectableTextBlock
+												FontSize="16"
+												FontWeight="SemiBold"
+												Text="{Binding Supplier}"
+												TextTrimming="CharacterEllipsis" />
+											<SelectableTextBlock
+												FontSize="12"
+												Opacity="0.6"
+												Text="{Binding KeyType}"
+												TextTrimming="CharacterEllipsis" />
+										</StackPanel>
+
+										<!--  Menu  -->
+										<Button
+											Grid.Column="2"
+											VerticalAlignment="Top"
+											Classes="Link"
+											Content="⋮">
+											<Button.Flyout>
+												<MenuFlyout>
+													<MenuItem
+														Command="{Binding $parent[UserControl].((vm:KeyManagementViewModel)DataContext).EditKeyCommand}"
+														CommandParameter="{Binding}"
+														Header="Edit" />
+													<MenuItem
+														Command="{Binding $parent[UserControl].((vm:KeyManagementViewModel)DataContext).DeleteKeyCommand}"
+														CommandParameter="{Binding}"
+														Header="Delete" />
+												</MenuFlyout>
+											</Button.Flyout>
+										</Button>
+									</Grid>
+
+									<!--  Details  -->
+									<StackPanel
+										Grid.Row="1"
+										Margin="0,15,0,0"
+										Spacing="5">
+										<Grid ColumnDefinitions="Auto, *">
+											<SelectableTextBlock
+												FontSize="13"
+												Opacity="0.7"
+												Text="End Point: " />
+											<SelectableTextBlock
+												Grid.Column="1"
+												HorizontalAlignment="Right"
+												FontFamily="Consolas, Monospace"
+												FontSize="13"
+												Text="{Binding EndpointDisplay}" />
+										</Grid>
+										<Grid ColumnDefinitions="Auto, *">
+											<SelectableTextBlock
+												FontSize="13"
+												Opacity="0.7"
+												Text="Key: " />
+											<SelectableTextBlock
+												Grid.Column="1"
+												HorizontalAlignment="Right"
+												FontFamily="Consolas, Monospace"
+												FontSize="13"
+												Text="{Binding KeyDisplay}" />
+										</Grid>
+										<Grid ColumnDefinitions="Auto, *">
+											<SelectableTextBlock
+												FontSize="13"
+												Opacity="0.7"
+												Text="Models: " />
+											<SelectableTextBlock
+												Grid.Column="1"
+												HorizontalAlignment="Right"
+												FontSize="13"
+												Text="{Binding ModelCount}" />
+										</Grid>
+									</StackPanel>
+								</Grid>
+							</Border>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ScrollViewer>
+		</Grid>
+
+		<!--  Modal Overlay  -->
+		<Grid IsVisible="{Binding IsModalOpen}">
+			<!--  Dimmed Background  -->
+			<Border Background="#80000000">
+				<!--  Optional: Close on background click  -->
+				<!--  <Border.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding CloseModalCommand}" />
+                </Border.GestureRecognizers>-->
+			</Border>
+
+			<!--  Upsert Modal  -->
+			<model:UpsertKeyModal IsVisible="{Binding IsEditorVisible}" />
+
+			<!--  Delete Confirm Modal  -->
+			<Border
+				Width="400"
+				VerticalAlignment="Center"
+				Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+				BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+				BorderThickness="1"
+				CornerRadius="8"
+				IsVisible="{Binding IsDeleteConfirmVisible}">
+				<Grid Margin="20" RowDefinitions="Auto, *, Auto">
+					<TextBlock
+						Grid.Row="0"
+						FontSize="20"
+						FontWeight="Bold"
+						Text="Delete Key" />
+					<TextBlock
+						Grid.Row="1"
+						Margin="0,15"
+						Text="Are you sure you want to delete this configuration? This action cannot be undone."
+						TextWrapping="Wrap" />
+					<StackPanel
+						Grid.Row="2"
+						HorizontalAlignment="Right"
+						Orientation="Horizontal"
+						Spacing="10">
+						<Button Command="{Binding CloseModalCommand}" Content="Cancel" />
+						<Button
+							Classes="Danger"
+							Command="{Binding ConfirmDeleteAsyncCommand}"
+							Content="Delete" />
+					</StackPanel>
+				</Grid>
+			</Border>
+		</Grid>
+	</Grid>
+</UserControl>

@@ -1,0 +1,162 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="NeroiStack.Desktop.App"
+             xmlns:conv="using:NeroiStack.Converters"
+             xmlns:fluenticons="using:FluentIcons.Avalonia"
+             xmlns:local="using:NeroiStack"
+             RequestedThemeVariant="Default">
+  <!--  "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options.  -->
+
+  <Application.DataTemplates>
+    <local:ViewLocator />
+  </Application.DataTemplates>
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+          <SolidColorBrush x:Key="ActiveForegroundBrush" Color="black" />
+          <SolidColorBrush x:Key="ActiveBackgroundBrush" Color="#81C0C0" />
+          <!--  Danger Brushes  -->
+          <SolidColorBrush x:Key="DangerForegroundBrush" Color="#E81123" />
+          <!--  Warning Brushes  -->
+          <SolidColorBrush x:Key="WarningForegroundBrush" Color="#FFB900" />
+          <!--  Success Brushes  -->
+          <SolidColorBrush x:Key="SuccessForegroundBrush" Color="#4F9D9D" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+          <SolidColorBrush x:Key="ActiveForegroundBrush" Color="white" />
+          <SolidColorBrush x:Key="ActiveBackgroundBrush" Color="#4F9D9D" />
+          <!--  Danger Brushes  -->
+          <SolidColorBrush x:Key="DangerForegroundBrush" Color="#E81123" />
+          <!--  Warning Brushes  -->
+          <SolidColorBrush x:Key="WarningForegroundBrush" Color="#FFB900" />
+          <!--  Success Brushes  -->
+          <SolidColorBrush x:Key="SuccessForegroundBrush" Color="#81C0C0" />
+        </ResourceDictionary>
+      </ResourceDictionary.ThemeDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+
+  <Application.Styles>
+    <FluentTheme>
+      <FluentTheme.Palettes>
+        <ColorPaletteResources
+          x:Key="Light"
+          Accent="#81C0C0"
+          ErrorText="Red"
+          RegionColor="White" />
+        <ColorPaletteResources
+          x:Key="Dark"
+          Accent="#4F9D9D"
+          ErrorText="Red"
+          RegionColor="Black" />
+      </FluentTheme.Palettes>
+    </FluentTheme>
+
+    <!--  Global Cursor Styles  -->
+    <Style Selector="Button">
+      <Setter Property="Cursor" Value="Hand" />
+    </Style>
+
+    <!--  Global Button Hover Styles  -->
+    <Style Selector="Button:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource ActiveBackgroundBrush}" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrush}" />
+    </Style>
+    <Style Selector="Button:pointerover TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrush}" />
+    </Style>
+    <Style Selector="Button:pointerover fluenticons|SymbolIcon">
+      <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrush}" />
+    </Style>
+
+    <Style Selector="ToggleSwitch">
+      <Setter Property="Cursor" Value="Hand" />
+    </Style>
+    <Style Selector="CheckBox">
+      <Setter Property="Cursor" Value="Hand" />
+    </Style>
+    <Style Selector="ComboBox">
+      <Setter Property="Cursor" Value="Hand" />
+    </Style>
+    <Style Selector="MenuItem">
+      <Setter Property="Cursor" Value="Hand" />
+    </Style>
+    <!--  Danger Button - Default State  -->
+    <Style Selector="Button.Danger /template/ ContentPresenter">
+      <Setter Property="BorderBrush" Value="{DynamicResource DangerForegroundBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource DangerForegroundBrush}" />
+    </Style>
+    <Style Selector="Button.Danger TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource DangerForegroundBrush}" />
+    </Style>
+    <Style Selector="Button.Danger fluenticons|SymbolIcon">
+      <Setter Property="Foreground" Value="{DynamicResource DangerForegroundBrush}" />
+    </Style>
+
+    <!--  Danger Button - Hover State  -->
+    <Style Selector="Button.Danger:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource DangerForegroundBrush}" />
+      <Setter Property="BorderBrush" Value="{DynamicResource ActiveForegroundBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrush}" />
+    </Style>
+    <Style Selector="Button.Danger:pointerover TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrush}" />
+    </Style>
+    <Style Selector="Button.Danger:pointerover fluenticons|SymbolIcon">
+      <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrush}" />
+    </Style>
+
+    <!--  Warning Button - Default State  -->
+    <Style Selector="Button.Warning /template/ ContentPresenter">
+      <Setter Property="BorderBrush" Value="{DynamicResource WarningForegroundBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource WarningForegroundBrush}" />
+    </Style>
+    <Style Selector="Button.Warning TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource WarningForegroundBrush}" />
+    </Style>
+    <Style Selector="Button.Warning fluenticons|SymbolIcon">
+      <Setter Property="Foreground" Value="{DynamicResource WarningForegroundBrush}" />
+    </Style>
+
+    <!--  Warning Button - Hover State  -->
+    <Style Selector="Button.Warning:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource WarningForegroundBrush}" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrush}" />
+    </Style>
+    <Style Selector="Button.Warning:pointerover TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrush}" />
+    </Style>
+    <Style Selector="Button.Warning:pointerover fluenticons|SymbolIcon">
+      <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrush}" />
+    </Style>
+
+    <!--  Success Button - Default State  -->
+    <Style Selector="Button.Success /template/ ContentPresenter">
+      <Setter Property="BorderBrush" Value="{DynamicResource SuccessForegroundBrush}" />
+      <Setter Property="Foreground" Value="{DynamicResource SuccessForegroundBrush}" />
+    </Style>
+    <Style Selector="Button.Success TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource SuccessForegroundBrush}" />
+    </Style>
+    <Style Selector="Button.Success fluenticons|SymbolIcon">
+      <Setter Property="Foreground" Value="{DynamicResource SuccessForegroundBrush}" />
+    </Style>
+
+    <!--  Success Button - Hover State  -->
+    <Style Selector="Button.Success:pointerover /template/ ContentPresenter">
+      <Setter Property="Background" Value="{DynamicResource SuccessForegroundBrush}" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrush}" />
+    </Style>
+    <Style Selector="Button.Success:pointerover TextBlock">
+      <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrush}" />
+    </Style>
+    <Style Selector="Button.Success:pointerover fluenticons|SymbolIcon">
+      <Setter Property="Foreground" Value="{DynamicResource ActiveForegroundBrush}" />
+    </Style>
+  </Application.Styles>
+</Application>

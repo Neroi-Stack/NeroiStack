@@ -1,0 +1,253 @@
+<UserControl
+	x:Class="NeroiStack.Views.PluginManageView"
+	xmlns="https://github.com/avaloniaui"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:compModel="clr-namespace:NeroiStack.Component.Model"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:fluenticons="using:FluentIcons.Avalonia"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:model="using:NeroiStack.Agent.Model"
+	xmlns:vm="clr-namespace:NeroiStack.ViewModels"
+	d:DesignHeight="450"
+	d:DesignWidth="800"
+	x:DataType="vm:PluginManageViewModel"
+	mc:Ignorable="d">
+	<UserControl.Resources />
+
+	<UserControl.DataTemplates>
+		<DataTemplate DataType="{x:Type model:PluginMcpHttpVM}">
+			<StackPanel>
+				<SelectableTextBlock Text="Endpoint" />
+				<TextBox Text="{Binding Endpoint}" />
+				<SelectableTextBlock Text="API Key" />
+				<TextBox PasswordChar="*" Text="{Binding ApiKey}" />
+			</StackPanel>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type model:ChPluginMcpStdioVM}">
+			<StackPanel>
+				<SelectableTextBlock Text="Command" />
+				<TextBox Text="{Binding Command}" />
+				<SelectableTextBlock Text="Arguments (one per line)" />
+				<TextBox
+					Height="80"
+					AcceptsReturn="True"
+					Text="{Binding $parent[UserControl].((vm:PluginManageViewModel)DataContext).McpStdioArguments}" />
+			</StackPanel>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type model:ChPluginOpenApiVM}">
+			<StackPanel>
+				<SelectableTextBlock Text="URI" />
+				<TextBox Text="{Binding Uri}" />
+				<SelectableTextBlock Text="Auth Type" />
+				<ComboBox SelectedIndex="{Binding $parent[UserControl].((vm:PluginManageViewModel)DataContext).OpenApiAuthType}">
+					<ComboBoxItem>No Auth</ComboBoxItem>
+					<ComboBoxItem>API Key</ComboBoxItem>
+					<ComboBoxItem>Bearer Token</ComboBoxItem>
+				</ComboBox>
+				<StackPanel IsVisible="{Binding $parent[UserControl].((vm:PluginManageViewModel)DataContext).IsApiKeyAuth}">
+					<SelectableTextBlock Text="API Key" />
+					<TextBox PasswordChar="*" Text="{Binding ApiKey}" />
+				</StackPanel>
+				<StackPanel IsVisible="{Binding $parent[UserControl].((vm:PluginManageViewModel)DataContext).IsBearerTokenAuth}">
+					<SelectableTextBlock Text="Bearer Token" />
+					<TextBox PasswordChar="*" Text="{Binding BearerToken}" />
+				</StackPanel>
+			</StackPanel>
+		</DataTemplate>
+		<DataTemplate DataType="{x:Type model:ChPluginSqlVM}">
+			<StackPanel Spacing="5">
+				<SelectableTextBlock Text="Provider" />
+				<ComboBox 
+					HorizontalAlignment="Stretch" 
+					ItemsSource="{x:Static model:ChPluginSqlVM.AvailableProviders}"
+					SelectedItem="{Binding Provider}" />
+				<SelectableTextBlock Text="Connection String" />
+				<TextBox Text="{Binding ConnectionString}" />
+			</StackPanel>
+		</DataTemplate>
+	</UserControl.DataTemplates>
+
+	<UserControl.Styles>
+		<Style Selector="Button.Link">
+			<Setter Property="Background" Value="Transparent" />
+			<Setter Property="BorderThickness" Value="0" />
+			<Setter Property="Padding" Value="5" />
+			<Setter Property="Cursor" Value="Hand" />
+		</Style>
+
+		<!--  Card Style Matching HomeView  -->
+		<Style Selector="Border.Card">
+			<Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+			<Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+			<Setter Property="BorderThickness" Value="1" />
+			<Setter Property="CornerRadius" Value="12" />
+			<Setter Property="Padding" Value="20" />
+			<Setter Property="Margin" Value="0,0,20,20" />
+			<Setter Property="Width" Value="300" />
+			<Setter Property="Height" Value="180" />
+			<Setter Property="Transitions">
+				<Transitions>
+					<TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
+				</Transitions>
+			</Setter>
+		</Style>
+	</UserControl.Styles>
+
+	<Grid>
+		<Grid RowDefinitions="Auto, *">
+			<!--  Header  -->
+			<StackPanel Grid.Row="0" Margin="0,0,0,30">
+				<Grid Margin="0,0,20,0" ColumnDefinitions="*, Auto">
+					<TextBlock
+						FontSize="32"
+						FontWeight="Bold"
+						Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+						Text="Plugins" />
+					<Button
+						Grid.Column="1"
+						Classes="Success"
+						Command="{Binding CreateCommand}"
+						Content="New Plugin" />
+				</Grid>
+				<TextBlock
+					Margin="0,8,0,0"
+					FontSize="16"
+					Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+					Opacity="0.6"
+					Text="Extend AI capabilities with MCP or OpenAPI plugins." />
+			</StackPanel>
+
+			<!--  Content  -->
+			<ScrollViewer Grid.Row="1" Padding="0,0,0,20">
+				<ItemsControl ItemsSource="{Binding Plugins}">
+					<ItemsControl.ItemsPanel>
+						<ItemsPanelTemplate>
+							<WrapPanel />
+						</ItemsPanelTemplate>
+					</ItemsControl.ItemsPanel>
+					<ItemsControl.ItemTemplate>
+						<DataTemplate>
+							<Border Classes="Card">
+								<Grid RowDefinitions="Auto, *, Auto">
+									<Grid Grid.Row="0" ColumnDefinitions="Auto, *, Auto">
+										<!--  Icon  -->
+										<Border
+											Width="40"
+											Height="40"
+											Margin="0,0,12,0"
+											VerticalAlignment="Top"
+											Background="#209C27B0"
+											CornerRadius="10">
+											<fluenticons:SymbolIcon
+												FontSize="20"
+												Foreground="#9C27B0"
+												Symbol="PuzzlePiece" />
+										</Border>
+
+										<StackPanel Grid.Column="1">
+											<SelectableTextBlock
+												FontSize="16"
+												FontWeight="SemiBold"
+												Text="{Binding Name}"
+												TextTrimming="CharacterEllipsis" />
+											<SelectableTextBlock
+												FontSize="12"
+												Opacity="0.6"
+												Text="{Binding Type}" />
+										</StackPanel>
+										<Button
+											Grid.Column="2"
+											VerticalAlignment="Top"
+											Classes="Link"
+											Content="⋮">
+											<Button.Flyout>
+												<MenuFlyout>
+													<MenuItem
+														Command="{Binding $parent[UserControl].((vm:PluginManageViewModel)DataContext).EditCommand}"
+														CommandParameter="{Binding}"
+														Header="Edit" />
+													<MenuItem
+														Command="{Binding $parent[UserControl].((vm:PluginManageViewModel)DataContext).DeleteCommand}"
+														CommandParameter="{Binding}"
+														Header="Delete" />
+												</MenuFlyout>
+											</Button.Flyout>
+										</Button>
+									</Grid>
+									
+									<!--  Details  -->
+									<StackPanel
+										Grid.Row="1"
+										Margin="0,15,0,0"
+										Spacing="5">
+										<Grid ColumnDefinitions="Auto, *">
+											<SelectableTextBlock
+												FontSize="13"
+												Opacity="0.7"
+												Text="Description: " />
+											<SelectableTextBlock
+												Grid.Column="1"
+												HorizontalAlignment="Right"
+												FontFamily="Consolas, Monospace"
+												FontSize="13"
+												Text="{Binding Description}" />
+										</Grid>
+									</StackPanel>
+
+									<Grid Grid.Row="2" ColumnDefinitions="Auto, *">
+										<ToggleSwitch
+											Command="{Binding $parent[UserControl].((vm:PluginManageViewModel)DataContext).ToggleEnableCommand}"
+											CommandParameter="{Binding}"
+											IsChecked="{Binding IsEnabled}"
+											OffContent="Off"
+											OnContent="On" />
+									</Grid>
+								</Grid>
+							</Border>
+						</DataTemplate>
+					</ItemsControl.ItemTemplate>
+				</ItemsControl>
+			</ScrollViewer>
+		</Grid>
+
+		<!--  Modal Overlay  -->
+		<Grid Background="#AA000000" IsVisible="{Binding IsModalOpen}">
+			<!--  Editor Modal  -->
+			<compModel:UpsertPluginModal IsVisible="{Binding IsEditorVisible}" />
+
+			<!--  Delete Confirmation  -->
+			<Border
+				Width="300"
+				HorizontalAlignment="Center"
+				VerticalAlignment="Center"
+				Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+				BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+				BorderThickness="1"
+				CornerRadius="8"
+				IsVisible="{Binding IsDeleteConfirmVisible}">
+				<Grid Margin="20" RowDefinitions="Auto, Auto, Auto">
+					<SelectableTextBlock
+						Grid.Row="0"
+						FontSize="18"
+						FontWeight="Bold"
+						Text="Delete Plugin" />
+					<SelectableTextBlock
+						Grid.Row="1"
+						Margin="0,15"
+						Text="Are you sure you want to delete this plugin?" />
+					<StackPanel
+						Grid.Row="2"
+						HorizontalAlignment="Right"
+						Orientation="Horizontal"
+						Spacing="10">
+						<Button Command="{Binding CloseModalCommand}" Content="Cancel" />
+						<Button
+							Classes="Danger"
+							Command="{Binding ConfirmDeleteCommand}"
+							Content="Delete" />
+					</StackPanel>
+				</Grid>
+			</Border>
+		</Grid>
+	</Grid>
+</UserControl>
