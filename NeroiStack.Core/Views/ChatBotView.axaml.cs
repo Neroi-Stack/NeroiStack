@@ -14,7 +14,7 @@ public partial class ChatBotView : UserControl
 		InitializeComponent();
 		if (!Design.IsDesignMode)
 		{
-			DataContext = App.Current.Services?.GetService<ChatBotViewModel>() ?? new ChatBotViewModel();
+			DataContext = ServiceLocator.Services?.GetService<ChatBotViewModel>() ?? new ChatBotViewModel();
 		}
 	}
 

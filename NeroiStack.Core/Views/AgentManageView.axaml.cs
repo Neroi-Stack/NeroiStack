@@ -12,7 +12,7 @@ public partial class AgentManageView : UserControl
 		InitializeComponent();
 		if (!Design.IsDesignMode)
 		{
-			DataContext = App.Current.Services?.GetRequiredService<AgentManageViewModel>();
+			DataContext = ServiceLocator.Services?.GetRequiredService<AgentManageViewModel>();
 		}
 	}
 

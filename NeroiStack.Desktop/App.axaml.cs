@@ -34,6 +34,10 @@ public partial class App : Application
         var collection = new ServiceCollection();
         ConfigureServices(collection);
         Services = collection.BuildServiceProvider();
+        
+        // Set the service locator for Core library
+        NeroiStack.ServiceLocator.Services = Services;
+        
         using (var scope = Services.CreateScope())
         {
             var dbContext = scope.ServiceProvider.GetRequiredService<ChatContext>();

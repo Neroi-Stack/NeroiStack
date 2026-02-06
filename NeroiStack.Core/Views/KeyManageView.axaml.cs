@@ -12,7 +12,7 @@ public partial class KeyManagementView : UserControl
 		InitializeComponent();
 		if (!Design.IsDesignMode)
 		{
-			DataContext = App.Current.Services?.GetRequiredService<KeyManagementViewModel>();
+			DataContext = ServiceLocator.Services?.GetRequiredService<KeyManagementViewModel>();
 		}
 	}
 

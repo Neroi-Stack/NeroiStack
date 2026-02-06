@@ -12,7 +12,7 @@ public partial class ChatManageView : UserControl
 		InitializeComponent();
 		if (!Design.IsDesignMode)
 		{
-			DataContext = App.Current.Services?.GetRequiredService<ChatManageViewModel>();
+			DataContext = ServiceLocator.Services?.GetRequiredService<ChatManageViewModel>();
 		}
 	}
 

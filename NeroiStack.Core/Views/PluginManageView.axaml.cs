@@ -12,7 +12,7 @@ public partial class PluginManageView : UserControl
 		InitializeComponent();
 		if (!Design.IsDesignMode)
 		{
-			DataContext = App.Current.Services?.GetRequiredService<PluginManageViewModel>();
+			DataContext = ServiceLocator.Services?.GetRequiredService<PluginManageViewModel>();
 		}
 	}
 
