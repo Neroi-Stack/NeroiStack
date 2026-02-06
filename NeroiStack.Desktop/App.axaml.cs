@@ -36,7 +36,7 @@ public partial class App : Application
         Services = collection.BuildServiceProvider();
         
         // Set the service locator for Core library
-        NeroiStack.ServiceLocator.Services = Services;
+        NeroiStack.ServiceLocator.Initialize(Services);
         
         using (var scope = Services.CreateScope())
         {

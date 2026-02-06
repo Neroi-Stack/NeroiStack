@@ -30,18 +30,22 @@ NeroiStack 现在采用多平台架构，支持 Desktop、Web (WebAssembly)、An
   - 使用 `IClassicDesktopStyleApplicationLifetime`
   - 完整的依赖注入配置
   - SQLite 数据库支持
+  - **状态**: ✅ 完全可用
 
 - **NeroiStack.Browser**: Web 应用 (WebAssembly)
   - 使用 `ISingleViewApplicationLifetime`
-  - 浏览器特定的启动配置
+  - 需要 `wasm-tools` workload
+  - **状态**: 🔧 框架就绪，需要完成单视图布局和浏览器特定服务
 
 - **NeroiStack.Android**: Android 应用
   - 最低 API Level 21
   - 使用 Avalonia.Android
+  - **状态**: 🔧 框架就绪，需要完成单视图布局和移动特定服务
 
 - **NeroiStack.iOS**: iOS 应用
   - 最低 iOS 11.0
   - 使用 Avalonia.iOS
+  - **状态**: 🔧 框架就绪，需要完成单视图布局和移动特定服务
 
 ### 测试项目
 

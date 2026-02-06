@@ -16,10 +16,12 @@ A powerful AI agent application with multi-platform support.
 ## Platform Support
 
 NeroiStack now supports multiple platforms:
-- ✅ **Desktop** - Windows, macOS, Linux
-- ✅ **Web** - WebAssembly (Browser)
-- ✅ **Android** - Mobile devices
-- ✅ **iOS** - iPhone and iPad
+- ✅ **Desktop** - Windows, macOS, Linux (Fully functional)
+- 🔧 **Web** - WebAssembly (Framework ready, needs single-view layout implementation)
+- 🔧 **Android** - Mobile devices (Framework ready, needs single-view layout implementation)
+- 🔧 **iOS** - iPhone and iPad (Framework ready, needs single-view layout implementation)
+
+The Desktop platform is fully functional and can be used in production. The Browser, Android, and iOS platforms have the framework in place but require additional work to implement single-view layouts and platform-specific services.
 
 See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed architecture information.
 
