@@ -42,10 +42,14 @@ jobs:
                   dotnet publish NeroiStack/NeroiStack.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -o ./publish
 
             - name: Install Qt Installer Framework
-              uses: jurplel/install-qt-action@v4
-              with:
-                  version: "6.5.0"
-                  tools: "qtifw"
+              shell: bash
+              run: |
+                  python3 -m pip install aqtinstall
+                  if [ "$RUNNER_OS" == "Windows" ]; then
+                    python3 -m aqt install-tool windows desktop tools_ifw --outputdir "$HOME/Qt"
+                  else
+                    python3 -m aqt install-tool linux desktop tools_ifw --outputdir "$HOME/Qt"
+                  fi
 
             - name: Prepare Installer Data
               shell: bash
@@ -56,21 +60,19 @@ jobs:
             - name: Build Installer
               shell: bash
               run: |
-                  if ! command -v binarycreator &> /dev/null; then
-                    if [ "$RUNNER_OS" == "Windows" ]; then
-                      export PATH="$PATH:/c/Qt/Tools/QtInstallerFramework/4.8/bin:/c/Qt/Tools/QtInstallerFramework/4.7/bin:/c/Qt/Tools/QtInstallerFramework/4.6/bin:/c/Qt/Tools/QtInstallerFramework/4.5/bin"
-                    else
-                      export PATH="$PATH:$HOME/Qt/Tools/QtInstallerFramework/4.8/bin:$HOME/Qt/Tools/QtInstallerFramework/4.7/bin:$HOME/Qt/Tools/QtInstallerFramework/4.6/bin"
-                    fi
+                  IFW_BIN=$(find $HOME/Qt/Tools/QtInstallerFramework -name "bin" -type d | head -n 1)
+                  if [ -z "$IFW_BIN" ]; then
+                    echo "Error: Could not find IFW bin directory"
+                    exit 1
                   fi
-
+                  export PATH="$PATH:$IFW_BIN"
+                  echo "PATH set to: $IFW_BIN"
                   if [ "$RUNNER_OS" == "Linux" ]; then
-                    chmod +x installer/packages/com.neroi.stack/data/NeroiStack
+                    [ -f installer/packages/com.neroi.stack/data/NeroiStack ] && chmod +x installer/packages/com.neroi.stack/data/NeroiStack
                   fi
 
                   binarycreator --version
                   binarycreator -v -c installer/config/config.xml -p installer/packages NeroiStack-Installer-${{ matrix.runtime }}${{ matrix.installer_ext }}
-                  ls -lh NeroiStack-Installer-${{ matrix.runtime }}${{ matrix.installer_ext }}
 
             - name: Upload Installer to Artifacts
               uses: actions/upload-artifact@v4
