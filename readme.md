@@ -1,6 +1,6 @@
 # NeroiStack
 
-A powerful AI agent application. 
+A powerful AI agent application with multi-platform support.
 `Still under development; pull requests are welcome.`
 
 <img width="959" height="505" alt="image" src="https://github.com/user-attachments/assets/6bb5ef39-6938-456d-97bf-91f1a67537db" />
@@ -11,6 +11,17 @@ A powerful AI agent application.
 - MCP-Plugin architecture for extensibility
 - Integration with OpenAI and other AI services
 - Support for Multi-Agent Orchestration
+- **Multi-platform support**: Desktop (Windows, macOS, Linux), Web (WASM), Android, and iOS
+
+## Platform Support
+
+NeroiStack now supports multiple platforms:
+- ✅ **Desktop** - Windows, macOS, Linux
+- ✅ **Web** - WebAssembly (Browser)
+- ✅ **Android** - Mobile devices
+- ✅ **iOS** - iPhone and iPad
+
+See [ARCHITECTURE.md](ARCHITECTURE.md) for detailed architecture information.
 
 ## Roadmap
 - [ ] Expand plugin ecosystem for third-party integrations
@@ -22,6 +33,9 @@ A powerful AI agent application.
 1. Ensure you have `.NET 10 SDK` installed. You can download it from the [.NET website](https://dotnet.microsoft.com/download/dotnet/10.0).
 
 ## Getting Started
+
+### Desktop Application
+
 1. Clone the repository, and open it in your IDE
 	```bash
 	git clone https://github.com/tse-wei-chen/NeroiStack.git
@@ -31,13 +45,42 @@ A powerful AI agent application.
 
 3. Build the project using `.NET CLI`
 	```bash
-	dotnet build
+	dotnet build NeroiStack.Desktop
 	```
 
 4. Run the application
 	```bash
-	dotnet run --project NeroiStack/NeroiStack.csproj
+	dotnet run --project NeroiStack.Desktop/NeroiStack.Desktop.csproj
 	```
+
+### Web Application (WASM)
+
+1. Install the WASM workload:
+	```bash
+	dotnet workload install wasm-tools
+	```
+
+2. Build and run:
+	```bash
+	dotnet build NeroiStack.Browser
+	dotnet run --project NeroiStack.Browser
+	```
+
+### Mobile Applications
+
+For Android:
+```bash
+dotnet workload install android
+dotnet build NeroiStack.Android -f net10.0-android
+```
+
+For iOS (requires macOS):
+```bash
+dotnet workload install ios
+dotnet build NeroiStack.iOS -f net10.0-ios
+```
+
+See [MIGRATION.md](MIGRATION.md) for detailed migration information from the legacy single-platform version.
 
 ## Multi-Agent Orchestration Strategies
 NeroiStack supports various multi-agent orchestration strategies to enable complex AI workflows. Below are some of the key strategies illustrated with diagrams:
