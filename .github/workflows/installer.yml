@@ -7,6 +7,10 @@ on:
     pull_request:
         branches: [main]
     workflow_dispatch:
+
+permissions:
+    contents: write
+
 jobs:
     build-and-install:
         runs-on: ${{ matrix.os }}
@@ -25,17 +29,60 @@ jobs:
             - name: Checkout Code
               uses: actions/checkout@v4
 
+            - name: Setup .NET
+              uses: actions/setup-dotnet@v4
+              with:
+                  dotnet-version: "10.0.x"
+
+            - name: Restore Dependencies
+              run: dotnet restore NeroiStack.sln
+
+            - name: Publish Application
+              run: |
+                  dotnet publish NeroiStack/NeroiStack.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -o ./publish
+
+            - name: Install Qt Installer Framework
+              uses: miurahr/install-qt-action@v3
+              with:
+                  version: "6.5.0"
+                  tools: "qtifw"
+
+            - name: Prepare Installer Data
+              shell: bash
+              run: |
+                  mkdir -p installer/packages/com.neroi.stack/data
+                  cp -r ./publish/* installer/packages/com.neroi.stack/data/
+
+            - name: Build Installer
+              shell: bash
+              run: |
+                  if ! command -v binarycreator &> /dev/null; then
+                    if [ "$RUNNER_OS" == "Windows" ]; then
+                      export PATH="$PATH:/c/Qt/Tools/QtInstallerFramework/4.8/bin:/c/Qt/Tools/QtInstallerFramework/4.7/bin:/c/Qt/Tools/QtInstallerFramework/4.6/bin:/c/Qt/Tools/QtInstallerFramework/4.5/bin"
+                    else
+                      export PATH="$PATH:$HOME/Qt/Tools/QtInstallerFramework/4.8/bin:$HOME/Qt/Tools/QtInstallerFramework/4.7/bin:$HOME/Qt/Tools/QtInstallerFramework/4.6/bin"
+                    fi
+                  fi
+
+                  if [ "$RUNNER_OS" == "Linux" ]; then
+                    chmod +x installer/packages/com.neroi.stack/data/NeroiStack
+                  fi
+
+                  binarycreator --version
+                  binarycreator -v -c installer/config/config.xml -p installer/packages NeroiStack-Installer-${{ matrix.runtime }}${{ matrix.installer_ext }}
+                  ls -lh NeroiStack-Installer-${{ matrix.runtime }}${{ matrix.installer_ext }}
+
             - name: Upload Installer to Artifacts
               uses: actions/upload-artifact@v4
               with:
                   name: NeroiStack-Installer-${{ matrix.runtime }}
                   path: NeroiStack-Installer-${{ matrix.runtime }}${{ matrix.installer_ext }}
+                  if-no-files-found: error
 
             - name: Release Installer
               uses: softprops/action-gh-release@v2
               if: startsWith(github.ref, 'refs/tags/')
               with:
-                  files: |
-                      NeroiStack-Installer-${{ matrix.runtime }}${{ matrix.installer_ext }}
+                  files: NeroiStack-Installer-${{ matrix.runtime }}${{ matrix.installer_ext }}
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
