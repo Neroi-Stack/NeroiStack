@@ -15,6 +15,7 @@
 		<PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.2" />
 		<PackageVersion Include="ClassIsland.Markdown.Avalonia.Tight" Version="11.0.3.4" />
 		<PackageVersion Include="ClassIsland.Markdown.Avalonia" Version="11.0.3.4" />
+		<PackageVersion Include="Velopack" Version="0.0.1298" />
 	</ItemGroup>
 	<ItemGroup>
 		<PackageVersion Include="Microsoft.SemanticKernel" Version="1.70.0" />
