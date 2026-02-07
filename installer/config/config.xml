@@ -8,9 +8,10 @@
 	<TargetDir>@ApplicationsDir@/NeroiStack</TargetDir>
 	<InstallerApplicationIcon>NeroiStack</InstallerApplicationIcon>
 
-	<MaintenanceToolName>maintenancetool</MaintenanceToolName>
 	<AllowAnyTargetDir>true</AllowAnyTargetDir>
 	<RequiresAdminRights>true</RequiresAdminRights>
+
+	<MaintenanceToolName>maintenancetool</MaintenanceToolName>
 
 	<WizardStyle>Modern</WizardStyle>
 </Installer>
