@@ -34,6 +34,7 @@
 	
 	<PackageReference Include="ClassIsland.Markdown.Avalonia.Tight" />
 	<PackageReference Include="ClassIsland.Markdown.Avalonia" />
+	<PackageReference Include="Velopack" />
   </ItemGroup>
 
   <ItemGroup>

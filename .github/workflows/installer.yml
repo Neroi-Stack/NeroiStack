@@ -21,10 +21,12 @@ jobs:
                 include:
                     - os: windows-latest
                       runtime: win-x64
-                      installer_ext: .exe
+                      main_exe: NeroiStack.exe
+                      icon_ext: .ico
                     - os: ubuntu-latest
                       runtime: linux-x64
-                      installer_ext: .run
+                      main_exe: NeroiStack
+                      icon_ext: .png
         steps:
             - name: Checkout Code
               uses: actions/checkout@v4
@@ -41,59 +43,47 @@ jobs:
               run: |
                   dotnet publish NeroiStack/NeroiStack.csproj -c Release -r ${{ matrix.runtime }} --self-contained true -o ./publish
 
-            - name: Install Qt Installer Framework
+            - name: Get Version
+              id: get_version
               shell: bash
               run: |
-                  python3 -m pip install aqtinstall
-                  if [ "$RUNNER_OS" == "Windows" ]; then
-                    python3 -m aqt install-tool windows desktop tools_ifw --outputdir "$HOME/Qt"
-                  else
-                    python3 -m aqt install-tool linux desktop tools_ifw --outputdir "$HOME/Qt"
+                  VERSION=${GITHUB_REF_NAME#v}
+                  if [[ $VERSION == main || $VERSION == master || $VERSION != [0-9]* ]]; then
+                    VERSION="0.0.0-dev"
                   fi
+                  echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
-            - name: Prepare Installer Data
-              shell: bash
-              run: |
-                  mkdir -p installer/packages/com.neroi.stack/data
-                  cp -r ./publish/* installer/packages/com.neroi.stack/data/
+            - name: Install Velopack CLI
+              run: dotnet tool install -g vpk
 
-            - name: Build Installer
+            - name: Build Installer (Velopack)
               shell: bash
               run: |
                   if [ "$RUNNER_OS" == "Linux" ]; then
                     sudo apt-get update
-                    sudo apt-get install -y libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xinput0 libxcb-shape0
+                    sudo apt-get install -y libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-render-util0 libxcb-xinerama0 libxcb-xinput0 libxcb-shape0 fuse
                   fi
-                  if [ "$RUNNER_OS" == "Windows" ]; then
-                    IFW_BIN=$(find $HOME/Qt/Tools/QtInstallerFramework -name "bin" -type d | head -n 1)
-                  else
-                    IFW_BIN=$(find $HOME/Qt -name "bin" -type d | grep QtInstallerFramework | head -n 1)
-                  fi
-
-                  if [ -z "$IFW_BIN" ]; then
-                    echo "Error: Could not find IFW bin directory"
-                    exit 1
-                  fi
-                  export PATH="$PATH:$IFW_BIN"
-                  echo "PATH set to: $IFW_BIN"
-
-                  if [ "$RUNNER_OS" == "Linux" ]; then
-                    [ -f installer/packages/com.neroi.stack/data/NeroiStack ] && chmod +x installer/packages/com.neroi.stack/data/NeroiStack
-                  fi
-
-                  binarycreator -v -c installer/config/config.xml -p installer/packages NeroiStack-Installer-${{ matrix.runtime }}${{ matrix.installer_ext }}
+                  vpk pack \
+                    --packId NeroiStack \
+                    --packVersion ${{ steps.get_version.outputs.VERSION }} \
+                    --packDir ./publish \
+                    --mainExe ${{ matrix.main_exe }} \
+                    --packAuthors "TseWei Chen" \
+                    --icon NeroiStack/Assets/NeroiStack${{ matrix.icon_ext }} \
+                    --outputDir ./releases
 
             - name: Upload Installer to Artifacts
               uses: actions/upload-artifact@v4
               with:
                   name: NeroiStack-Installer-${{ matrix.runtime }}
-                  path: NeroiStack-Installer-${{ matrix.runtime }}${{ matrix.installer_ext }}
+                  path: ./releases/*
                   if-no-files-found: error
 
             - name: Release Installer
               uses: softprops/action-gh-release@v2
               if: startsWith(github.ref, 'refs/tags/')
               with:
-                  files: NeroiStack-Installer-${{ matrix.runtime }}${{ matrix.installer_ext }}
+                  files: ./releases/*
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
