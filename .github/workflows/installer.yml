@@ -83,6 +83,9 @@ jobs:
               uses: softprops/action-gh-release@v2
               if: startsWith(github.ref, 'refs/tags/')
               with:
-                  files: ./releases/*
+                  files: |
+                      ./releases/*.exe
+                      ./releases/*.AppImage
+                      ./releases/*-Portable.zip
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
