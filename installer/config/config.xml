@@ -7,9 +7,6 @@
 	<StartMenuDir>NeroiStack</StartMenuDir>
 	<TargetDir>@ApplicationsDir@/NeroiStack</TargetDir>
 	<InstallerApplicationIcon>NeroiStack</InstallerApplicationIcon>
-
-	<RequiresAdminRights>true</RequiresAdminRights>
-
 	<MaintenanceToolName>maintenancetool</MaintenanceToolName>
 
 	<WizardStyle>Modern</WizardStyle>
