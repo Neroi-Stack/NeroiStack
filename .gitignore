@@ -487,4 +487,3 @@ $RECYCLE.BIN/
 /neroi_chats.db-wal
 /neroi_chats.db-shm
 *.db
-/installer/packages/*/data/
