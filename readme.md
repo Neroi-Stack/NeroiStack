@@ -1,7 +1,10 @@
 # NeroiStack
 
+![GitHub Release](https://img.shields.io/github/v/release/Neroi-Stack/NeroiStack) ![GitHub License](https://img.shields.io/github/license/Neroi-Stack/NeroiStack) ![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Neroi-Stack/NeroiStack/installer.yml)
+
 A powerful AI agent application. 
 `Still under development; pull requests are welcome.`
+
 
 <img width="959" height="505" alt="image" src="https://github.com/user-attachments/assets/6bb5ef39-6938-456d-97bf-91f1a67537db" />
 
