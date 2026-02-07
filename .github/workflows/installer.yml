@@ -49,7 +49,7 @@ jobs:
               run: |
                   VERSION=${GITHUB_REF_NAME#v}
                   if [[ $VERSION == main || $VERSION == master || $VERSION != [0-9]* ]]; then
-                    VERSION="0.0.0-dev"
+                    VERSION="0.0.1"
                   fi
                   echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
 
